@@ -1,11 +1,14 @@
 package github.alecsio.mmceaddons;
 
+import github.alecsio.mmceaddons.common.cache.handler.MachineControllerRedstoneAffectedEventHandler;
+import github.alecsio.mmceaddons.common.cache.handler.WorldUnloadHandler;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.registry.internal.EventHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.royawesome.jlibnoise.module.combiner.Min;
 
 import javax.annotation.Nonnull;
 
@@ -33,6 +36,8 @@ public class CommonProxy {
         };
 
         MinecraftForge.EVENT_BUS.register(new EventHandler());
+        MinecraftForge.EVENT_BUS.register(new WorldUnloadHandler());
+        MinecraftForge.EVENT_BUS.register(new MachineControllerRedstoneAffectedEventHandler());
 
         ModularMachineryAddonsBlocks.initialise();
     }

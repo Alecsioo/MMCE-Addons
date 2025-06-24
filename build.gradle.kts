@@ -13,7 +13,7 @@ plugins {
 
 // Project properties
 group = "alecsio.modularmachineryaddons"
-version = "1.0.1"
+version = "1.0.2"
 
 // Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
 java {
@@ -176,24 +176,22 @@ dependencies {
     testCompileOnly("me.eigenraven.java8unsupported:java-8-unsupported-shim:1.0.0")
     implementation("zone.rong:mixinbooter:8.9")
     // Mixins
-    /*
+
     val mixin : String = modUtils.enableMixins("zone.rong:mixinbooter:8.9", "mixins.mmcea.refmap.json").toString()
     api (mixin) {
         isTransitive = false
     }
 
-     */
 
     annotationProcessor("org.ow2.asm:asm-debug-all:5.2")
     annotationProcessor("com.google.guava:guava:30.0-jre")
     annotationProcessor("com.google.code.gson:gson:2.8.9")
 
-    /*
+
     annotationProcessor (mixin) {
         isTransitive = false
     }
 
-     */
 
     implementation(rfg.deobf("curse.maven:ae2-570458:6302098"))
     implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:5527355-sources-5527359"))
@@ -206,6 +204,8 @@ dependencies {
     implementation(rfg.deobf("curse.maven:spark-361579:3542217"))
 
     implementation(rfg.deobf("curse.maven:thaumicaug-319441:6047659"))
+    implementation(rfg.deobf("curse.maven:lazyae2dep-322344:3509087"))
+    implementation(rfg.deobf("curse.maven:lazyae2-322347:3254160"))
 
     implementation(rfg.deobf("curse.maven:contentTweaker-237065:3331364"))
     implementation(rfg.deobf("curse.maven:contentTweakerDependency-246996:3440963"))

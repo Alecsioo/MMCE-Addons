@@ -16,7 +16,7 @@ import static net.minecraft.util.math.MathHelper.clamp;
 
 public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement> extends TileColorableMachineComponent implements IRequirementHandler<T> {
 
-    private final ChunksReader chunksReader = ChunksReader.getInstance();
+    protected final ChunksReader chunksReader = ChunksReader.getInstance();
 
     public CraftCheck canHandle(T requirement) {
         List<Chunk> chunks = chunksReader.getSurroundingChunks(world, this.pos, requirement.getChunkRange());
