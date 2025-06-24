@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "modularmachineryaddons:items/inactive_radiation_sponge"
+    }
+}

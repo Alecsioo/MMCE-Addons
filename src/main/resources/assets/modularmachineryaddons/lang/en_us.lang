@@ -18,6 +18,10 @@ tile.modularmachineryaddons.blockdimensionproviderinput.name=Dimension Hatch
 item.modularmachineryaddons.itemadvancedconstructtool.name=Advanced Wrench
 item.modularmachineryaddons.itemadvancedmachineassembler.name=Advanced Machine Assembler
 item.modularmachineryaddons.itemadvancedmachinedisassembler.name=Advanced Machine Disassembler
+item.modularmachineryaddons.itemradiationsponge.name=Radiation Sponge
+item.modularmachineryaddons.iteminactiveradiationsponge.name=Inactive Radiation Sponge
+
+commands.mmcea.getcacheinfo.usage=/getScrubbedChunksCacheInfo
 
 # errors
 error.modularmachineryaddons.component.invalid.biome=No biome hatch found
@@ -52,6 +56,11 @@ error.modularmachineryaddons.requirement.missing.meteor.missing=Meteor hatch cou
 
 # items
 item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and click on a machine controller to extract the entire multiblock definition. Selecting a third block will clear the selection.
+tooltip.modularmachineryaddons.radiationsponge=Removes all radiation from the user as well as from the current chunk the user is in
+
+# blocks
+tooltip.modularmachineryaddons.scrubber=May still cause leaks for a short time window in-between recipes or on world restart. Scrub your base!
+
 
 # messages
 message.modularmachineryaddons.assembly.complete=Multiblock assembly completed successfully
@@ -72,3 +81,4 @@ tooltip.builder.player_inventory_me=Mode: Player Inventory + Linked ME Network
 tooltip.builder.all=Mode: Player Inventory + EMC + Linked ME Network
 message.assembly.tip.success.missing.blocks=Could not place the following blocks: %s
 message.assembly.too.quickly=Trying to perform action too quickly!
+message.modularmachineryaddons.radiationsponge.success=Scrubbed Radiation: [%d from %s] [%d from chunk buffer] [%d from chunk level]

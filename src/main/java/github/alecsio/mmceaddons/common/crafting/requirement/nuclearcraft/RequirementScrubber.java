@@ -9,6 +9,7 @@ import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRa
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentScrubberProvider;
+import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileScrubberProvider;
 import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.crafting.helper.ProcessingComponent;
@@ -17,6 +18,7 @@ import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
+import hellfirepvp.modularmachinery.common.util.ResultChance;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -52,6 +54,13 @@ public class RequirementScrubber extends ComponentRequirement.PerTick<Radiation,
         scrubberHandler.handle(this);
 
         return CraftCheck.success();
+    }
+
+    @Nonnull
+    @Override
+    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
+        ((TileScrubberProvider) getRadiationHandler(component)).clearScrubbedChunks();
+        return super.finishCrafting(component, context, chance);
     }
 
     @Override

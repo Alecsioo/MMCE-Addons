@@ -176,18 +176,22 @@ dependencies {
     testCompileOnly("me.eigenraven.java8unsupported:java-8-unsupported-shim:1.0.0")
     implementation("zone.rong:mixinbooter:8.9")
     // Mixins
+
     val mixin : String = modUtils.enableMixins("zone.rong:mixinbooter:8.9", "mixins.mmcea.refmap.json").toString()
     api (mixin) {
         isTransitive = false
     }
 
+
     annotationProcessor("org.ow2.asm:asm-debug-all:5.2")
     annotationProcessor("com.google.guava:guava:30.0-jre")
     annotationProcessor("com.google.code.gson:gson:2.8.9")
 
+
     annotationProcessor (mixin) {
         isTransitive = false
     }
+
 
     implementation(rfg.deobf("curse.maven:ae2-570458:6302098-sources-6302100"))
     implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:5527355-sources-5527359"))
@@ -205,6 +209,8 @@ dependencies {
     implementation("curse.maven:jmap-32274:5172461")
 
     implementation(rfg.deobf("curse.maven:thaumicaug-319441:6047659"))
+    implementation(rfg.deobf("curse.maven:lazyae2dep-322344:3509087"))
+    implementation(rfg.deobf("curse.maven:lazyae2-322347:3254160"))
 
     implementation(rfg.deobf("curse.maven:contentTweaker-237065:3331364"))
     implementation(rfg.deobf("curse.maven:contentTweakerDependency-246996:3440963"))
