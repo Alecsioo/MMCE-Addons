@@ -15,8 +15,11 @@ public class MachineControllerRedstoneAffectedEventHandler {
             if (component.getComponent() instanceof MachineComponentScrubberProvider scrubberProvider) {
                 IRequirementHandler<?> handler = scrubberProvider.getContainerProvider();
                 if (handler instanceof TileScrubberProvider scrubber) {
-                    scrubber.unmarkAllChunksAsScrubbed();
-                    scrubber.setHandledRedstone();
+                    if (event.isPowered) {
+                        scrubber.unmarkAllChunksAsScrubbed();
+                    } else {
+                        scrubber.markAllChunksAsScrubbed();
+                    }
                 }
             }
         }

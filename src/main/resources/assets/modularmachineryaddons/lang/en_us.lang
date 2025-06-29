@@ -50,3 +50,4 @@ item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and
 message.modularmachineryaddons.advancedconstructtool.cleared=Cleared tool selection
 message.modularmachineryaddons.advancedconstructtool.invalid.selection=Please select two corners!
 message.modularmachineryaddons.advancedconstructtool.selection=Successfully selected corner
+message.modularmachineryaddons.radiationsponge.success=Scrubbed Radiation: [%d from %s] [%d from chunk buffer] [%d from chunk level]

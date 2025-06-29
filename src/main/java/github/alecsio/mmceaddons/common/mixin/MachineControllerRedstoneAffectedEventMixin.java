@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import scala.tools.asm.Opcodes;
 
 import java.util.stream.Collectors;
@@ -24,7 +25,15 @@ public abstract class MachineControllerRedstoneAffectedEventMixin extends TileMu
             opcode = Opcodes.PUTFIELD,
             shift = At.Shift.AFTER), remap = false )
     private void onControllerPowered(CallbackInfo ci) {
-        System.out.printf("ControllerPowered\n");
-        MinecraftForge.EVENT_BUS.post(new MachineControllerRedstoneAffectedEvent(foundComponents.values().stream().collect(Collectors.toList())));
+        MinecraftForge.EVENT_BUS.post(new MachineControllerRedstoneAffectedEvent(foundComponents.values().stream().collect(Collectors.toList()), true));
+    }
+
+    @Inject(
+            method = "canCheckStructure()Z",
+            at = @At(value = "FIELD", target = "Lhellfirepvp/modularmachinery/common/tiles/TileMachineController;redstoneEffected:Z",
+                    opcode = Opcodes.PUTFIELD,
+                    shift = At.Shift.AFTER), remap = false )
+    private void onControllerUnpowered(CallbackInfoReturnable<Boolean> cir) {
+        MinecraftForge.EVENT_BUS.post(new MachineControllerRedstoneAffectedEvent(foundComponents.values().stream().collect(Collectors.toList()), false));
     }
 }

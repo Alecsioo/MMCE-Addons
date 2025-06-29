@@ -4,9 +4,9 @@ import net.minecraft.util.math.ChunkPos;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -21,45 +21,63 @@ public class ScrubbedChunksCache {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    private static final ConcurrentMap<Integer, ConcurrentMap<ChunkPos, Integer>> DIMENSION_SCRUBBED_CHUNKS_MARKERS = new ConcurrentHashMap<>();
+    private static final HashMap<Integer, HashMap<ChunkPos, Integer>> DIMENSION_SCRUBBED_CHUNKS_MARKERS = new HashMap<>();
+    private static final Map<InterDimensionalBlockPos, Boolean> SCRUBBER_POS_IS_SCRUBBED = new HashMap<>();
 
+    public static void markAsScrubbed(InterDimensionalBlockPos controllerPosition, List<ChunkPos> scrubbedChunks) {
+        try {
+            lock.writeLock().lock();
 
-    public static void markAsScrubbed(int dimensionId, ChunkPos chunkPos) {
-        ConcurrentMap<ChunkPos, Integer> chunkMap = DIMENSION_SCRUBBED_CHUNKS_MARKERS.computeIfAbsent(dimensionId, k -> new ConcurrentHashMap<>());
-        chunkMap.merge(chunkPos, 1, Integer::sum);
-    }
+            SCRUBBER_POS_IS_SCRUBBED.put(controllerPosition, true);
+            HashMap<ChunkPos, Integer> affectedChunks = DIMENSION_SCRUBBED_CHUNKS_MARKERS.computeIfAbsent(controllerPosition.dimensionId(), dimId -> new HashMap<>());
+            scrubbedChunks.forEach(chunkPos -> affectedChunks.merge(chunkPos, 1, Integer::sum));
 
-    public static void unmarkAsScrubbed(int dimensionId, ChunkPos chunkPos) {
-        ConcurrentMap<ChunkPos, Integer> chunkMap = DIMENSION_SCRUBBED_CHUNKS_MARKERS.get(dimensionId);
-        if (chunkMap == null) {
-            LOGGER.error("No marked chunks found for dimension {}. Cache is in inconsistent state!", dimensionId);
-            return;
+        } finally {
+            lock.writeLock().unlock();
         }
-
-        chunkMap.compute(chunkPos, (k, scrubberCount) -> {
-            if (scrubberCount == null || scrubberCount <= 1) {return null;} // Remove if the chunk is not scrubbed by any scrubber hatches anymore
-            return scrubberCount - 1;
-        });
     }
 
-    public static boolean isMarkedAsScrubbed(int dimensionId, ChunkPos chunkPos) {
+    public static void unmarkAsScrubbed(InterDimensionalBlockPos controllerPosition, List<ChunkPos> scrubbedChunks) {
+        try {
+            lock.writeLock().lock();
+
+            SCRUBBER_POS_IS_SCRUBBED.remove(controllerPosition);
+            HashMap<ChunkPos, Integer> affectedChunks = DIMENSION_SCRUBBED_CHUNKS_MARKERS.computeIfAbsent(controllerPosition.dimensionId(), dimId -> new HashMap<>());
+
+            for (final ChunkPos chunkPos : scrubbedChunks) {
+                affectedChunks.compute(chunkPos, (scrubbedChunk, scrubbedCount) -> {
+                    if (scrubbedCount == null || scrubbedCount <= 1) {
+                        return null;
+                    }
+                    return scrubbedCount - 1;
+                });
+            }
+
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    public static boolean isScrubbed(InterDimensionalBlockPos controllerPosition) {
+        Boolean isScrubbed;
+        try {
+            lock.readLock().lock();
+            isScrubbed = SCRUBBER_POS_IS_SCRUBBED.get(controllerPosition);
+        } finally {
+            lock.readLock().unlock();
+        }
+        return isScrubbed != null && isScrubbed;
+    }
+
+    public static boolean isChunkMarkedAsScrubbed(int dimensionId, ChunkPos chunkPos) {
         try {
             lock.readLock().lock();
 
-            ConcurrentMap<ChunkPos, Integer> chunkMap = DIMENSION_SCRUBBED_CHUNKS_MARKERS.get(dimensionId);
+            HashMap<ChunkPos, Integer> chunkMap = DIMENSION_SCRUBBED_CHUNKS_MARKERS.get(dimensionId);
             return chunkMap != null && chunkMap.containsKey(chunkPos);
 
         } finally {
             lock.readLock().unlock();
-        }
-    }
-
-    public static void unmarkAllAsScrubbed(int dimensionId, List<ChunkPos> chunkPositions) {
-        try {
-            lock.writeLock().lock();
-            chunkPositions.forEach(chunkPos -> unmarkAsScrubbed(dimensionId, chunkPos));
-        } finally {
-            lock.writeLock().unlock();
         }
     }
 

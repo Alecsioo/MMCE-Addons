@@ -13,8 +13,10 @@ public class MachineControllerRedstoneAffectedEvent extends Event {
 
     // The currently found components for the affected controller
     public List<ProcessingComponent<?>> components;
+    public boolean isPowered;
 
-    public MachineControllerRedstoneAffectedEvent(List<ProcessingComponent<?>> components) {
+    public MachineControllerRedstoneAffectedEvent(List<ProcessingComponent<?>> components, boolean isPowered) {
         this.components = components;
+        this.isPowered = isPowered;
     }
 }

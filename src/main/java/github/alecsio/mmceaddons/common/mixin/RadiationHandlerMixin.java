@@ -24,7 +24,7 @@ public class RadiationHandlerMixin {
     )
     private static void radiationHandlerMixin(World world, Chunk chunk, double radiation, CallbackInfo ci) {
         int dimensionId = world.provider.getDimension();
-        if (ScrubbedChunksCache.isMarkedAsScrubbed(dimensionId, chunk.getPos())) {
+        if (ScrubbedChunksCache.isChunkMarkedAsScrubbed(dimensionId, chunk.getPos())) {
             IRadiationSource chunkRadiationSource = RadiationHelper.getRadiationSource(chunk);
             chunkRadiationSource.setRadiationBuffer(0);
             chunkRadiationSource.setRadiationLevel(0);
