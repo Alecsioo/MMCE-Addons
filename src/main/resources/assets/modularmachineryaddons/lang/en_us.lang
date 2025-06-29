@@ -32,6 +32,7 @@ error.assembler.not.found=Could not locate an advanced machine assembler item in
 error.encryption.key.not.found=The assembler must be linked to an ME system via a security station to allow item extraction
 error.security.station.not.found=Could not locate security station
 message.assembly.missing.machine=Could not identify machine. Insert a blueprint or convert the controller
+message.item.mode.changed=Changed item mode to %s
 
 # requirement check fails
 error.modularmachineryaddons.requirement.missing.multichunk.input=Missing multi-chunk input requirement

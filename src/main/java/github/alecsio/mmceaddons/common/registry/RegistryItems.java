@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons.common.registry;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedConstructTool;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineAssembler;
+import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineDisassembler;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
@@ -15,16 +16,21 @@ public class RegistryItems {
 
     public static ItemAdvancedConstructTool constructTool;
     public static ItemAdvancedMachineAssembler machineAssembler;
+    public static ItemAdvancedMachineDisassembler machineDisassembler;
 
     public static void initialise() {
 
         constructTool = new ItemAdvancedConstructTool();
         machineAssembler = new ItemAdvancedMachineAssembler();
+        machineDisassembler = new ItemAdvancedMachineDisassembler();
 
         constructTool.setRegistryName(ModularMachineryAddons.MODID, "advancedconstructtool").setTranslationKey(ModularMachineryAddons.MODID + "." + constructTool.getClass().getSimpleName().toLowerCase());
         machineAssembler.setRegistryName(ModularMachineryAddons.MODID, "advancedmachineassembler").setTranslationKey(ModularMachineryAddons.MODID + "." + machineAssembler.getClass().getSimpleName().toLowerCase());
+        machineDisassembler.setRegistryName(ModularMachineryAddons.MODID, "advancedmachinedisassembler").setTranslationKey(ModularMachineryAddons.MODID + "." + machineDisassembler.getClass().getSimpleName().toLowerCase());
+
         ITEM_BLOCKS.add(constructTool);
         ITEM_BLOCKS.add(machineAssembler);
+        ITEM_BLOCKS.add(machineDisassembler);
 
         registerItemBlocks();
         registerItemModels();
