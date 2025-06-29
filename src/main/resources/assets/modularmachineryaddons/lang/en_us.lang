@@ -16,6 +16,7 @@ tile.modularmachineryaddons.blockbiomeproviderinput.name=Biome Hatch
 tile.modularmachineryaddons.blockdimensionproviderinput.name=Dimension Hatch
 
 item.modularmachineryaddons.itemadvancedconstructtool.name=Advanced Wrench
+item.modularmachineryaddons.itemadvancedmachineassembler.name=Advanced Machine Assembler
 
 # errors
 error.modularmachineryaddons.component.invalid.biome=No biome hatch found
@@ -27,6 +28,11 @@ error.modularmachineryaddons.component.invalid.scrubber=No scrubber hatch found
 error.modularmachineryaddons.component.invalid.radiation=No radiation hatch found
 error.modularmachineryaddons.component.invalid.will=No will hatch found
 error.modularmachineryaddons.component.invalid.meteor=No meteor hatch found
+error.assembler.not.found=Could not locate an advanced machine assembler item in the player's inventory
+error.encryption.key.not.found=The assembler must be linked to an ME system via a security station to allow item extraction
+error.security.station.not.found=Could not locate security station
+message.assembly.missing.machine=Could not identify machine. Insert a blueprint or convert the controller
+message.item.mode.changed=Changed item mode to %s
 
 # requirement check fails
 error.modularmachineryaddons.requirement.missing.multichunk.input=Missing multi-chunk input requirement
@@ -50,3 +56,7 @@ item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and
 message.modularmachineryaddons.advancedconstructtool.cleared=Cleared tool selection
 message.modularmachineryaddons.advancedconstructtool.invalid.selection=Please select two corners!
 message.modularmachineryaddons.advancedconstructtool.selection=Successfully selected corner
+
+#assembly
+message.assembly.missing.item.knowledge=Missing knowledge of item %s
+message.assembly.missing.emc=Not enough EMC for item %s with count %s. Current EMC: %d Needed: %d
