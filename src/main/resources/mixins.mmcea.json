@@ -1,0 +1,13 @@
+{
+  "package": "github.alecsio.mmceaddons.common.mixin",
+  "refmap": "mixins.mmcea.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "verbose": true,
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MachineControllerRedstoneAffectedEventMixin",
+    "MachineNotFormedEventMixin",
+    "RadiationHandlerMixin"
+  ]
+}

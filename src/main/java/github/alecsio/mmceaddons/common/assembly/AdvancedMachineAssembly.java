@@ -46,7 +46,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import stanhebben.zenscript.annotations.NotNull;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents and encapsulates all the logic related to the assembly of a multiblock.
