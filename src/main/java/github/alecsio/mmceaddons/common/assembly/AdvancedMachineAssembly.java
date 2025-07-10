@@ -26,6 +26,7 @@ import ink.ikx.mmce.common.utils.StructureIngredient;
 import moze_intel.projecte.api.ProjectEAPI;
 import moze_intel.projecte.api.capabilities.IKnowledgeProvider;
 import moze_intel.projecte.utils.EMCHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -118,7 +119,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
             ItemStack stack = stackStateTuple.getFirst();
             IBlockState state = stackStateTuple.getSecond();
 
-            boolean handled = false;
+            ItemStack handledItem = ItemStack.EMPTY;
             ItemStack assembler = null;
             ItemStack stackInInvToConsume = null;
             // player inv
@@ -127,14 +128,14 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
                 // but idk if it's worth addressing
                 if (stackInSlot.getItem() instanceof ItemAdvancedMachineAssembler) {
                     assembler = stackInSlot;
-                    if (handled) {break;}
+                    if (!handledItem.isEmpty()) {break;}
                 }
 
                 // Handling both the assembler and block lookup in the same loop means that even if you don't have an assembler
                 // it will still place items from your inventory. This happens if, for example, you start an assembly and throw the item.
-                if (ItemStack.areItemsEqual(stack, stackInSlot) && !handled) {
-                    handled = true;
+                if (ItemStack.areItemsEqual(stack, stackInSlot) && handledItem.isEmpty()) {
                     stackInInvToConsume = stackInSlot;
+                    handledItem = stackInInvToConsume.copy();
                 }
             }
 
@@ -154,15 +155,15 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
             modeIndex = tag.getInteger(ItemAdvancedMachineAssembler.MODE_INDEX);
             AssemblyModes mode = AssemblyModes.getSupportedModes().get(modeIndex);
 
-            if (!handled && LoadedModsCache.aeLoaded && mode.supports(AssemblySupportedMods.APPLIEDENERGISTICS2)) {
-                handled = canMEHandle(stack, assembler);
+            if (handledItem.isEmpty() && LoadedModsCache.aeLoaded && mode.supports(AssemblySupportedMods.APPLIEDENERGISTICS2)) {
+                handledItem = canMEHandle(stack, assembler);
             }
 
-            if (!handled && LoadedModsCache.projecteLoaded && mode.supports(AssemblySupportedMods.PROJECTE)) {
-                handled = canEMCHandle(stack);
+            if (handledItem.isEmpty() && LoadedModsCache.projecteLoaded && mode.supports(AssemblySupportedMods.PROJECTE)) {
+                handledItem = canEMCHandle(stack);
             }
 
-            if (!handled || !world.isAirBlock(toPlacePos)) {
+            if (handledItem.isEmpty() || !world.isAirBlock(toPlacePos)) {
                 if (i == ingredientToProcess.ingredientList().size() - 1) {
                     unhandledBlocks.add(stack.getDisplayName());
                     hadError = true;
@@ -171,7 +172,10 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
             }
 
             lastError = null;
+
             world.setBlockState(toPlacePos, state);
+            Block block = world.getBlockState(toPlacePos).getBlock();
+            block.onBlockPlacedBy(world, toPlacePos, state, player, handledItem);
             world.playSound(null, toPlacePos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             TileEntity te = world.getTileEntity(toPlacePos);
             if (te != null && ingredientToProcess.nbt() != null) {
@@ -188,18 +192,18 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
     }
 
     @Optional.Method(modid = LoadedModsCache.AE2)
-    private boolean canMEHandle(ItemStack stack, @NotNull ItemStack assembler) {
+    private ItemStack canMEHandle(ItemStack stack, @NotNull ItemStack assembler) {
         IAppEngApi aeApi = AEApi.instance();
         java.util.Optional<Long> optEncryptionKey = getOptionalEncryptionKeyFrom(assembler);
         if (!optEncryptionKey.isPresent()) {
-            return false;
+            return ItemStack.EMPTY;
         }
 
         long parsedKey = optEncryptionKey.get();
         ILocatable securityStation = aeApi.registries().locatable().getLocatableBy(parsedKey);
         if (!(securityStation instanceof IActionHost host)) {
             lastError = new TextComponentTranslation("error.security.station.not.found");
-            return false;
+            return ItemStack.EMPTY;
         }
 
         IGridNode node = host.getActionableNode();
@@ -213,29 +217,29 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
         IAEStack<IAEItemStack> aeStack = aeApi.storage().poweredExtraction(energyGrid, itemStorage, AEItemStack.fromItemStack(stack), new PlayerSource(player, host), Actionable.SIMULATE);
         if (aeStack != null && aeStack.getStackSize() == stack.getCount()) {
-            storageHelper.poweredExtraction(energyGrid, itemStorage, AEItemStack.fromItemStack(stack), new PlayerSource(player, host), Actionable.MODULATE);
-            return true;
+            IAEStack<IAEItemStack> extracted = storageHelper.poweredExtraction(energyGrid, itemStorage, AEItemStack.fromItemStack(stack), new PlayerSource(player, host), Actionable.MODULATE);
+            return extracted.asItemStackRepresentation();
         }
 
-        return false;
+        return ItemStack.EMPTY;
     }
 
     @Optional.Method(modid = LoadedModsCache.PROJECTE)
-    private boolean canEMCHandle(ItemStack stack) {
+    private ItemStack canEMCHandle(ItemStack stack) {
         if (player == null) {
             LOGGER.error("Null player in assembly. This should probably not happen.");
-            return false;
+            return ItemStack.EMPTY;
         }
 
         IKnowledgeProvider provider = player.getCapability(ProjectEAPI.KNOWLEDGE_CAPABILITY, null);
         if (provider == null) {
             LOGGER.error("Null IKnowledgeProvider in assembly. This should probably not happen.");
-            return false;
+            return ItemStack.EMPTY;
         }
 
         boolean hasEmc = EMCHelper.doesItemHaveEmc(stack);
         if (!hasEmc) {
-            return false;
+            return ItemStack.EMPTY;
         }
 
         long emc = provider.getEmc();
@@ -243,16 +247,16 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
         if (!provider.hasKnowledge(stack)) {
             lastError = new TextComponentTranslation("message.assembly.missing.item.knowledge", stack.getDisplayName());
-            return false;
+            return ItemStack.EMPTY;
         }
 
         if (emc - stackEmcValue < 0) {
             lastError = new TextComponentTranslation("message.assembly.missing.emc", stack.getDisplayName(), stack.getCount(), emc, stackEmcValue);
-            return false;
+            return ItemStack.EMPTY;
         }
 
         provider.setEmc(emc - stackEmcValue);
-        return true;
+        return stack;
     }
 
     private boolean canPlaceBlockAt(BlockPos pos) {

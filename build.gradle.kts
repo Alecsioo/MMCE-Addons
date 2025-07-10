@@ -212,6 +212,13 @@ dependencies {
     implementation(rfg.deobf("curse.maven:lazyae2dep-322344:3509087"))
     implementation(rfg.deobf("curse.maven:lazyae2-322347:3254160"))
 
+    implementation(rfg.deobf("curse.maven:astral-241721:3044416"))
+
+    implementation(rfg.deobf("curse.maven:thermal-69163:2926431"))
+    implementation(rfg.deobf("curse.maven:thermalfoundation-222880:2926428"))
+    implementation(rfg.deobf("curse.maven:cofhcore-69162:2920433"))
+    implementation(rfg.deobf("curse.maven:cofhworld-271384:2920434"))
+    implementation(rfg.deobf("curse.maven:redstoneflux-270789:2920436"))
     implementation(rfg.deobf("curse.maven:contentTweaker-237065:3331364"))
     implementation(rfg.deobf("curse.maven:contentTweakerDependency-246996:3440963"))
     implementation(rfg.deobf("curse.maven:mixinbootstrap-357178:3437402"))
