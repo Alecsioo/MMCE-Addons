@@ -1,7 +1,11 @@
 package github.alecsio.mmceaddons.common.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.Tuple;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -11,17 +15,22 @@ import java.util.List;
 // Sent from server -> client
 public class MachineAssemblyMessage implements IMessage {
 
+    private static final String ITEM_LIST_KEY = "itemList";
+    private static final String FLUID_LIST_KEY = "fluidList";
+
     private String completedTranslationKey;
     private String missingBlocksTranslationKey;
-    private List<Tuple<String, Long>> unhandledBlocks;
+    private List<ItemStack> unhandledBlocks;
+    private List<FluidStack> unhandledFluids;
 
     public MachineAssemblyMessage() {
     }
 
-    public MachineAssemblyMessage(String completedTranslationKey, String missingBlocksTranslationKey, List<Tuple<String, Long>> unhandledBlocks) {
+    public MachineAssemblyMessage(String completedTranslationKey, String missingBlocksTranslationKey, List<ItemStack> unhandledBlocks, List<FluidStack> unhandledFluids) {
         this.completedTranslationKey = completedTranslationKey;
         this.missingBlocksTranslationKey = missingBlocksTranslationKey;
         this.unhandledBlocks = unhandledBlocks;
+        this.unhandledFluids = unhandledFluids;
     }
 
     public String getCompletedTranslationKey() {
@@ -32,8 +41,12 @@ public class MachineAssemblyMessage implements IMessage {
         return missingBlocksTranslationKey;
     }
 
-    public List<Tuple<String, Long>> getUnhandledBlocks() {
+    public List<ItemStack> getUnhandledBlocks() {
         return unhandledBlocks;
+    }
+
+    public List<FluidStack> getUnhandledFluids() {
+        return unhandledFluids;
     }
 
     @Override
@@ -41,22 +54,54 @@ public class MachineAssemblyMessage implements IMessage {
         completedTranslationKey = ByteBufUtils.readUTF8String(buf);
         missingBlocksTranslationKey = ByteBufUtils.readUTF8String(buf);
         this.unhandledBlocks = new ArrayList<>();
-        int size = buf.readInt();
-        for (int i = 0; i < size; i++) {
-            String key = ByteBufUtils.readUTF8String(buf);
-            long count = buf.readLong();
-            this.unhandledBlocks.add(new Tuple<>(key, count));
+        this.unhandledFluids = new ArrayList<>();
+
+        NBTTagCompound tagCompound = ByteBufUtils.readTag(buf);
+        NBTTagList itemList = tagCompound.getTagList(ITEM_LIST_KEY, Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < itemList.tagCount(); i++) {
+            NBTTagCompound itemTagCompound = itemList.getCompoundTagAt(i);
+            if (!itemList.isEmpty()) {
+                ItemStack itemStack = new ItemStack(itemTagCompound);
+                if (!itemStack.isEmpty()) {
+                    this.unhandledBlocks.add(itemStack);
+                }
+            }
         }
+        NBTTagList fluidList = tagCompound.getTagList(FLUID_LIST_KEY, Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < fluidList.tagCount(); i++) {
+            NBTTagCompound fluidTagCompound = fluidList.getCompoundTagAt(i);
+            if (!fluidTagCompound.isEmpty()) {
+                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTagCompound);
+                if (fluidStack != null) {
+                    this.unhandledFluids.add(fluidStack);
+                }
+            }
+        }
+
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         ByteBufUtils.writeUTF8String(buf, completedTranslationKey);
         ByteBufUtils.writeUTF8String(buf, missingBlocksTranslationKey);
-        buf.writeInt(this.unhandledBlocks.size());
-        unhandledBlocks.forEach(tuple -> {
-            ByteBufUtils.writeUTF8String(buf, tuple.getFirst());
-            buf.writeLong(tuple.getSecond());
-        });
+
+        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagList itemList = new NBTTagList();
+        for (ItemStack stack : unhandledBlocks) {
+            NBTTagCompound stackTag = new NBTTagCompound();
+            stack.writeToNBT(stackTag);
+            itemList.appendTag(stackTag);
+        }
+        tag.setTag(ITEM_LIST_KEY, itemList);
+
+        NBTTagList fluidList = new NBTTagList();
+        for (FluidStack stack : unhandledFluids) {
+            NBTTagCompound stackTag = new NBTTagCompound();
+            stack.writeToNBT(stackTag);
+            fluidList.appendTag(stackTag);
+        }
+        tag.setTag(FLUID_LIST_KEY, fluidList);
+
+        ByteBufUtils.writeTag(buf, tag);
     }
 }

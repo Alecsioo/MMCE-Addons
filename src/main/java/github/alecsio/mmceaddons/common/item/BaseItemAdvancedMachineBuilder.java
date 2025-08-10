@@ -37,7 +37,6 @@ import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Optional;
 
@@ -144,16 +143,12 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
         List<StructureIngredient.ItemIngredient> ingredientList = new ArrayList<>();
         machineDef.getPattern().forEach((pos, info) -> {
             BlockPos realPos = ctrlPos.add(pos);
-            IBlockState blockState = world.getBlockState(realPos);
-            if (info.matches(world, realPos, false) || !isSource(blockState)) {
+            IBlockState actualState = world.getBlockState(realPos);
+            if (shouldProcessIngredient(actualState, info.getSampleState())) {
                 ingredientList.add(new StructureIngredient.ItemIngredient(pos, info.getBlockStateIngredientList(), info.getMatchingTag()));
             }
         });
         return ingredientList;
-    }
-
-    private boolean isSource(IBlockState blockState) {
-        return blockState.getProperties().containsKey(BlockFluidBase.LEVEL) && blockState.getValue(BlockFluidBase.LEVEL) == 0;
     }
 
     protected List<StructureIngredient.FluidIngredient> getBlockStateFluidIngredientList(List<StructureIngredient.ItemIngredient> itemIngredients) {
@@ -290,4 +285,5 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
     }
 
     abstract IMachineAssembly getAssembly(World world, BlockPos controllerPos, EntityPlayer player, BlockArray machineDef);
+    abstract boolean shouldProcessIngredient(IBlockState currentState, IBlockState expectedState);
 }

@@ -205,7 +205,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         }
 
         if (!handledFluid) {
-            unhandledBlocks.add(fluidToBreak.getUnlocalizedName());
+            unhandledFluids.add(new FluidStack(fluidToBreak.getFluid(), 1, fluidToBreak.tag));
             return;
         }
 
@@ -214,7 +214,6 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         world.getBlockState(toBreakPos).getBlock().neighborChanged(fluidState, world, toBreakPos, world.getBlockState(toBreakPos.up()).getBlock(), toBreakPos.up());
         world.playSound(null, toBreakPos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
-
 
     // Credits to: net.minecraftforge.fluids.BlockFluidBase.getFluid(net.minecraft.block.state.IBlockState)
     private Fluid getFluid(IBlockState blockState) {
@@ -240,16 +239,22 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
 
     private void tryBreakBlock(StructureIngredient.ItemIngredient ingredientToProcess) throws MultiblockBuilderNotFoundException {
         BlockPos toBreakPos = getControllerPos().add(ingredientToProcess.pos());
-
-        if (!canBreakBlockAt(toBreakPos)) {return;}
-
         IBlockState actualState = world.getBlockState(toBreakPos);
 
-        Block blockToBreak = world.getBlockState(toBreakPos).getBlock();
+        if (!canBreakBlockAt(toBreakPos)) {
+            // If it couldn't be broken and it wasn't air
+            if (!actualState.getBlock().isAir(actualState, world, toBreakPos)) {
+                unhandledBlocks.add(ingredientToProcess.ingredientList().get(0).getFirst());
+            }
+            return;
+        }
+
+
+        Block blockToBreak = actualState.getBlock();
         ItemStack stack = blockToBreak.getPickBlock(actualState, null, world, toBreakPos, player);
         TileEntity tileEntity = world.getTileEntity(toBreakPos);
         if (blockToBreak == Blocks.AIR || getFluid(actualState) != null) {
-            // Don't inform the player if it's air
+            // Don't inform the player if it's air or a fluid
             return;
         }
 
@@ -257,6 +262,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
             // Bypassing the last error so that the player is always informed of this
             hadError = true;
             player.sendMessage(new TextComponentTranslation("error.disassembler.nonempty.itemhandler"));
+            unhandledBlocks.add(stack.copy());
             return;
         }
 
@@ -264,6 +270,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
             // Bypassing the last error so that the player is always informed of this
             hadError = true;
             player.sendMessage(new TextComponentTranslation("error.disassembler.nonempty.fluidhandler"));
+            unhandledBlocks.add(stack.copy());
             return;
         }
 
@@ -293,11 +300,11 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         }
 
         if (!handled) {
-            handled = player.inventory.addItemStackToInventory(stack);
+            handled = player.inventory.addItemStackToInventory(stack.copy());
         }
 
         if (!handled) {
-            unhandledBlocks.add(stack.getTranslationKey());
+            unhandledBlocks.add(stack.copy());
             return;
         }
 

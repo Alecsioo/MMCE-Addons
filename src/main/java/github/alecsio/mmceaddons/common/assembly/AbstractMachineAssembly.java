@@ -3,11 +3,13 @@ package github.alecsio.mmceaddons.common.assembly;
 import github.alecsio.mmceaddons.common.LoadedModsCache;
 import ink.ikx.mmce.common.utils.StructureIngredient;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Optional;
 
 import java.util.ArrayList;
@@ -17,12 +19,15 @@ public abstract class AbstractMachineAssembly implements IMachineAssembly {
 
     public static final String MODE_INDEX = "modeIndex";
     public static final String AE2_ENCRYPTION_KEY = "encryptionKey";
+    // For some reason in some prod envs ItemStack.EMPTY is modified
+    protected static final ItemStack EMPTY = new ItemStack((Item) null);
 
     protected final World world;
     protected final BlockPos controllerPos;
     protected final EntityPlayer player;
     protected StructureIngredient ingredient;
-    protected List<String> unhandledBlocks = new ArrayList<>();
+    protected List<ItemStack> unhandledBlocks = new ArrayList<>();
+    protected List<FluidStack> unhandledFluids = new ArrayList<>();
     // The last error that was reported by any of the handlers. If multiple errors were reported, only the last
     // one will be displayed to the player.
     protected TextComponentTranslation lastError;
@@ -55,8 +60,13 @@ public abstract class AbstractMachineAssembly implements IMachineAssembly {
     }
 
     @Override
-    public List<String > getUnhandledBlockTranslationKeys() {
+    public List<ItemStack> getUnhandledBlocks() {
         return unhandledBlocks;
+    }
+
+    @Override
+    public List<FluidStack> getUnhandledFluids() {
+        return unhandledFluids;
     }
 
     @Optional.Method(modid = LoadedModsCache.AE2)

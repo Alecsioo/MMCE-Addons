@@ -7,7 +7,7 @@ import github.alecsio.mmceaddons.common.commands.CommandGetCacheInfo;
 import github.alecsio.mmceaddons.common.item.handler.RightClickHandler;
 import github.alecsio.mmceaddons.common.network.MachineAssemblyMessage;
 import github.alecsio.mmceaddons.common.network.MouseScrollMessage;
-import github.alecsio.mmceaddons.common.network.handler.MachineAssemblyMessageHandler;
+import github.alecsio.mmceaddons.client.network.handler.MachineAssemblyMessageHandler;
 import github.alecsio.mmceaddons.common.network.handler.MouseScrollMessageHandler;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import net.minecraftforge.common.MinecraftForge;
