@@ -92,3 +92,15 @@ message.modularmachineryaddons.radiationsponge.success=已清除辐射: [%2$d：
 modularmachineryaddons.config.title=模块化机械拓展
 key.cycle=循环工具模式
 key.categories.mmcea=模块化机械拓展
+
+# JEI 提示信息
+jei.tooltip.modularmachineryaddons.flux=咒波
+jei.tooltip.modularmachineryaddons.vis=魔力
+jei.tooltip.modularmachineryaddons.radiation=辐射
+jei.tooltip.modularmachineryaddons.chunk_range=区块范围
+jei.tooltip.modularmachineryaddons.aspect=要素
+jei.tooltip.modularmachineryaddons.amount=数量
+jei.tooltip.modularmachineryaddons.dimension=维度
+jei.tooltip.modularmachineryaddons.biome=生物群系
+jei.tooltip.modularmachineryaddons.meteor_contents=陨石内容
+jei.tooltip.modularmachineryaddons.scrubber_special=无穷无尽！

@@ -5,6 +5,7 @@ import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.FormatUtils;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;
+import net.minecraft.client.resources.I18n;
 import thaumcraft.api.aspects.Aspect;
 import thaumicenergistics.api.EssentiaStack;
 
@@ -38,8 +39,8 @@ public class Essentia extends EssentiaStack implements IRequiresEquals<Essentia>
     @Override
     public List<String> getTooltip() {
         List<String> tooltip = Lists.newArrayList();
-        tooltip.add(FormatUtils.format("Aspect", super.getAspect().getName()));
-        tooltip.add(FormatUtils.format("Amount", String.valueOf(super.getAmount())));
+        tooltip.add(FormatUtils.format(I18n.format(LocalizationKeys.ASPECT), super.getAspect().getName()));
+        tooltip.add(FormatUtils.format(I18n.format(LocalizationKeys.AMOUNT), String.valueOf(super.getAmount())));
         return tooltip;
     }
 }

@@ -6,6 +6,7 @@ import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.FormatUtils;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
@@ -44,7 +45,7 @@ public class Meteor extends WayofTime.bloodmagic.meteor.Meteor implements IRequi
     @Override
     public List<String> getTooltip() {
         List<String> tooltip = Lists.newArrayList();
-        tooltip.add(FormatUtils.format(TextFormatting.BOLD, "Meteor Contents"));
+        tooltip.add(FormatUtils.format(TextFormatting.BOLD, I18n.format(LocalizationKeys.METEOR_CONTENTS)));
         double total = this.getComponents().stream().mapToDouble(MeteorComponent::getWeight).sum();
 
         this.getComponents().forEach(component -> tooltip.add(FormatUtils.format(component.getOreName(), String.format("%.2f%%", (double)Math.round(component.weight/total*100)))));

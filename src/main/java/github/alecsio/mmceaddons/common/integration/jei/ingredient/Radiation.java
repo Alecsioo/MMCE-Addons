@@ -5,6 +5,7 @@ import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.FormatUtils;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;
+import net.minecraft.client.resources.I18n;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -49,8 +50,8 @@ public class Radiation implements IRequiresEquals<Radiation>, IIngredientType<Ra
     @Override
     public List<String> getTooltip() {
         List<String> tooltip = Lists.newArrayList();
-        tooltip.add(FormatUtils.format("Radiation", scrubber ? "To Infinity and Beyond!" : String.valueOf(this.amount)));
-        tooltip.add(FormatUtils.format("Chunk Range", String.valueOf(this.chunkRange)));
+        tooltip.add(FormatUtils.format(I18n.format(LocalizationKeys.RADIATION), scrubber ? I18n.format(LocalizationKeys.SCRUBBER_SPECIAL) : String.valueOf(this.amount)));
+        tooltip.add(FormatUtils.format(I18n.format(LocalizationKeys.CHUNK_RANGE), String.valueOf(this.chunkRange)));
         return tooltip;
     }
 }
