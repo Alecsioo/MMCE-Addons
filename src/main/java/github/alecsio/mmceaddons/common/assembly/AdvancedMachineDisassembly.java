@@ -23,7 +23,6 @@ import com.google.common.collect.Lists;
 import github.alecsio.mmceaddons.common.LoadedModsCache;
 import github.alecsio.mmceaddons.common.assembly.handler.exception.MultiblockBuilderNotFoundException;
 import github.alecsio.mmceaddons.common.config.MMCEAConfig;
-import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineAssembler;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineDisassembler;
 import ink.ikx.mmce.common.utils.FluidUtils;
 import ink.ikx.mmce.common.utils.StructureIngredient;
@@ -34,6 +33,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -44,6 +44,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -100,12 +101,13 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
             return;
         }
 
-        if (fluidIterator.hasNext()) {
-            for (int i = 0; i < MMCEAConfig.disassemblyBlocksProcessedPerTick; i++) {
-                StructureIngredient.FluidIngredient fluidIngredient = fluidIterator.next();
-                tryBreakFluid(fluidIngredient);
-                fluidIterator.remove();
+        for (int i = 0; i < MMCEAConfig.disassemblyBlocksProcessedPerTick; i++) {
+            if (!fluidIterator.hasNext()) {
+                break;
             }
+            StructureIngredient.FluidIngredient fluidIngredient = fluidIterator.next();
+            tryBreakFluid(fluidIngredient);
+            fluidIterator.remove();
         }
 
 
@@ -174,7 +176,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         for (final ItemStack stackInSlot : player.inventory.mainInventory) {
             // If there's more than one assembler this will work incorrectly (say if one is linked to the ME system and the other is not)
             // but idk if it's worth addressing
-            if (stackInSlot.getItem() instanceof ItemAdvancedMachineAssembler) {
+            if (stackInSlot.getItem() instanceof ItemAdvancedMachineDisassembler) {
                 disassembler = stackInSlot;
             }
 
@@ -309,10 +311,23 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
         }
 
         lastError = null; // If it was handled, we don't care
+
         IBlockState state = world.getBlockState(toBreakPos);
         world.setBlockToAir(toBreakPos);
         world.getBlockState(toBreakPos).getBlock().neighborChanged(state, world, toBreakPos, world.getBlockState(toBreakPos.up()).getBlock(), toBreakPos.up());
         world.playSound(null, toBreakPos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+        AxisAlignedBB aabb = new AxisAlignedBB(toBreakPos).expand(1, 1, 1);
+        List<EntityItem> droppedItems = world.getEntitiesWithinAABB(EntityItem.class, aabb);
+        if (!droppedItems.isEmpty()) {
+            for (EntityItem droppedItem : droppedItems) {
+                ItemStack dropped = droppedItem.getItem();
+                if (dropped.getCount() == stack.getCount() && dropped.getItem() == stack.getItem()) {
+                    droppedItem.setDead();
+                    break;
+                }
+            }
+        }
     }
 
     @Optional.Method(modid = LoadedModsCache.AE2)
@@ -421,8 +436,7 @@ public class AdvancedMachineDisassembly extends AbstractMachineAssembly {
     }
 
     private boolean canBreakBlockAt(BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
-        return player.isAllowEdit() && world.isBlockModifiable(player, pos) && !state.getBlock().isAir(state, world, pos);
+        return player.isAllowEdit() && world.isBlockModifiable(player, pos);
     }
 
     private boolean isFluidHandlerEmpty(TileEntity te) {

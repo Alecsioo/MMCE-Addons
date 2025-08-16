@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons.common.item;
 import github.alecsio.mmceaddons.common.assembly.AdvancedMachineDisassembly;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import hellfirepvp.modularmachinery.common.util.BlockArray;
+import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
 import ink.ikx.mmce.common.utils.StructureIngredient;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.material.Material;
@@ -26,8 +27,7 @@ public class ItemAdvancedMachineDisassembler extends BaseItemAdvancedMachineBuil
     }
 
     @Override
-    boolean shouldProcessIngredient(IBlockState currentState, IBlockState expectedState) {
-        // Disassemblies only care about what's not air
+    boolean shouldProcessIngredient(IBlockState currentState, List<IBlockStateDescriptor> possibleStates) {
         return currentState.getMaterial() != Material.AIR;
     }
 

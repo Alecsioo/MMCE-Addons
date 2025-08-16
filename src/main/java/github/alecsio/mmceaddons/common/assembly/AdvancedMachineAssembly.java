@@ -260,6 +260,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
                 // but idk if it's worth addressing
                 if (stackInSlot.getItem() instanceof ItemAdvancedMachineAssembler) {
                     assembler = stackInSlot;
+                    // If we already found the block we need to place, then we can stop looping in the inventory
                     if (handledItem != EMPTY) {break;}
                 }
 
@@ -351,6 +352,10 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         IMEMonitor<IAEFluidStack> fluidStorage = storageGrid.getInventory(storageHelper.getStorageChannel(IFluidStorageChannel.class));
         IAEFluidStack fluidStack = AEFluidStack.fromFluidStack(stack);
 
+        if (fluidStack == null) {
+            return null;
+        }
+
         IAEStack<IAEFluidStack> aeStack = aeApi.storage().poweredExtraction(energyGrid, fluidStorage, fluidStack, playerSource, Actionable.SIMULATE);
 
         if (aeStack != null && aeStack.getStackSize() == stack.amount) {
@@ -388,6 +393,10 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
         NBTTagCompound stackTag = stack.getTagCompound();
         AEItemStack aeItemStack = AEItemStack.fromItemStack(stack);
+
+        if (aeItemStack == null) {
+            return EMPTY;
+        }
 
         // If we don't need to match exact NBT for this block
         if (stackTag == null) {

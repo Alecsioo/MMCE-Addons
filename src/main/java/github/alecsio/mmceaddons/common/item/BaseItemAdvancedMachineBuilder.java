@@ -7,6 +7,7 @@ import github.alecsio.mmceaddons.client.MouseScrollHandler;
 import github.alecsio.mmceaddons.common.assembly.AssemblyModes;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import github.alecsio.mmceaddons.common.assembly.MachineAssemblyManager;
+import github.alecsio.mmceaddons.common.config.MMCEAConfig;
 import github.alecsio.mmceaddons.common.mixin.BlockStateDescriptorMixin;
 import github.alecsio.mmceaddons.common.mixin.IBlockArrayInvoker;
 import github.alecsio.mmceaddons.common.mixin.IBlockInformationAccessor;
@@ -23,11 +24,13 @@ import ink.ikx.mmce.common.utils.FluidUtils;
 import ink.ikx.mmce.common.utils.StructureIngredient;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAir;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -44,6 +47,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler.ASSEMBLY_ACCESS_TOKEN;
 
@@ -63,13 +67,15 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
     }
 
     public boolean onControllerRightClick(EntityPlayer player, BlockPos controllerPos, World world) {
-        Boolean access = ASSEMBLY_ACCESS_TOKEN.getIfPresent(player);
+        if (MMCEAConfig.cooldownEnabled) {
+            Boolean access = ASSEMBLY_ACCESS_TOKEN.getIfPresent(player);
 
-        if (Boolean.FALSE.equals(access)) {
-            player.sendMessage(new TextComponentTranslation("message.assembly.too.quickly"));
-            return false;
+            if (Boolean.FALSE.equals(access)) {
+                player.sendMessage(new TextComponentTranslation("message.assembly.too.quickly"));
+                return false;
+            }
+            ASSEMBLY_ACCESS_TOKEN.put(player, false);
         }
-        ASSEMBLY_ACCESS_TOKEN.put(player, false);
 
         TileEntity tileEntity = world.getTileEntity(controllerPos);
 
@@ -144,8 +150,8 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
         machineDef.getPattern().forEach((pos, info) -> {
             BlockPos realPos = ctrlPos.add(pos);
             IBlockState actualState = world.getBlockState(realPos);
-            if (shouldProcessIngredient(actualState, info.getSampleState())) {
-                ingredientList.add(new StructureIngredient.ItemIngredient(pos, info.getBlockStateIngredientList(), info.getMatchingTag()));
+            if (shouldProcessIngredient(actualState, info.getMatchingStates())) {
+                ingredientList.add(new StructureIngredient.ItemIngredient(pos, filterBlockStates(info.getBlockStateIngredientList()), info.getMatchingTag()));
             }
         });
         return ingredientList;
@@ -167,6 +173,7 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
                 }
                 fluidIngredient.add(new Tuple<>(fluidStack, state));
             }
+            fluidIngredient = filterBlockStatesFluid(fluidIngredient);
 
             if (!fluidIngredient.isEmpty()) {
                 fluidIngredientList.add(new StructureIngredient.FluidIngredient(pos, fluidIngredient));
@@ -191,6 +198,18 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
             copy.put(copiedPos, copiedBlockInfo);
         }
         return copy;
+    }
+
+    private List<Tuple<ItemStack, IBlockState>> filterBlockStates(List<Tuple<ItemStack, IBlockState>> toFilter) {
+        return toFilter.stream()
+                .filter(tuple -> tuple.getSecond().getMaterial() != Material.AIR && !(tuple.getFirst().getItem() instanceof ItemAir))
+                .collect(Collectors.toList());
+    }
+
+    private List<Tuple<FluidStack, IBlockState>> filterBlockStatesFluid(List<Tuple<FluidStack, IBlockState>> toFilter) {
+        return toFilter.stream()
+                .filter(tuple -> tuple.getSecond().getMaterial() != Material.AIR)
+                .collect(Collectors.toList());
     }
 
     private List<IBlockStateDescriptor> deepCopyDescriptors(List<IBlockStateDescriptor> original) {
@@ -285,5 +304,5 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
     }
 
     abstract IMachineAssembly getAssembly(World world, BlockPos controllerPos, EntityPlayer player, BlockArray machineDef);
-    abstract boolean shouldProcessIngredient(IBlockState currentState, IBlockState expectedState);
+    abstract boolean shouldProcessIngredient(IBlockState currentState, List<IBlockStateDescriptor> possibleStates);
 }

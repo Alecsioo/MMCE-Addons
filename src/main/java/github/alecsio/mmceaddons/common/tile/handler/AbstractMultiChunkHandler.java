@@ -79,7 +79,9 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
             }
         }
 
-        return totalHandled;
+        // Due to floating point rounding we could end up with results extremely close to the total amount. In those cases,
+        // I just round up to reach the total amount (ie 999.999999 -> 1000.0
+        return clampWithEpsilon(totalAmount - totalHandled, 0.0, totalAmount, 1e-6) == 0 ? totalAmount : totalHandled;
     }
 
     private double handleOutputForChunks(T requirement, boolean simulate) {

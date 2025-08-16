@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons.common.item;
 import github.alecsio.mmceaddons.common.assembly.AdvancedMachineAssembly;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import hellfirepvp.modularmachinery.common.util.BlockArray;
+import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
 import ink.ikx.mmce.common.utils.StructureIngredient;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
@@ -25,9 +26,19 @@ public class ItemAdvancedMachineAssembler extends BaseItemAdvancedMachineBuilder
     }
 
     @Override
-    boolean shouldProcessIngredient(IBlockState currentState, IBlockState expectedState) {
-        // Assemblies only process block positions where a block != the expected one is present
-        return currentState.getBlock() != expectedState.getBlock();
+    boolean shouldProcessIngredient(IBlockState currentState, List<IBlockStateDescriptor> possibleStates) {
+        boolean alreadyMatchesPossibleState = false;
+        // If the state at the position already matches what the multiblock can accept for that pos, we don't process it
+        outer:
+        for (IBlockStateDescriptor blockStateDescriptor : possibleStates) {
+            for (IBlockState blockState : blockStateDescriptor.getApplicable()) {
+                if (currentState.getBlock() == blockState.getBlock()) {
+                    alreadyMatchesPossibleState = true;
+                    break outer;
+                }
+            }
+        }
+        return !alreadyMatchesPossibleState;
     }
 
 }

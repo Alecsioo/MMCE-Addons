@@ -1,8 +1,8 @@
 package github.alecsio.mmceaddons.common.tile.bloodmagic;
 
-import WayofTime.bloodmagic.entity.projectile.EntityMeteor;
 import WayofTime.bloodmagic.meteor.Meteor;
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementMeteor;
+import github.alecsio.mmceaddons.common.entity.EntityImprovedMeteor;
 import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.tile.machinecomponent.MachineComponentMeteorProvider;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
@@ -22,7 +22,8 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
 
     public static class Output extends TileMeteorProvider {
 
-        private EntityMeteor currentMeteor;
+        private EntityImprovedMeteor currentMeteor;
+        private BlockPos spawnPos;
         private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
         @Nullable
@@ -41,11 +42,14 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
 
 
                 BlockPos pos = this.getPos();
+                BlockPos spawnPos = this.getPos();
                 if (!world.canSeeSky(pos)) {
                     int obstructedBlocks = 0;
                     for (int y = pos.getY() + 1; y <= MAX_HEIGHT; y++) {
-                        if (!world.isAirBlock(pos.up(y - pos.getY()))) {
+                        BlockPos toCheck = pos.up(y - pos.getY());
+                        if (!world.isAirBlock(toCheck)) {
                             obstructedBlocks++;
+                            spawnPos = toCheck.toImmutable();
                             if (obstructedBlocks > MAX_ALLOWED_BLOCKS_BETWEEN_TILE_AND_SKY) {
                                 return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor");
                             }
@@ -53,6 +57,7 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
                     }
                 }
 
+                this.spawnPos = spawnPos;
                 return CraftCheck.success();
             } finally {
                 lock.readLock().unlock();
@@ -64,7 +69,7 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
             lock.writeLock().lock();
             try {
                 Meteor meteor = requirement.getMeteor();
-                this.currentMeteor = new EntityMeteor(world, pos.getX(), 260, pos.getZ(), 0, -0.1, 0, 1, 0, 0.2);
+                this.currentMeteor = new EntityImprovedMeteor(world, pos.getX(), pos.getZ(), spawnPos == null ? this.pos : spawnPos);
                 this.currentMeteor.setMeteorStack(meteor.getCatalystStack());
                 world.spawnEntity(this.currentMeteor);
                 markNoUpdateSync();

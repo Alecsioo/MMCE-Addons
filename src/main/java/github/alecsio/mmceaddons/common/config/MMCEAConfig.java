@@ -14,6 +14,9 @@ public class MMCEAConfig {
     @Config.Comment({"The amount of radiation that. Default: 10000"})
     public static int spongeMaxRadiation = 10000;
 
+    @Config.Comment("Whether the cooldown for assemblies/disassemblies should be enabled or not. Default: true")
+    public static boolean cooldownEnabled = true;
+
     @Config.Comment("The cooldown between multiblock assemblies. Default: 1 second")
     public static int cooldown = 1;
 

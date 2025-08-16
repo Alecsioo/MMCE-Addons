@@ -2,6 +2,8 @@ package github.alecsio.mmceaddons.client;
 
 import github.alecsio.mmceaddons.CommonProxy;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
+import github.alecsio.mmceaddons.client.render.entity.MeteorRenderFactory;
+import github.alecsio.mmceaddons.common.entity.EntityImprovedMeteor;
 import hellfirepvp.modularmachinery.common.block.BlockDynamicColor;
 import hellfirepvp.modularmachinery.common.item.ItemDynamicColor;
 import net.minecraft.block.Block;
@@ -14,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -33,6 +36,8 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForge.EVENT_BUS.register(this);
         KeyBindings.init();
+        RenderingRegistry.registerEntityRenderingHandler(EntityImprovedMeteor.class, new MeteorRenderFactory());
+
         super.preInit(event);
     }
 
