@@ -86,6 +86,7 @@ tooltip.builder.player_inventory_me=模式：玩家物品栏+连接的ME网络
 tooltip.builder.all=模式：玩家物品栏+EMC+连接的ME网络
 tooltip.builder.change.modes=按住Shift并滚动滚轮，或者使用绑定按键以更改模式
 message.assembly.tip.success.missing.blocks=无法放置以下方块: %s
+message.disassembly.tip.success.missing.blocks=无法破坏以下方块: %s
 message.assembly.too.quickly=尝试执行操作过快！
 message.modularmachineryaddons.radiationsponge.success=已清除辐射: [%2$d：%1$s] [区块缓存：%3$d] [区块等级：%4$d]
 
