@@ -3,14 +3,16 @@ package github.alecsio.mmceaddons.common.item;
 import github.alecsio.mmceaddons.common.assembly.AdvancedMachineDisassembly;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import hellfirepvp.modularmachinery.common.util.BlockArray;
+import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
 import ink.ikx.mmce.common.utils.StructureIngredient;
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
 import java.util.List;
 
 @MethodsReturnNonnullByDefault
@@ -19,17 +21,14 @@ public class ItemAdvancedMachineDisassembler extends BaseItemAdvancedMachineBuil
 
     @Override
     IMachineAssembly getAssembly(World world, BlockPos controllerPos, EntityPlayer player, BlockArray machineDef) {
-        return new AdvancedMachineDisassembly(world, controllerPos, player, new StructureIngredient(getBlockStateIngredientList(world, controllerPos, machineDef), null));
+        List<StructureIngredient.ItemIngredient> itemIngredients = getBlockStateIngredientList(world, controllerPos, machineDef);
+        List<StructureIngredient.FluidIngredient> fluidIngredients = getBlockStateFluidIngredientList(itemIngredients);
+        return new AdvancedMachineDisassembly(world, controllerPos, player, new StructureIngredient(itemIngredients, fluidIngredients));
     }
 
-    public List<StructureIngredient.ItemIngredient> getBlockStateIngredientList(World world, BlockPos ctrlPos, BlockArray machineDef) {
-        List<StructureIngredient.ItemIngredient> ingredientList = new ArrayList<>();
-        machineDef.getPattern().forEach((pos, info) -> {
-            BlockPos realPos = ctrlPos.add(pos);
-            if (info.matches(world, realPos, false)) {
-                ingredientList.add(new StructureIngredient.ItemIngredient(pos, info.getBlockStateIngredientList(), info.getMatchingTag()));
-            }
-        });
-        return ingredientList;
+    @Override
+    boolean shouldProcessIngredient(IBlockState currentState, List<IBlockStateDescriptor> possibleStates) {
+        return currentState.getMaterial() != Material.AIR;
     }
+
 }

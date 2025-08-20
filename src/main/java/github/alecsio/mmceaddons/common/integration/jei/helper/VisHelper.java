@@ -22,6 +22,6 @@ public class VisHelper extends BaseIngredientHelper<Vis> {
     @Override
     @Nonnull
     public Vis copyIngredient(@Nonnull Vis vis) {
-        return new Vis(vis.getAmount(), vis.getChunkRange());
+        return new Vis(vis.getAmount(), vis.getChunkRange(), vis.getMinPerChunk(), vis.getMaxPerChunk());
     }
 }

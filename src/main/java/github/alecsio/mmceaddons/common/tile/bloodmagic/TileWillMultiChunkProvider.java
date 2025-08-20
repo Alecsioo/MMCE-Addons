@@ -30,10 +30,6 @@ public abstract class TileWillMultiChunkProvider extends AbstractMultiChunkHandl
             WillHelperWrapper.drainWill(this.world, randomBlockPos, ((RequirementWillMultiChunk)requirement).willType, amountToHandle);
         }
 
-        @Override
-        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount - amountToModify < requirement.getMinPerChunk();
-        }
     }
 
     public static class Output extends TileWillMultiChunkProvider {
@@ -48,9 +44,5 @@ public abstract class TileWillMultiChunkProvider extends AbstractMultiChunkHandl
             WillHelperWrapper.addWill(this.world, randomBlockPos, ((RequirementWillMultiChunk)requirement).willType, amountToHandle);
         }
 
-        @Override
-        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount + amountToModify <= requirement.getMaxPerChunk();
-        }
     }
 }

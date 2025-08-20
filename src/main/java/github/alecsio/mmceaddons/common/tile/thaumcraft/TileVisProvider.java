@@ -21,11 +21,6 @@ public abstract class TileVisProvider extends AbstractMultiChunkHandler<Requirem
     public static class Input extends TileVisProvider {
 
         @Override
-        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount - amountToModify >= 0;
-        }
-
-        @Override
         protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {
             AuraHelperWrapper.Vis.drainVis(this.world, blockPosInChunk, (float) amountToHandle);
         }
@@ -40,11 +35,6 @@ public abstract class TileVisProvider extends AbstractMultiChunkHandler<Requirem
     public static class Output extends TileVisProvider {
 
         public static final float MAXIMUM_AMOUNT_IN_CHUNK = 32766.0F; // This is a magic number imposed by the TC API
-
-        @Override
-        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount + amountToModify <= MAXIMUM_AMOUNT_IN_CHUNK;
-        }
 
         @Override
         protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {

@@ -1,22 +1,30 @@
 package github.alecsio.mmceaddons;
 
+import WayofTime.bloodmagic.BloodMagic;
 import github.alecsio.mmceaddons.client.ClientTickHandler;
 import github.alecsio.mmceaddons.client.MouseScrollHandler;
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
 import github.alecsio.mmceaddons.common.commands.CommandGetCacheInfo;
+import github.alecsio.mmceaddons.common.entity.EntityImprovedMeteor;
 import github.alecsio.mmceaddons.common.item.handler.RightClickHandler;
+import github.alecsio.mmceaddons.common.network.MachineAssemblyMessage;
 import github.alecsio.mmceaddons.common.network.MouseScrollMessage;
+import github.alecsio.mmceaddons.client.network.handler.MachineAssemblyMessageHandler;
 import github.alecsio.mmceaddons.common.network.handler.MouseScrollMessageHandler;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
@@ -72,8 +80,10 @@ public class ModularMachineryAddons {
         if (event.getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new MouseScrollHandler());
             MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
+            MinecraftForge.EVENT_BUS.register(new MachineAssemblyMessageHandler());
         }
         INSTANCE.registerMessage(MouseScrollMessageHandler.class, MouseScrollMessage.class, 0, Side.SERVER);
+        INSTANCE.registerMessage(MachineAssemblyMessageHandler.class, MachineAssemblyMessage.class, 1, Side.CLIENT);
     }
 
     @Mod.EventHandler
@@ -89,5 +99,17 @@ public class ModularMachineryAddons {
     public void serverStart(FMLServerStartingEvent serverStartEvent) {
         ModularMachineryAddons.logger.info("MMCEA: Server starting");
         serverStartEvent.registerServerCommand(new CommandGetCacheInfo());
+    }
+
+    @Mod.EventBusSubscriber(modid = ModularMachineryAddons.MODID)
+    public static class EntityRegistryHandler {
+        @SubscribeEvent
+        public static void onRegisterEntity(RegistryEvent.Register<EntityEntry> regisryEvent) {
+            int entities = 0;
+
+            regisryEvent.getRegistry().registerAll(
+                    EntityEntryBuilder.create().id("improved_meteor", ++entities).entity(EntityImprovedMeteor.class).name("improved_meteor").tracker(16 * 4, 3, true).build()
+            );
+        }
     }
 }

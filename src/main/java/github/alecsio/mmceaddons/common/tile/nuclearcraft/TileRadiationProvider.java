@@ -28,11 +28,6 @@ public abstract class TileRadiationProvider extends AbstractMultiChunkHandler<Re
         }
 
         @Override
-        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount - amountToModify >= 0;
-        }
-
-        @Override
         protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {
             RadiationHelperWrapper.decreaseRadiationLevel(world.getChunk(blockPosInChunk), amountToHandle);
         }
@@ -43,11 +38,6 @@ public abstract class TileRadiationProvider extends AbstractMultiChunkHandler<Re
         @Override
         public MachineComponent<IRequirementHandler<RequirementRadiation>> provideComponent() {
             return new MachineComponentRadiationProvider(IOType.OUTPUT, this);
-        }
-
-        @Override
-        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount + amountToModify <= requirement.getMaxPerChunk();
         }
 
         @Override

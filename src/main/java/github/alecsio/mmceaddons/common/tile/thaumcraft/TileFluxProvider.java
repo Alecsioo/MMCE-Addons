@@ -36,14 +36,10 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
         }
 
         @Override
-        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount - amountToModify >= 0;
-        }
-
-        @Override
         protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {
             AuraHelperWrapper.Flux.drainFlux(this.world, blockPosInChunk, castWithSafeguard(amountToHandle));
         }
+
     }
 
     public static class Output extends TileFluxProvider {
@@ -54,11 +50,6 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
         @Override
         public MachineComponentFluxProvider provideComponent() {
             return new MachineComponentFluxProvider(this, IOType.OUTPUT);
-        }
-
-        @Override
-        protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-            return currentAmount + amountToModify <= MAXIMUM_AMOUNT_IN_CHUNK;
         }
 
         @Override

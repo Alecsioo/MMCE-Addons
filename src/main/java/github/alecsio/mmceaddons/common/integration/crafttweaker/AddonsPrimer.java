@@ -11,6 +11,8 @@ import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.Requirem
 import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementVis;
 import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.RequirementEssentia;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
+import github.alecsio.mmceaddons.common.tile.thaumcraft.TileFluxProvider;
+import github.alecsio.mmceaddons.common.tile.thaumcraft.TileVisProvider;
 import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
 import hellfirepvp.modularmachinery.common.integration.crafttweaker.RecipePrimer;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -87,6 +89,11 @@ public class AddonsPrimer {
     }
 
     @ZenMethod
+    public static RecipePrimer addFluxInput(RecipePrimer primer, float amount, int chunkRange, int minPerChunk) {
+        return addRequirement(primer, () -> RequirementFlux.from(IOType.INPUT, chunkRange, amount, minPerChunk, TileFluxProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK));
+    }
+
+    @ZenMethod
     public static RecipePrimer addFluxInput(RecipePrimer primer, float amount) {
         return addFluxInput(primer, amount, 0);
     }
@@ -94,6 +101,11 @@ public class AddonsPrimer {
     @ZenMethod
     public static RecipePrimer addFluxOutput(RecipePrimer primer, float amount, int chunkRange) {
         return addRequirement(primer, () -> RequirementFlux.from(IOType.OUTPUT, chunkRange, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addFluxOutput(RecipePrimer primer, float amount, int chunkRange, int maxPerChunk) {
+        return addRequirement(primer, () -> RequirementFlux.from(IOType.OUTPUT, chunkRange, amount, 0, maxPerChunk));
     }
 
     @ZenMethod
@@ -107,6 +119,11 @@ public class AddonsPrimer {
     }
 
     @ZenMethod
+    public static RecipePrimer addVisInput(RecipePrimer primer, float amount, int chunkRange, int minPerChunk) {
+        return addRequirement(primer, () -> RequirementVis.from(IOType.INPUT, chunkRange, amount, minPerChunk, TileVisProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK));
+    }
+
+    @ZenMethod
     public static RecipePrimer addVisInput(RecipePrimer primer, float amount) {
         return addVisInput(primer, amount, 0);
     }
@@ -114,6 +131,11 @@ public class AddonsPrimer {
     @ZenMethod
     public static RecipePrimer addVisOutput(RecipePrimer primer, float amount, int chunkRange) {
         return addRequirement(primer, () -> RequirementVis.from(IOType.OUTPUT, chunkRange, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addVisOutput(RecipePrimer primer, float amount, int chunkRange, int maxPerChunk) {
+        return addRequirement(primer, () -> RequirementVis.from(IOType.OUTPUT, chunkRange, amount, 0, maxPerChunk));
     }
 
     @ZenMethod

@@ -7,6 +7,7 @@ import github.alecsio.mmceaddons.client.MouseScrollHandler;
 import github.alecsio.mmceaddons.common.assembly.AssemblyModes;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import github.alecsio.mmceaddons.common.assembly.MachineAssemblyManager;
+import github.alecsio.mmceaddons.common.config.MMCEAConfig;
 import github.alecsio.mmceaddons.common.mixin.BlockStateDescriptorMixin;
 import github.alecsio.mmceaddons.common.mixin.IBlockArrayInvoker;
 import github.alecsio.mmceaddons.common.mixin.IBlockInformationAccessor;
@@ -19,32 +20,34 @@ import hellfirepvp.modularmachinery.common.tiles.base.TileMultiblockMachineContr
 import hellfirepvp.modularmachinery.common.util.BlockArray;
 import hellfirepvp.modularmachinery.common.util.BlockArrayCache;
 import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
+import ink.ikx.mmce.common.utils.FluidUtils;
+import ink.ikx.mmce.common.utils.StructureIngredient;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAir;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Optional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler.ASSEMBLY_ACCESS_TOKEN;
 
@@ -55,8 +58,6 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
 
     public static final String AE2_ENCRYPTION_KEY = "encryptionKey";
     public static final String MODE_INDEX = "modeIndex";
-    private static final Logger log = LogManager.getLogger(BaseItemAdvancedMachineBuilder.class);
-
 
     public BaseItemAdvancedMachineBuilder() {
         this.setMaxStackSize(1);
@@ -66,13 +67,15 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
     }
 
     public boolean onControllerRightClick(EntityPlayer player, BlockPos controllerPos, World world) {
-        Boolean access = ASSEMBLY_ACCESS_TOKEN.getIfPresent(player);
+        if (MMCEAConfig.cooldownEnabled) {
+            Boolean access = ASSEMBLY_ACCESS_TOKEN.getIfPresent(player);
 
-        if (Boolean.FALSE.equals(access)) {
-            player.sendMessage(new TextComponentTranslation("message.assembly.too.quickly"));
-            return false;
+            if (Boolean.FALSE.equals(access)) {
+                player.sendMessage(new TextComponentTranslation("message.assembly.too.quickly"));
+                return false;
+            }
+            ASSEMBLY_ACCESS_TOKEN.put(player, false);
         }
-        ASSEMBLY_ACCESS_TOKEN.put(player, false);
 
         TileEntity tileEntity = world.getTileEntity(controllerPos);
 
@@ -142,7 +145,45 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
         return true;
     }
 
-    private Map<BlockPos, BlockArray.BlockInformation> getPatternDeepCopy(Map<BlockPos, BlockArray.BlockInformation> original) {
+    public List<StructureIngredient.ItemIngredient> getBlockStateIngredientList(World world, BlockPos ctrlPos, BlockArray machineDef) {
+        List<StructureIngredient.ItemIngredient> ingredientList = new ArrayList<>();
+        machineDef.getPattern().forEach((pos, info) -> {
+            BlockPos realPos = ctrlPos.add(pos);
+            IBlockState actualState = world.getBlockState(realPos);
+            if (shouldProcessIngredient(actualState, info.getMatchingStates())) {
+                ingredientList.add(new StructureIngredient.ItemIngredient(pos, filterBlockStates(info.getBlockStateIngredientList()), info.getMatchingTag()));
+            }
+        });
+        return ingredientList;
+    }
+
+    protected List<StructureIngredient.FluidIngredient> getBlockStateFluidIngredientList(List<StructureIngredient.ItemIngredient> itemIngredients) {
+        List<StructureIngredient.FluidIngredient> fluidIngredientList = new ArrayList<>();
+        Iterator<StructureIngredient.ItemIngredient> iterator = itemIngredients.iterator();
+        while (iterator.hasNext()) {
+            StructureIngredient.ItemIngredient itemIngredient = iterator.next();
+            BlockPos pos = itemIngredient.pos();
+            List<Tuple<FluidStack, IBlockState>> fluidIngredient = new ArrayList<>();
+
+            for (final Tuple<ItemStack, IBlockState> tuple : itemIngredient.ingredientList()) {
+                IBlockState state = tuple.getSecond();
+                FluidStack fluidStack = FluidUtils.getFluidStackFromBlockState(state);
+                if (fluidStack == null) {
+                    continue;
+                }
+                fluidIngredient.add(new Tuple<>(fluidStack, state));
+            }
+            fluidIngredient = filterBlockStatesFluid(fluidIngredient);
+
+            if (!fluidIngredient.isEmpty()) {
+                fluidIngredientList.add(new StructureIngredient.FluidIngredient(pos, fluidIngredient));
+                iterator.remove();
+            }
+        }
+        return fluidIngredientList;
+    }
+
+    protected Map<BlockPos, BlockArray.BlockInformation> getPatternDeepCopy(Map<BlockPos, BlockArray.BlockInformation> original) {
         Map<BlockPos, BlockArray.BlockInformation> copy = new HashMap<>();
         for (Map.Entry<BlockPos, BlockArray.BlockInformation> entry : original.entrySet()) {
             BlockPos originalPos = entry.getKey();
@@ -157,6 +198,18 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
             copy.put(copiedPos, copiedBlockInfo);
         }
         return copy;
+    }
+
+    private List<Tuple<ItemStack, IBlockState>> filterBlockStates(List<Tuple<ItemStack, IBlockState>> toFilter) {
+        return toFilter.stream()
+                .filter(tuple -> tuple.getSecond().getMaterial() != Material.AIR && !(tuple.getFirst().getItem() instanceof ItemAir))
+                .collect(Collectors.toList());
+    }
+
+    private List<Tuple<FluidStack, IBlockState>> filterBlockStatesFluid(List<Tuple<FluidStack, IBlockState>> toFilter) {
+        return toFilter.stream()
+                .filter(tuple -> tuple.getSecond().getMaterial() != Material.AIR)
+                .collect(Collectors.toList());
     }
 
     private List<IBlockStateDescriptor> deepCopyDescriptors(List<IBlockStateDescriptor> original) {
@@ -251,4 +304,5 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
     }
 
     abstract IMachineAssembly getAssembly(World world, BlockPos controllerPos, EntityPlayer player, BlockArray machineDef);
+    abstract boolean shouldProcessIngredient(IBlockState currentState, List<IBlockStateDescriptor> possibleStates);
 }

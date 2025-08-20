@@ -14,9 +14,19 @@ public class RightClickHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onRightClick(PlayerInteractEvent.RightClickBlock event) {
-        Item item = event.getItemStack().getItem();
-        World world = event.getWorld();
-        BlockPos pos = event.getPos();
+        handleRightClick(event);
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onRightClick(PlayerInteractEvent.RightClickItem event) {
+        handleRightClick(event);
+    }
+
+    private void handleRightClick(PlayerInteractEvent interactEvent) {
+        Item item = interactEvent.getItemStack().getItem();
+        World world = interactEvent.getWorld();
+        BlockPos pos = interactEvent.getPos();
+
         if (item == Items.AIR || world.isRemote) {
             return;
         }
@@ -24,13 +34,12 @@ public class RightClickHandler {
         boolean result = false;
 
         if (item instanceof BaseItemAdvancedMachineBuilder builder) {
-            result = builder.onControllerRightClick(event.getEntityPlayer(), pos, world);
+            result = builder.onControllerRightClick(interactEvent.getEntityPlayer(), pos, world);
         }
 
         if (result) {
-            event.setCanceled(true);
-            event.setCancellationResult(EnumActionResult.SUCCESS);
+            interactEvent.setCanceled(true);
+            interactEvent.setCancellationResult(EnumActionResult.SUCCESS);
         }
-
     }
 }

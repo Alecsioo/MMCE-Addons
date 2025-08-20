@@ -2,26 +2,30 @@ package github.alecsio.mmceaddons.common.assembly.handler;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
 import github.alecsio.mmceaddons.common.assembly.MachineAssemblyManager;
 import github.alecsio.mmceaddons.common.assembly.handler.exception.MultiblockBuilderNotFoundException;
 import github.alecsio.mmceaddons.common.config.MMCEAConfig;
+import github.alecsio.mmceaddons.common.network.MachineAssemblyMessage;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.tiles.base.TileMultiblockMachineController;
 import ink.ikx.mmce.core.AssemblyConfig;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 public class MachineAssemblyEventHandler {
@@ -35,6 +39,10 @@ public class MachineAssemblyEventHandler {
         EntityPlayer player = event.player;
         World world = player.world;
         if (event.phase == TickEvent.Phase.START || world.isRemote || world.getTotalWorldTime() % AssemblyConfig.tickBlock != 0) {
+            return;
+        }
+
+        if (!(player instanceof EntityPlayerMP entityPlayerMP)) {
             return;
         }
 
@@ -59,22 +67,47 @@ public class MachineAssemblyEventHandler {
 
                 if (assembly.isCompleted()) {
                     MachineAssemblyManager.removeMachineAssembly(assembly.getControllerPos());
-                    player.sendMessage(new TextComponentTranslation(assembly.getCompletedTranslationKey()));
-                    List<String> unhandledBlocks = assembly.getUnhandledBlocks();
-                    if (unhandledBlocks != null && !unhandledBlocks.isEmpty()) {
-                        Map<String, Long> blockCounts = unhandledBlocks.stream()
-                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-                        StringBuilder unhandledBlocksBuilder = new StringBuilder().append("\n");
-                        blockCounts.forEach((block, count) ->
-                                unhandledBlocksBuilder.append(count).append("x ").append(block).append("\n")
-                        );
+                    List<ItemStack> itemsToSend = new ArrayList<>();
 
-                        player.sendMessage(new TextComponentTranslation(
-                                assembly.getMissingBlocksTranslationKey(),
-                                unhandledBlocksBuilder.toString()
-                        ));
+                    List<ItemStack> unhandledBlocks = assembly.getUnhandledBlocks();
+                    List<ItemStack> copy = new ArrayList<>(unhandledBlocks);
+                    unhandledBlocks.clear();
+
+                    while (!copy.isEmpty()) {
+                        ItemStack first = copy.remove(0); // take first
+                        Iterator<ItemStack> it = copy.iterator();
+                        while (it.hasNext()) {
+                            ItemStack other = it.next();
+                            if (other.getItem() == first.getItem()) {
+                                first.setCount(first.getCount() + other.getCount());
+                                it.remove();
+                            }
+                        }
+                        itemsToSend.add(first);
                     }
+
+                    List<FluidStack> fluidsToSend = new ArrayList<>();
+
+                    List<FluidStack> unhandledFluids = assembly.getUnhandledFluids();
+                    List<FluidStack> fluidCopy = new ArrayList<>(unhandledFluids);
+                    unhandledFluids.clear();
+
+                    while (!fluidCopy.isEmpty()) {
+                        FluidStack fluid = fluidCopy.remove(0);
+                        Iterator<FluidStack> it = fluidCopy.iterator();
+                        while (it.hasNext()) {
+                            FluidStack other = it.next();
+                            if (other.getFluid() == fluid.getFluid()) {
+                                fluid = new FluidStack(fluid.getFluid(), fluid.amount + other.amount);
+                                it.remove();
+                            }
+                        }
+                        fluidsToSend.add(fluid);
+                    }
+
+                    MachineAssemblyMessage machineAssemblyMessage = new MachineAssemblyMessage(assembly.getCompletedTranslationKey(), assembly.getMissingBlocksTranslationKey(), itemsToSend, fluidsToSend);
+                    ModularMachineryAddons.INSTANCE.sendTo(machineAssemblyMessage, entityPlayerMP);
                 }
             }
         });

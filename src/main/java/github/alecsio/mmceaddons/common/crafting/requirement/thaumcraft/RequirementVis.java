@@ -27,17 +27,24 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
 
     private final Vis vis;
 
-    public static RequirementVis from(IOType ioType, int chunkRange, float amount) {
+    public static RequirementVis from(IOType ioType, int chunkRange, float amount, float minPerChunk, float maxPerChunk) {
         requirementValidator.validateNotNegative(chunkRange, "Chunk range must be a positive number!");
         requirementValidator.validateNotNegative(amount, "Amount must be a positive number!");
         if (ioType == IOType.OUTPUT) {requirementValidator.validateNotAbove(amount, TileVisProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK, String.format("Amount cannot be greater than maximum amount allowed in chunk (this is a TC API limitation): %f", TileVisProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK));}
 
-        return new RequirementVis(ioType, chunkRange, amount);
+        requirementValidator.validateNotNegative(minPerChunk, "Minimum per chunk must be a positive number!");
+        requirementValidator.validateNotAbove(maxPerChunk, TileVisProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK, String.format("Amount cannot be greater than maximum amount allowed in chunk (this is a TC API limitation): %f", TileVisProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK));
+
+        return new RequirementVis(ioType, chunkRange, amount, minPerChunk, maxPerChunk);
     }
 
-    private RequirementVis(IOType actionType, int chunkRange, double amount) {
+    public static RequirementVis from(IOType ioType, int chunkRange, float amount) {
+        return from(ioType, chunkRange, amount, 0, TileVisProvider.Output.MAXIMUM_AMOUNT_IN_CHUNK);
+    }
+
+    private RequirementVis(IOType actionType, int chunkRange, float amount, float minPerChunk, float maxPerChunk) {
         super((RequirementTypeVis) RegistriesMM.REQUIREMENT_TYPE_REGISTRY.getValue(ModularMachineryAddonsRequirements.KEY_REQUIREMENT_VIS), actionType);
-        this.vis = new Vis((float) amount, chunkRange);
+        this.vis = new Vis(amount, chunkRange, minPerChunk, maxPerChunk);
     }
 
     @Override
@@ -73,7 +80,7 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
 
     @Override
     public ComponentRequirement<Vis, RequirementTypeVis> deepCopy() {
-        return new RequirementVis(this.actionType, this.vis.getChunkRange(), this.vis.getAmount());
+        return new RequirementVis(this.actionType, this.vis.getChunkRange(), this.vis.getAmount(), this.vis.getMinPerChunk(), this.vis.getMaxPerChunk());
     }
 
     @Override
@@ -114,11 +121,11 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
 
     @Override
     public double getMinPerChunk() {
-        return 0;
+        return vis.getMinPerChunk();
     }
 
     @Override
     public double getMaxPerChunk() {
-        return Float.MAX_VALUE;
+        return vis.getMaxPerChunk();
     }
 }

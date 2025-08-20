@@ -44,11 +44,6 @@ public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementS
     }
 
     @Override
-    protected boolean canChunkHandle(double currentAmount, double amountToModify, IMultiChunkRequirement requirement) {
-        return currentChunkRange == requirement.getChunkRange();
-    }
-
-    @Override
     public void handle(RequirementScrubber requirement) {
         if (currentChunkRange != requirement.getChunkRange() || needsRefresh.compareAndSet(true, false)) {
             log.debug("Current chunk range for scrubber at {} is {}. New chunk range: {}", this.pos.toString(), currentChunkRange, requirement.getChunkRange());

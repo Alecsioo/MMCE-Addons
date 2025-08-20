@@ -13,12 +13,16 @@ public class Vis implements IRequiresEquals<Vis>, IIngredientType<Vis>, ITooltip
 
     private float amount;
     private int chunkRange;
+    private float minPerChunk;
+    private float maxPerChunk;
 
     public Vis() {}
 
-    public Vis(float amount, int chunkRange) {
+    public Vis(float amount, int chunkRange, float minPerChunk, float maxPerChunk) {
         this.amount = amount;
         this.chunkRange = chunkRange;
+        this.minPerChunk = minPerChunk;
+        this.maxPerChunk = maxPerChunk;
     }
 
     @Override
@@ -32,6 +36,14 @@ public class Vis implements IRequiresEquals<Vis>, IIngredientType<Vis>, ITooltip
 
     public int getChunkRange() {
         return chunkRange;
+    }
+
+    public float getMinPerChunk() {
+        return minPerChunk;
+    }
+
+    public float getMaxPerChunk() {
+        return maxPerChunk;
     }
 
     @Override
