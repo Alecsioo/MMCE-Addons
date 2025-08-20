@@ -5,6 +5,7 @@ import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.FormatUtils;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;
+import net.minecraft.client.resources.I18n;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -55,8 +56,8 @@ public class Vis implements IRequiresEquals<Vis>, IIngredientType<Vis>, ITooltip
     @Override
     public List<String> getTooltip() {
         List<String> tooltip = Lists.newArrayList();
-        tooltip.add(FormatUtils.format("Vis", String.valueOf(this.amount)));
-        tooltip.add(FormatUtils.format("Chunk Range", String.valueOf(this.chunkRange)));
+        tooltip.add(FormatUtils.format(I18n.format(LocalizationKeys.VIS), String.valueOf(this.amount)));
+        tooltip.add(FormatUtils.format(I18n.format(LocalizationKeys.CHUNK_RANGE), String.valueOf(this.chunkRange)));
         return tooltip;
     }
 }

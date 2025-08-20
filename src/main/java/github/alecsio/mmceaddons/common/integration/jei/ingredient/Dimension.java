@@ -5,6 +5,7 @@ import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.FormatUtils;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
@@ -51,7 +52,7 @@ public class Dimension implements IRequiresEquals<Dimension>, IIngredientType<Di
     @Override
     public List<String> getTooltip() {
         setDimensionNameIfNotPresent();
-        return Lists.newArrayList(FormatUtils.format("Dimension", name != null && !name.isEmpty() ? name : String.valueOf(id)));
+        return Lists.newArrayList(FormatUtils.format(I18n.format(LocalizationKeys.DIMENSION), name != null && !name.isEmpty() ? name : String.valueOf(id)));
     }
 
     public void setDimensionNameIfNotPresent() {
