@@ -6,7 +6,6 @@ import hellfirepvp.modularmachinery.common.util.BlockArray;
 import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
 import ink.ikx.mmce.common.utils.StructureIngredient;
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +27,7 @@ public class ItemAdvancedMachineDisassembler extends BaseItemAdvancedMachineBuil
 
     @Override
     boolean shouldProcessIngredient(IBlockState currentState, List<IBlockStateDescriptor> possibleStates) {
-        return currentState.getMaterial() != Material.AIR;
+        return matchesExisting(currentState, possibleStates);
     }
 
 }

@@ -1,6 +1,5 @@
 package github.alecsio.mmceaddons;
 
-import WayofTime.bloodmagic.BloodMagic;
 import github.alecsio.mmceaddons.client.ClientTickHandler;
 import github.alecsio.mmceaddons.client.MouseScrollHandler;
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
@@ -41,7 +40,7 @@ import org.apache.logging.log4j.Logger;
                 + "after:nuclearcraft@[0.0.0,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
-        acceptableRemoteVersions = "[1.2.0]"
+        acceptableRemoteVersions = "[1.2.1]"
 )
 public class ModularMachineryAddons {
 
