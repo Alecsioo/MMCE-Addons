@@ -6,7 +6,11 @@ import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.FormatUtils;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
@@ -48,7 +52,13 @@ public class Meteor extends WayofTime.bloodmagic.meteor.Meteor implements IRequi
         tooltip.add(FormatUtils.format(TextFormatting.BOLD, I18n.format(LocalizationKeys.METEOR_CONTENTS)));
         double total = this.getComponents().stream().mapToDouble(MeteorComponent::getWeight).sum();
 
-        this.getComponents().forEach(component -> tooltip.add(FormatUtils.format(component.getOreName(), String.format("%.2f%%", (double)Math.round(component.weight/total*100)))));
+        this.getComponents().forEach(component -> {
+            IBlockState state = component.getStateFromOre();
+            Block componentBlock = state.getBlock();
+            Item componentItem = Item.getItemFromBlock(componentBlock);
+            ItemStack stack = new ItemStack(Item.getItemFromBlock(componentBlock), 1, componentBlock.damageDropped(state));
+            tooltip.add(FormatUtils.format(componentItem != Items.AIR ? componentItem.getItemStackDisplayName(stack) : component.getOreName(), String.format("%.2f%%", (double)Math.round(component.weight/total*100))));
+        });
         return tooltip;
     }
 }

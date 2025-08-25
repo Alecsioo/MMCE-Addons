@@ -27,18 +27,7 @@ public class ItemAdvancedMachineAssembler extends BaseItemAdvancedMachineBuilder
 
     @Override
     boolean shouldProcessIngredient(IBlockState currentState, List<IBlockStateDescriptor> possibleStates) {
-        boolean alreadyMatchesPossibleState = false;
-        // If the state at the position already matches what the multiblock can accept for that pos, we don't process it
-        outer:
-        for (IBlockStateDescriptor blockStateDescriptor : possibleStates) {
-            for (IBlockState blockState : blockStateDescriptor.getApplicable()) {
-                if (currentState.getBlock() == blockState.getBlock()) {
-                    alreadyMatchesPossibleState = true;
-                    break outer;
-                }
-            }
-        }
-        return !alreadyMatchesPossibleState;
+        return !matchesExisting(currentState, possibleStates);
     }
 
 }

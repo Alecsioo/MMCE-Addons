@@ -157,6 +157,21 @@ public abstract class BaseItemAdvancedMachineBuilder extends Item implements INe
         return ingredientList;
     }
 
+    protected boolean matchesExisting(IBlockState currentState, List<IBlockStateDescriptor> possibleStates) {
+        boolean alreadyMatchesPossibleState = false;
+        // If the state at the position already matches what the multiblock can accept for that pos, we don't process it
+        outer:
+        for (IBlockStateDescriptor blockStateDescriptor : possibleStates) {
+            for (IBlockState blockState : blockStateDescriptor.getApplicable()) {
+                if (currentState.getBlock() == blockState.getBlock()) {
+                    alreadyMatchesPossibleState = true;
+                    break outer;
+                }
+            }
+        }
+        return alreadyMatchesPossibleState;
+    }
+
     protected List<StructureIngredient.FluidIngredient> getBlockStateFluidIngredientList(List<StructureIngredient.ItemIngredient> itemIngredients) {
         List<StructureIngredient.FluidIngredient> fluidIngredientList = new ArrayList<>();
         Iterator<StructureIngredient.ItemIngredient> iterator = itemIngredients.iterator();
