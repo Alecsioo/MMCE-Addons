@@ -36,7 +36,9 @@ import moze_intel.projecte.utils.EMCHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -53,6 +55,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -187,7 +190,8 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
                     assembler = stackInSlot;
                 }
 
-                if (FluidUtils.isFluidHandler(stackInSlot)) {
+                Item item = stackInSlot.getItem();
+                if (FluidUtils.isFluidHandler(stackInSlot) && !(item instanceof UniversalBucket) && item != Items.WATER_BUCKET && item != Items.LAVA_BUCKET) {
                     fluidHandlers.add(FluidUtil.getFluidHandler(stackInSlot));
                 }
             }

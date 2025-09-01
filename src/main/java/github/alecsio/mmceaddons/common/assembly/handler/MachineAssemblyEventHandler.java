@@ -79,7 +79,7 @@ public class MachineAssemblyEventHandler {
                         Iterator<ItemStack> it = copy.iterator();
                         while (it.hasNext()) {
                             ItemStack other = it.next();
-                            if (other.getItem() == first.getItem()) {
+                            if (other.getItem() == first.getItem() && other.getMetadata() == first.getMetadata()) {
                                 first.setCount(first.getCount() + other.getCount());
                                 it.remove();
                             }
