@@ -13,7 +13,7 @@ plugins {
 
 // Project properties
 group = "alecsio.modularmachineryaddons"
-version = "1.2.1"
+version = "1.2.2"
 
 // Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
 java {
@@ -193,8 +193,8 @@ dependencies {
     }
 
 
-    implementation(rfg.deobf("curse.maven:ae2-570458:6302098-sources-6302100"))
-    implementation(rfg.deobf("curse.maven:ae2fc-623955:5751930"))
+    implementation("curse.maven:ae2-570458:5378163")
+    implementation("curse.maven:ae2fc-623955:5751930")
     implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:6480528"))
     implementation(rfg.deobf("curse.maven:botonia-225643:3330934"))
     implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
