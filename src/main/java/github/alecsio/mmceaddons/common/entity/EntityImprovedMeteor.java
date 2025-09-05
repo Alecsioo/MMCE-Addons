@@ -37,6 +37,7 @@ public class EntityImprovedMeteor extends EntityMeteor {
     protected void onImpact(RayTraceResult mop) {
         if (mop.typeOfHit == RayTraceResult.Type.BLOCK) {
             generateMeteor(spawnPos);
+            this.setDead();
         }
     }
 }

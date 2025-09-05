@@ -40,13 +40,13 @@ import org.apache.logging.log4j.Logger;
                 + "after:nuclearcraft@[0.0.0,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
-        acceptableRemoteVersions = "[1.2.2]"
+        acceptableRemoteVersions = "[1.2.3]"
 )
 public class ModularMachineryAddons {
 
     public static final String MODID = "modularmachineryaddons";
     public static final String NAME = "Modular Machinery: Community Edition Addons";
-    public static final String VERSION = "1.2.2";
+    public static final String VERSION = "1.2.3";
     public static final String CLIENT_PROXY = "github.alecsio.mmceaddons.client.ClientProxy";
     public static final String COMMON_PROXY = "github.alecsio.mmceaddons.CommonProxy";
 
