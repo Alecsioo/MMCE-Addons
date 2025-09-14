@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.assembly;
 
 import com.github.bsideup.jabel.Desugar;
-import github.alecsio.mmceaddons.common.LoadedModsCache;
+import github.alecsio.mmceaddons.common.base.Mods;
 
 import java.util.*;
 
@@ -12,7 +12,6 @@ public enum AssemblyModes {
     PLAYER_INVENTORY_EMC(Collections.unmodifiableSet(EnumSet.of(AssemblySupportedMods.VANILLA, AssemblySupportedMods.PROJECTE))),
     PLAYER_INVENTORY_ME(Collections.unmodifiableSet(EnumSet.of(AssemblySupportedMods.VANILLA, AssemblySupportedMods.APPLIEDENERGISTICS2))),
     ALL(Collections.unmodifiableSet(EnumSet.of(AssemblySupportedMods.VANILLA, AssemblySupportedMods.PROJECTE, AssemblySupportedMods.APPLIEDENERGISTICS2))),;
-
 
     private final Set<AssemblySupportedMods> requiredMods;
     private static final List<AssemblyModes> supportedModes = new ArrayList<>();
@@ -32,15 +31,15 @@ public enum AssemblyModes {
 
         supportedModes.add(PLAYER_INVENTORY);
 
-        if (LoadedModsCache.projecteLoaded) {
+        if (Mods.PROJECTE.isPresent()) {
             supportedModes.add(AssemblyModes.PLAYER_INVENTORY_EMC);
         }
 
-        if (LoadedModsCache.aeLoaded) {
+        if (Mods.APPLIEDENERGISTICS.isPresent()) {
             supportedModes.add(AssemblyModes.PLAYER_INVENTORY_ME);
         }
 
-        if (LoadedModsCache.aeLoaded && LoadedModsCache.projecteLoaded) {
+        if (Mods.APPLIEDENERGISTICS.isPresent() && Mods.PROJECTE.isPresent()) {
             supportedModes.add(AssemblyModes.ALL);
         }
 

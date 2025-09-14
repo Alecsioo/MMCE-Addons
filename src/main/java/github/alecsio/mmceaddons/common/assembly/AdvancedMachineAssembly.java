@@ -23,9 +23,9 @@ import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
 import com.google.common.collect.ImmutableList;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
-import github.alecsio.mmceaddons.common.LoadedModsCache;
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
 import github.alecsio.mmceaddons.common.assembly.handler.exception.MultiblockBuilderNotFoundException;
+import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.config.MMCEAConfig;
 import github.alecsio.mmceaddons.common.item.ItemAdvancedMachineAssembler;
 import ink.ikx.mmce.common.utils.FluidUtils;
@@ -211,7 +211,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
             AssemblyModes mode = getAssemblyModesFrom(assembler);
 
-            if (handledFluid == null && LoadedModsCache.aeLoaded && mode.supports(AssemblySupportedMods.APPLIEDENERGISTICS2)) {
+            if (handledFluid == null && Mods.APPLIEDENERGISTICS.isPresent() && mode.supports(AssemblySupportedMods.APPLIEDENERGISTICS2)) {
                 handledFluid = canMEHandle(fluidStack, assembler);
             }
 
@@ -286,11 +286,11 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
 
             AssemblyModes mode = getAssemblyModesFrom(assembler);
 
-            if (handledItem == EMPTY && LoadedModsCache.aeLoaded && mode.supports(AssemblySupportedMods.APPLIEDENERGISTICS2)) {
+            if (handledItem == EMPTY && Mods.APPLIEDENERGISTICS.isPresent() && mode.supports(AssemblySupportedMods.APPLIEDENERGISTICS2)) {
                 handledItem = canMEHandle(stack, assembler);
             }
 
-            if (handledItem == EMPTY && LoadedModsCache.projecteLoaded && mode.supports(AssemblySupportedMods.PROJECTE)) {
+            if (handledItem == EMPTY && Mods.PROJECTE.isPresent() && mode.supports(AssemblySupportedMods.PROJECTE)) {
                 handledItem = canEMCHandle(stack);
             }
 
@@ -330,7 +330,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         }
     }
 
-    @Optional.Method(modid = LoadedModsCache.AE2)
+    @Optional.Method(modid = Mods.APPLIEDENERGISTICS_ID)
     private @Nullable FluidStack canMEHandle(FluidStack stack, ItemStack assembler) {
         IAppEngApi aeApi = AEApi.instance();
         java.util.Optional<Long> optEncryptionKey = getOptionalEncryptionKeyFrom(assembler);
@@ -370,7 +370,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         return null;
     }
 
-    @Optional.Method(modid = LoadedModsCache.AE2)
+    @Optional.Method(modid = Mods.APPLIEDENERGISTICS_ID)
     private ItemStack canMEHandle(ItemStack stack, @NotNull ItemStack assembler) {
         IAppEngApi aeApi = AEApi.instance();
         java.util.Optional<Long> optEncryptionKey = getOptionalEncryptionKeyFrom(assembler);
@@ -434,7 +434,7 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
         return EMPTY;
     }
 
-    @Optional.Method(modid = LoadedModsCache.PROJECTE)
+    @Optional.Method(modid = Mods.PROJECTE_ID)
     private ItemStack canEMCHandle(ItemStack stack) {
         if (player == null) {
             LOGGER.error("Null player in assembly. This should probably not happen.");

@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.assembly;
 
-import github.alecsio.mmceaddons.common.LoadedModsCache;
+import github.alecsio.mmceaddons.common.base.Mods;
 import ink.ikx.mmce.common.utils.StructureIngredient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -69,7 +69,7 @@ public abstract class AbstractMachineAssembly implements IMachineAssembly {
         return unhandledFluids;
     }
 
-    @Optional.Method(modid = LoadedModsCache.AE2)
+    @Optional.Method(modid = Mods.APPLIEDENERGISTICS_ID)
     protected java.util.Optional<Long> getOptionalEncryptionKeyFrom(ItemStack assembler) {
         java.util.Optional<String> optEncryptionKey = getEncryptionKey(assembler);
         if (!optEncryptionKey.isPresent() || optEncryptionKey.get().isEmpty()) {

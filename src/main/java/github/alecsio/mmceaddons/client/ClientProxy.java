@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons.client;
 import github.alecsio.mmceaddons.CommonProxy;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.client.render.entity.MeteorRenderFactory;
+import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.entity.EntityImprovedMeteor;
 import hellfirepvp.modularmachinery.common.block.BlockDynamicColor;
 import hellfirepvp.modularmachinery.common.item.ItemDynamicColor;
@@ -36,7 +37,10 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForge.EVENT_BUS.register(this);
         KeyBindings.init();
-        RenderingRegistry.registerEntityRenderingHandler(EntityImprovedMeteor.class, new MeteorRenderFactory());
+
+        if (Mods.BLOODMAGIC.isPresent()) {
+            RenderingRegistry.registerEntityRenderingHandler(EntityImprovedMeteor.class, new MeteorRenderFactory());
+        }
 
         super.preInit(event);
     }

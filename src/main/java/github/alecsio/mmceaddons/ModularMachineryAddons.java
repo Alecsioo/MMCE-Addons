@@ -2,13 +2,14 @@ package github.alecsio.mmceaddons;
 
 import github.alecsio.mmceaddons.client.ClientTickHandler;
 import github.alecsio.mmceaddons.client.MouseScrollHandler;
+import github.alecsio.mmceaddons.client.network.handler.MachineAssemblyMessageHandler;
 import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
+import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.commands.CommandGetCacheInfo;
 import github.alecsio.mmceaddons.common.entity.EntityImprovedMeteor;
 import github.alecsio.mmceaddons.common.item.handler.RightClickHandler;
 import github.alecsio.mmceaddons.common.network.MachineAssemblyMessage;
 import github.alecsio.mmceaddons.common.network.MouseScrollMessage;
-import github.alecsio.mmceaddons.client.network.handler.MachineAssemblyMessageHandler;
 import github.alecsio.mmceaddons.common.network.handler.MouseScrollMessageHandler;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import net.minecraftforge.common.MinecraftForge;
@@ -40,13 +41,13 @@ import org.apache.logging.log4j.Logger;
                 + "after:nuclearcraft@[0.0.0,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
-        acceptableRemoteVersions = "[1.2.3]"
+        acceptableRemoteVersions = "[1.2.4]"
 )
 public class ModularMachineryAddons {
 
     public static final String MODID = "modularmachineryaddons";
     public static final String NAME = "Modular Machinery: Community Edition Addons";
-    public static final String VERSION = "1.2.3";
+    public static final String VERSION = "1.2.4";
     public static final String CLIENT_PROXY = "github.alecsio.mmceaddons.client.ClientProxy";
     public static final String COMMON_PROXY = "github.alecsio.mmceaddons.CommonProxy";
 
@@ -106,9 +107,11 @@ public class ModularMachineryAddons {
         public static void onRegisterEntity(RegistryEvent.Register<EntityEntry> regisryEvent) {
             int entities = 0;
 
-            regisryEvent.getRegistry().registerAll(
-                    EntityEntryBuilder.create().id("improved_meteor", ++entities).entity(EntityImprovedMeteor.class).name("improved_meteor").tracker(16 * 4, 3, true).build()
-            );
+            if (Mods.BLOODMAGIC.isPresent()) {
+                regisryEvent.getRegistry().registerAll(
+                        EntityEntryBuilder.create().id("improved_meteor", ++entities).entity(EntityImprovedMeteor.class).name("improved_meteor").tracker(16 * 4, 3, true).build()
+                );
+            }
         }
     }
 }

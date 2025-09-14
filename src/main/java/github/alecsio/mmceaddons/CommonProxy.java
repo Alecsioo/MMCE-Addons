@@ -1,6 +1,5 @@
 package github.alecsio.mmceaddons;
 
-import github.alecsio.mmceaddons.common.LoadedModsCache;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.registry.internal.EventHandler;
 import net.minecraft.creativetab.CreativeTabs;
@@ -36,7 +35,6 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
 
         ModularMachineryAddonsBlocks.initialise();
-        LoadedModsCache.initialize();
     }
 
     public void init() {}
