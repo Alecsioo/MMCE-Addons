@@ -29,7 +29,6 @@ Interested? You can find more details about each hatch and how they work for dev
 ## 🐛 Issues & Feature Requests
 
 If you encounter a bug or want to suggest a feature, please [open an issue](https://github.com/Alecsioo/MMCE-Addons/issues). PRs are welcome!
-Have any other questions? Join the [Discord server](https://discord.gg/Axfw6t3nDf).
 
 ---
 
