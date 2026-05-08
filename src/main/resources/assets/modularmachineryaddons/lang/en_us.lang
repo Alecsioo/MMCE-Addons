@@ -15,6 +15,22 @@ tile.modularmachineryaddons.blockscrubberproviderinput.name=Scrubber Hatch
 tile.modularmachineryaddons.blockbiomeproviderinput.name=Biome Hatch
 tile.modularmachineryaddons.blockdimensionproviderinput.name=Dimension Hatch
 
+tile.modularmachineryaddons.blocksingularityiteminputbus.tiny.name=Tiny Singularity Input Hatch
+tile.modularmachineryaddons.blocksingularityiteminputbus.small.name=Small Singularity Input Hatch
+tile.modularmachineryaddons.blocksingularityiteminputbus.normal.name=Normal Singularity Input Hatch
+tile.modularmachineryaddons.blocksingularityiteminputbus.reinforced.name=Reinforced Singularity Input Hatch
+tile.modularmachineryaddons.blocksingularityiteminputbus.big.name=Big Singularity Input Hatch
+tile.modularmachineryaddons.blocksingularityiteminputbus.huge.name=Huge Singularity Input Hatch
+tile.modularmachineryaddons.blocksingularityiteminputbus.ludicrous.name=Ludicrous Singularity Input Hatch
+
+tile.modularmachineryaddons.blocksingularityitemoutputbus.tiny.name=Tiny Singularity Output Hatch
+tile.modularmachineryaddons.blocksingularityitemoutputbus.small.name=Small Singularity Output Hatch
+tile.modularmachineryaddons.blocksingularityitemoutputbus.normal.name=Normal Singularity Output Hatch
+tile.modularmachineryaddons.blocksingularityitemoutputbus.reinforced.name=Reinforced Singularity Output Hatch
+tile.modularmachineryaddons.blocksingularityitemoutputbus.big.name=Big Singularity Output Hatch
+tile.modularmachineryaddons.blocksingularityitemoutputbus.huge.name=Huge Singularity Output Hatch
+tile.modularmachineryaddons.blocksingularityitemoutputbus.ludicrous.name=Ludicrous Singularity Output Hatch
+
 item.modularmachineryaddons.itemadvancedconstructtool.name=Advanced Wrench
 item.modularmachineryaddons.itemadvancedmachineassembler.name=Advanced Machine Assembler
 item.modularmachineryaddons.itemadvancedmachinedisassembler.name=Advanced Machine Disassembler

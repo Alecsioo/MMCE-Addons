@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "size=tiny": { "model":"modularmachineryaddons:blocksingularityitemoutputbus_tiny" },
+        "size=small": { "model":"modularmachineryaddons:blocksingularityitemoutputbus_small" },
+        "size=normal": { "model":"modularmachineryaddons:blocksingularityitemoutputbus_normal" },
+        "size=reinforced": { "model":"modularmachineryaddons:blocksingularityitemoutputbus_reinforced" },
+        "size=big": { "model":"modularmachineryaddons:blocksingularityitemoutputbus_big" },
+        "size=huge": { "model":"modularmachineryaddons:blocksingularityitemoutputbus_huge" },
+        "size=ludicrous": { "model":"modularmachineryaddons:blocksingularityitemoutputbus_ludicrous" }
+    }
+}

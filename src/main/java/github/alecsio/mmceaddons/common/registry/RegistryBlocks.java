@@ -4,6 +4,8 @@ import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.block.BlockBiomeProviderInput;
 import github.alecsio.mmceaddons.common.block.BlockDimensionProviderInput;
+import github.alecsio.mmceaddons.common.block.BlockSingularityItemInputBus;
+import github.alecsio.mmceaddons.common.block.BlockSingularityItemOutputBus;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
@@ -19,6 +21,8 @@ import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderOutput;
 import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.tile.TileBiomeProvider;
 import github.alecsio.mmceaddons.common.tile.TileDimensionProvider;
+import github.alecsio.mmceaddons.common.tile.TileSingularityItemInputBus;
+import github.alecsio.mmceaddons.common.tile.TileSingularityItemOutputBus;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileWillMultiChunkProvider;
 import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileRadiationProvider;
@@ -107,6 +111,13 @@ public class RegistryBlocks {
         // Always register
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockBiomeProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDimensionProviderInput);
+
+        // Singularity Item Buses: always registered:
+        ModularMachineryAddonsBlocks.blockSingularityItemInput = prepareRegister(new BlockSingularityItemInputBus());
+        ModularMachineryAddonsBlocks.blockSingularityItemOutput = prepareRegister(new BlockSingularityItemOutputBus());
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockSingularityItemInput);
+        prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockSingularityItemOutput);
+
     }
 
     private static void registerTileEntities() {
@@ -137,6 +148,8 @@ public class RegistryBlocks {
         // Always present
         registerTileEntity(TileBiomeProvider.class);
         registerTileEntity(TileDimensionProvider.class);
+        registerTileEntity(TileSingularityItemInputBus.class);
+        registerTileEntity(TileSingularityItemOutputBus.class);
     }
 
     /**

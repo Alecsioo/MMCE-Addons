@@ -8,12 +8,12 @@ plugins {
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
     id("eclipse")
     id("groovy")
-    id("com.gtnewhorizons.retrofuturagradle") version "1.3.19"
+    id("com.gtnewhorizons.retrofuturagradle") version "1.4.0"
 }
 
 // Project properties
 group = "alecsio.modularmachineryaddons"
-version = "1.2.4"
+version = "1.2.5"
 
 // Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
 java {
@@ -195,7 +195,7 @@ dependencies {
 
     implementation("curse.maven:ae2-570458:5378163")
     implementation("curse.maven:ae2fc-623955:5751930")
-    implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:6480528"))
+    implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:7372951"))
     implementation(rfg.deobf("curse.maven:botonia-225643:3330934"))
     implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
     implementation("curse.maven:thaumicEnergistics-223666:2915506")
