@@ -4,29 +4,14 @@ import hellfirepvp.modularmachinery.common.tiles.base.TileEntitySynchronized;
 import hellfirepvp.modularmachinery.common.util.IOInventory;
 import hellfirepvp.modularmachinery.common.util.ItemUtils;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 
 public class IOSingularityInventory extends IOInventory {
-    public IOSingularityInventory(
-            TileEntitySynchronized owner,
-            int[] inSlots,
-            int[] outSlots,
-            int maxSize
-    ) {
+    public IOSingularityInventory(TileEntitySynchronized owner, int[] inSlots, int[] outSlots, int maxSize) {
         super(owner, inSlots, outSlots);
         Arrays.fill(this.slotLimits, maxSize);
-    }
-
-    public IOSingularityInventory(
-            TileEntitySynchronized owner,
-            int[] inSlots,
-            int[] outSlots,
-            EnumFacing... accessibleFrom
-    ) {
-        super(owner, inSlots, outSlots, accessibleFrom);
     }
 
     protected ItemStack insertItemInternal(int slot, @Nonnull ItemStack stack, boolean simulate) {
@@ -38,13 +23,13 @@ public class IOSingularityInventory extends IOInventory {
                 return stack;
             } else {
                 ItemStack toInsert = ItemUtils.copyStackWithSize(stack, stack.getCount());
-                if (!((ItemStack)holder.itemStack.get()).isEmpty()) {
-                    ItemStack existing = ItemUtils.copyStackWithSize((ItemStack)holder.itemStack.get(), ((ItemStack)holder.itemStack.get()).getCount());
+                if (!holder.itemStack.get().isEmpty()) {
+                    ItemStack existing = ItemUtils.copyStackWithSize(holder.itemStack.get(), holder.itemStack.get().getCount());
                     int max = this.getSlotLimit(slot);
                     if (existing.getCount() < max && canMergeItemStacks(existing, toInsert)) {
                         int movable = Math.min(max - existing.getCount(), stack.getCount());
                         if (!simulate) {
-                            ((ItemStack)holder.itemStack.get()).grow(movable);
+                            holder.itemStack.get().grow(movable);
                         }
 
                         if (movable >= stack.getCount()) {

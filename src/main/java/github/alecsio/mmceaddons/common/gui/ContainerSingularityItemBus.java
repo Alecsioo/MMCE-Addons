@@ -11,10 +11,8 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 
 public class ContainerSingularityItemBus extends ContainerItemBus {
-    public ContainerSingularityItemBus(
-            TileItemBus owner,
-            EntityPlayer opening
-    ) {
+
+    public ContainerSingularityItemBus(TileItemBus owner, EntityPlayer opening) {
         super(owner, opening);
     }
 
@@ -28,12 +26,7 @@ public class ContainerSingularityItemBus extends ContainerItemBus {
             ItemStack inventoryStack = singularitySlot.getStack();
 
 
-            if (
-                    !heldStack.isEmpty() && !inventoryStack.isEmpty() &&
-                            heldStack.getItem() == inventoryStack.getItem() && heldStack.getMetadata() == inventoryStack.getMetadata() && ItemStack.areItemStackTagsEqual(
-                            heldStack,
-                            inventoryStack
-                    )) {
+            if (!heldStack.isEmpty() && !inventoryStack.isEmpty() && heldStack.getItem() == inventoryStack.getItem() && heldStack.getMetadata() == inventoryStack.getMetadata() && ItemStack.areItemStackTagsEqual(heldStack, inventoryStack)) {
                 int amountToDrop = dragType == 0 ? heldStack.getCount() : 1;
 
                 if (amountToDrop > singularitySlot.getItemStackLimit(heldStack) - inventoryStack.getCount()) {

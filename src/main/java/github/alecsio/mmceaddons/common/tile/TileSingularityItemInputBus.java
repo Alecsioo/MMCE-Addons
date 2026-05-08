@@ -12,10 +12,6 @@ import javax.annotation.Nullable;
 
 public class TileSingularityItemInputBus extends TileSingularityItemBus implements MachineComponentTile {
 
-    @SuppressWarnings("unused")
-    public TileSingularityItemInputBus() {
-    }
-
     public TileSingularityItemInputBus(ItemBusSize type) {
         super(type);
     }

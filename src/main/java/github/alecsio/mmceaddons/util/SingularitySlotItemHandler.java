@@ -7,12 +7,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import javax.annotation.Nonnull;
 
 public class SingularitySlotItemHandler extends SlotItemHandler {
-    public SingularitySlotItemHandler(
-            IItemHandler itemHandler,
-            int index,
-            int xPosition,
-            int yPosition
-    ) {
+    public SingularitySlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
     }
 
