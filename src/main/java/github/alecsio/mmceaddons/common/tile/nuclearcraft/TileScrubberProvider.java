@@ -17,8 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import java.util.stream.Collectors;
 
 public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementScrubber> implements MachineComponentTileNotifiable {
 
-    private static final Logger log = LogManager.getLogger(TileScrubberProvider.class);
     private int currentChunkRange = -1;
     // Not persisted on purpose, since the cache is not persisted either, it needs a refresh if there's a restart
     private final AtomicBoolean redstonePowered = new AtomicBoolean(false);
@@ -46,7 +43,6 @@ public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementS
     @Override
     public void handle(RequirementScrubber requirement) {
         if (currentChunkRange != requirement.getChunkRange() || needsRefresh.compareAndSet(true, false)) {
-            log.debug("Current chunk range for scrubber at {} is {}. New chunk range: {}", this.pos.toString(), currentChunkRange, requirement.getChunkRange());
             replaceScrubbedChunks(requirement.getChunkRange());
         }
     }
@@ -98,7 +94,6 @@ public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementS
             currentChunkRange = newChunkRange;
             scrubbedChunks = getSurroundingChunks(world, this.pos, currentChunkRange);
             List<InterdimensionalChunkPos> interdimensionalChunkPos = scrubbedChunks.stream().map(chunkPosAsLong -> InterdimensionalChunkPos.of(world.provider.getDimension(), chunkPosAsLong)).collect(Collectors.toList());
-            log.debug("Adding {} chunks to the scrubber cache from scrubber at {}", interdimensionalChunkPos.size(), this.pos.toString());
             ScrubbedChunksCache.addChunksToCache(interdimensionalChunkPos, this.pos);
         } finally {
             scrubbedChunksLock.unlock();
@@ -115,7 +110,6 @@ public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementS
     @Override
     public void onMachineEvent(MachineEvent event) {
         if (event instanceof MachineNotFormedEvent || event instanceof MachineControllerInvalidatedEvent) {
-            log.debug("Received event {} from controller. Clearing scrubber chunk cache at {}", event.getClass().getSimpleName(), pos.toString());
             clearScrubbedChunks();
         }
 

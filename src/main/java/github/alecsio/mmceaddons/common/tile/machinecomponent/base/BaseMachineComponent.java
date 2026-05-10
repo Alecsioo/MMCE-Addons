@@ -17,4 +17,9 @@ public abstract class BaseMachineComponent<T> extends MachineComponent<IRequirem
     public IRequirementHandler<T> getContainerProvider() {
         return handler;
     }
+
+    @Override
+    public boolean isAsyncSupported() {
+        return false;
+    }
 }

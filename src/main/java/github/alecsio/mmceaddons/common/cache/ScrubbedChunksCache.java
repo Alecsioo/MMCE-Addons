@@ -10,9 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.*;
 
 /**
  * Utility class responsible for caching and managing the association between
@@ -74,7 +72,7 @@ public class ScrubbedChunksCache {
 
                 return true;
             }
-        } finally { // Regardless of early return or not, process invalid positions
+        } finally {
             positions.removeAll(invalidPositions);
             invalidPositions.forEach(pos -> LOGGER.debug("Removed invalid scrubber position: {}. For chunk: {}", pos, chunkPos));
 

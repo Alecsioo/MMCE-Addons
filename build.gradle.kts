@@ -32,7 +32,7 @@ minecraft {
     mcVersion.set("1.12.2")
 
     // Username for client run configurations
-    username.set("Alecsio")
+    username.set("Dev")
 
     // Generate a field named VERSION with the mod version in the injected Tags class
     injectedTags.put("VERSION", project.version)
@@ -231,7 +231,7 @@ dependencies {
     implementation(rfg.deobf("curse.maven:rftools-dep-mcjtylib-233105:2745846"))
     implementation(rfg.deobf("curse.maven:trash-394535:4606884"))
     implementation(rfg.deobf("curse.maven:trashdep-454372:6034694"))
-    implementation("curse.maven:nuclearcraft-226254:6151363-sources-6151372")
+    implementation(rfg.deobf("curse.maven:nuclearcraft-226254:6151363-sources-6151372"))
     implementation(rfg.deobf("curse.maven:drawers-223852:5981297"))
     implementation(rfg.deobf("curse.maven:drawersChameleonDependency-230497:2450900"))
     implementation(rfg.deobf("curse.maven:chisel-278493:3319307"))
