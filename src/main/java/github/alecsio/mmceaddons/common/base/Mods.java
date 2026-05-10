@@ -7,6 +7,7 @@ public enum Mods {
     BLOODMAGIC("bloodmagic"),
     THAUMICENERGISTICS("thaumicenergistics"),
     THAUMCRAFT("thaumcraft"),
+    ABYSSALCRAFT("abyssalcraft"),
     APPLIEDENERGISTICS("appliedenergistics2"),
     ASTRALSORCERY("astralsorcery"),
     PROJECTE("projecte"),
@@ -17,7 +18,7 @@ public enum Mods {
     public static final String BLOODMAGIC_ID = "bloodmagic";
     public static final String THAUMICENERGISTICS_ID = "thaumicenergistics";
     public static final String THAUMCRAFT_ID = "thaumcraft";
-    public static final String ASTRALSORCERY_ID = "astralsorcery";
+    public static final String ABYSSALCRAFT_ID = "abyssalcraft";
     public static final String APPLIEDENERGISTICS_ID = "appliedenergistics2";
     public static final String PROJECTE_ID = "projecte";
 

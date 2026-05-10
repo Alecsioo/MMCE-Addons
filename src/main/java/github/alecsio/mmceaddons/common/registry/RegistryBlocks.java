@@ -6,6 +6,8 @@ import github.alecsio.mmceaddons.common.block.BlockBiomeProviderInput;
 import github.alecsio.mmceaddons.common.block.BlockDimensionProviderInput;
 import github.alecsio.mmceaddons.common.block.BlockSingularityItemInputBus;
 import github.alecsio.mmceaddons.common.block.BlockSingularityItemOutputBus;
+import github.alecsio.mmceaddons.common.block.abyssalcraft.BlockPotentialEnergyProviderInput;
+import github.alecsio.mmceaddons.common.block.abyssalcraft.BlockPotentialEnergyProviderOutput;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
@@ -23,6 +25,7 @@ import github.alecsio.mmceaddons.common.tile.TileBiomeProvider;
 import github.alecsio.mmceaddons.common.tile.TileDimensionProvider;
 import github.alecsio.mmceaddons.common.tile.TileSingularityItemInputBus;
 import github.alecsio.mmceaddons.common.tile.TileSingularityItemOutputBus;
+import github.alecsio.mmceaddons.common.tile.abyssalcraft.TilePotentialEnergyProvider;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileWillMultiChunkProvider;
 import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileRadiationProvider;
@@ -108,6 +111,14 @@ public class RegistryBlocks {
             prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderOutput);
         }
 
+        if (Mods.ABYSSALCRAFT.isPresent()) {
+            ModularMachineryAddonsBlocks.blockPotentialEnergyProviderInput = prepareRegister(new BlockPotentialEnergyProviderInput());
+            ModularMachineryAddonsBlocks.blockPotentialEnergyProviderOutput = prepareRegister(new BlockPotentialEnergyProviderOutput());
+
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockPotentialEnergyProviderInput);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockPotentialEnergyProviderOutput);
+        }
+
         // Always register
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockBiomeProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDimensionProviderInput);
@@ -143,6 +154,11 @@ public class RegistryBlocks {
             registerTileEntity(TileFluxProvider.Output.class);
             registerTileEntity(TileVisProvider.Input.class);
             registerTileEntity(TileVisProvider.Output.class);
+        }
+
+        if (Mods.ABYSSALCRAFT.isPresent()) {
+            registerTileEntity(TilePotentialEnergyProvider.Input.class);
+            registerTileEntity(TilePotentialEnergyProvider.Output.class);
         }
 
         // Always present

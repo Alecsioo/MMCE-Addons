@@ -22,6 +22,8 @@ public class ModularMachineryAddonsComponents {
     public static final ResourceLocation KEY_COMPONENT_VIS = new ResourceLocation(ModularMachineryAddons.MODID, "vis");
     public static final ResourceLocation KEY_COMPONENT_BIOME = new ResourceLocation(ModularMachineryAddons.MODID, "biome");
     public static final ResourceLocation KEY_COMPONENT_DIMENSION = new ResourceLocation(ModularMachineryAddons.MODID, "dimension");
+    public static final ResourceLocation KEY_COMPONENT_POTENTIAL_ENERGY = new ResourceLocation(ModularMachineryAddons.MODID, "potentialEnergy");
+
 
     public static final ArrayList<ComponentType> COMPONENTS = new ArrayList<>();
 
@@ -48,6 +50,10 @@ public class ModularMachineryAddonsComponents {
         if (Mods.THAUMCRAFT.isPresent()) {
             registerComponent(new ComponentFlux(), KEY_COMPONENT_FLUX);
             registerComponent(new ComponentVis(), KEY_COMPONENT_VIS);
+        }
+
+        if (Mods.ABYSSALCRAFT.isPresent()) {
+            registerComponent(new ComponentPotentialEnergy(), KEY_COMPONENT_POTENTIAL_ENERGY);
         }
     }
 

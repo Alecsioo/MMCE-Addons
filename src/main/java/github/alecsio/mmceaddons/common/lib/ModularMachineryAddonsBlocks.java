@@ -5,6 +5,8 @@ import github.alecsio.mmceaddons.common.block.BlockBiomeProviderInput;
 import github.alecsio.mmceaddons.common.block.BlockDimensionProviderInput;
 import github.alecsio.mmceaddons.common.block.BlockSingularityItemInputBus;
 import github.alecsio.mmceaddons.common.block.BlockSingularityItemOutputBus;
+import github.alecsio.mmceaddons.common.block.abyssalcraft.BlockPotentialEnergyProviderInput;
+import github.alecsio.mmceaddons.common.block.abyssalcraft.BlockPotentialEnergyProviderOutput;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
 import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
@@ -46,6 +48,10 @@ public class ModularMachineryAddonsBlocks {
 
     public static BlockVisProviderInput blockVisProviderInput;
     public static BlockVisProviderOutput blockVisProviderOutput;
+
+    // Abyssalcraft
+    public static BlockPotentialEnergyProviderInput blockPotentialEnergyProviderInput;
+    public static BlockPotentialEnergyProviderOutput blockPotentialEnergyProviderOutput;
 
     public static BlockSingularityItemInputBus blockSingularityItemInput;
     public static BlockSingularityItemOutputBus blockSingularityItemOutput;

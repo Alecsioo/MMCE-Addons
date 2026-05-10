@@ -50,6 +50,7 @@ error.modularmachineryaddons.component.invalid.scrubber=No scrubber hatch found
 error.modularmachineryaddons.component.invalid.radiation=No radiation hatch found
 error.modularmachineryaddons.component.invalid.will=No will hatch found
 error.modularmachineryaddons.component.invalid.meteor=No meteor hatch found
+error.modularmachineryaddons.component.invalid.potential_energy=No potential energy hatch found
 error.assembler.not.found=Could not locate an advanced machine assembler item in the player's inventory
 error.encryption.key.not.found=The assembler must be linked to an ME system via a security station to allow item extraction
 error.security.station.not.found=Could not locate security station
@@ -71,6 +72,9 @@ error.modularmachineryaddons.requirement.missing.dimension=The hatch is in the w
 error.modularmachineryaddons.requirement.missing.meteor.alive=Meteor is still alive
 error.modularmachineryaddons.requirement.missing.meteor=Line of sight is obstructed (max 1 block allowed)
 error.modularmachineryaddons.requirement.missing.meteor.missing=Meteor hatch could not handle meteor. You should never see this message
+
+error.modularmachineryaddons.requirement.missing.potentialenergy.input=Missing potential energy requirement
+error.modularmachineryaddons.requirement.missing.potentialenergy.output=Not enough space for potential energy output
 
 
 # items

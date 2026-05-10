@@ -4,6 +4,7 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
 import github.alecsio.mmceaddons.common.crafting.requirement.RequirementBiome;
 import github.alecsio.mmceaddons.common.crafting.requirement.RequirementDimension;
+import github.alecsio.mmceaddons.common.crafting.requirement.abyssalcraft.RequirementPotentialEnergy;
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementRadiation;
 import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementScrubber;
@@ -161,5 +162,15 @@ public class AddonsPrimer {
     @ZenMethod
     public static RecipePrimer addDimensionInput(RecipePrimer primer, int id) {
         return addRequirement(primer, () -> RequirementDimension.from(IOType.INPUT, id));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addPotentialEnergyInput(RecipePrimer primer, float amount) {
+        return addRequirement(primer, () -> RequirementPotentialEnergy.from(IOType.INPUT, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addPotentialEnergyOutput(RecipePrimer primer, float amount) {
+        return addRequirement(primer, () -> RequirementPotentialEnergy.from(IOType.OUTPUT, amount));
     }
 }

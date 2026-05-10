@@ -235,6 +235,7 @@ dependencies {
     implementation(rfg.deobf("curse.maven:drawers-223852:5981297"))
     implementation(rfg.deobf("curse.maven:drawersChameleonDependency-230497:2450900"))
     implementation(rfg.deobf("curse.maven:chisel-278493:3319307"))
+    implementation(rfg.deobf("curse.maven:abyssal-53686:7384999"))
     compileOnly(rfg.deobf("curse.maven:bloodmagic-224791:2822288-sources-2822290"))
     implementation(rfg.deobf("curse.maven:bmdependency-228832:2645992"))
     compileOnly(rfg.deobf("curse.maven:mantle-74924:2713386"))

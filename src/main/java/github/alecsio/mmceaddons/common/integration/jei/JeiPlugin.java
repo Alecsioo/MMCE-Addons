@@ -53,6 +53,10 @@ public class JeiPlugin implements IModPlugin {
             registerIngredient(new Vis(), new VisHelper(), new VisRenderer());
         }
 
+        if (Mods.ABYSSALCRAFT.isPresent()) {
+            registerIngredient(new PotentialEnergy(), new PotentialEnergyHelper(), new PotentialEnergyRenderer());
+        }
+
         this.registry = null;
     }
 

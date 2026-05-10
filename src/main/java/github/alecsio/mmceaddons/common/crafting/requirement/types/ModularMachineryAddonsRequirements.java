@@ -2,6 +2,7 @@ package github.alecsio.mmceaddons.common.crafting.requirement.types;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.base.Mods;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.abyssalcraft.RequirementTypePotentialEnergy;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeMeteor;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeWillMultiChunk;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiation;
@@ -24,6 +25,7 @@ public class ModularMachineryAddonsRequirements {
     public static final ResourceLocation KEY_REQUIREMENT_VIS = new ResourceLocation(ModularMachineryAddons.MODID, "vis");
     public static final ResourceLocation KEY_REQUIREMENT_BIOME = new ResourceLocation(ModularMachineryAddons.MODID, "biome");
     public static final ResourceLocation KEY_REQUIREMENT_DIMENSION = new ResourceLocation(ModularMachineryAddons.MODID, "dimension");
+    public static final ResourceLocation KEY_REQUIREMENT_POTENTIAL_ENERGY = new ResourceLocation(ModularMachineryAddons.MODID, "potentialEnergy");
 
     public static final ArrayList<RequirementType<?, ?>> REQUIREMENTS = new ArrayList<>();
 
@@ -51,6 +53,10 @@ public class ModularMachineryAddonsRequirements {
         if (Mods.THAUMCRAFT.isPresent()) {
             registerRequirement(new RequirementTypeFlux(), KEY_REQUIREMENT_FLUX);
             registerRequirement(new RequirementTypeVis(), KEY_REQUIREMENT_VIS);
+        }
+
+        if (Mods.ABYSSALCRAFT.isPresent()) {
+            registerRequirement(new RequirementTypePotentialEnergy(), KEY_REQUIREMENT_POTENTIAL_ENERGY);
         }
     }
 

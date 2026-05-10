@@ -17,6 +17,9 @@ public class MMCEAConfig {
     @Config.Comment("Whether the cooldown for assemblies/disassemblies should be enabled or not. Default: true")
     public static boolean cooldownEnabled = true;
 
+    @Config.Comment("The maximum amount of potential energy that potential energy hatches (input and output) can hold. Default: 4096")
+    public static int potentialEnergyHatchesCapacity = 4096;
+
     @Config.Comment("The cooldown between multiblock assemblies. Default: 1 second")
     public static int cooldown = 1;
 
