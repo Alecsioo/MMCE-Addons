@@ -12,6 +12,7 @@ import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderInput;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderOutput;
+import github.alecsio.mmceaddons.common.block.iceandfire.BlockDragonBreathInput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderInput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderOutput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.scrubber.BlockScrubberProviderInput;
@@ -52,6 +53,9 @@ public class ModularMachineryAddonsBlocks {
     // Abyssalcraft
     public static BlockPotentialEnergyProviderInput blockPotentialEnergyProviderInput;
     public static BlockPotentialEnergyProviderOutput blockPotentialEnergyProviderOutput;
+
+    // Ice & Fire
+    public static BlockDragonBreathInput blockDragonBreathProviderInput;
 
     public static BlockSingularityItemInputBus blockSingularityItemInput;
     public static BlockSingularityItemOutputBus blockSingularityItemOutput;

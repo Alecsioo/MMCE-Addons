@@ -23,7 +23,7 @@ public class ModularMachineryAddonsComponents {
     public static final ResourceLocation KEY_COMPONENT_BIOME = new ResourceLocation(ModularMachineryAddons.MODID, "biome");
     public static final ResourceLocation KEY_COMPONENT_DIMENSION = new ResourceLocation(ModularMachineryAddons.MODID, "dimension");
     public static final ResourceLocation KEY_COMPONENT_POTENTIAL_ENERGY = new ResourceLocation(ModularMachineryAddons.MODID, "potentialEnergy");
-
+    public static final ResourceLocation KEY_COMPONENT_DRAGON_BREATH = new ResourceLocation(ModularMachineryAddons.MODID, "dragonBreath");
 
     public static final ArrayList<ComponentType> COMPONENTS = new ArrayList<>();
 
@@ -54,6 +54,10 @@ public class ModularMachineryAddonsComponents {
 
         if (Mods.ABYSSALCRAFT.isPresent()) {
             registerComponent(new ComponentPotentialEnergy(), KEY_COMPONENT_POTENTIAL_ENERGY);
+        }
+
+        if (Mods.ICE_AND_FIRE.isPresent()) {
+            registerComponent(new ComponentDragonBreath(), KEY_COMPONENT_DRAGON_BREATH);
         }
     }
 

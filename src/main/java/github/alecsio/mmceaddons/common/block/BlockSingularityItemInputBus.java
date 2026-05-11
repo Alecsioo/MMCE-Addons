@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class BlockSingularityItemInputBus extends BlockSingularityItemBus {
+
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState iBlockState) {

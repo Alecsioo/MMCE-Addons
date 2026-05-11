@@ -57,6 +57,10 @@ public class JeiPlugin implements IModPlugin {
             registerIngredient(new PotentialEnergy(), new PotentialEnergyHelper(), new PotentialEnergyRenderer());
         }
 
+        if (Mods.ICE_AND_FIRE.isPresent()) {
+            registerIngredient(new DragonBreath(), new DragonBreathHelper(), new DragonBreathRenderer());
+        }
+
         this.registry = null;
     }
 

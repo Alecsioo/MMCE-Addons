@@ -13,6 +13,7 @@ import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderInput;
 import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderOutput;
+import github.alecsio.mmceaddons.common.block.iceandfire.BlockDragonBreathInput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderInput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderOutput;
 import github.alecsio.mmceaddons.common.block.nuclearcraft.scrubber.BlockScrubberProviderInput;
@@ -28,6 +29,7 @@ import github.alecsio.mmceaddons.common.tile.TileSingularityItemOutputBus;
 import github.alecsio.mmceaddons.common.tile.abyssalcraft.TilePotentialEnergyProvider;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;
 import github.alecsio.mmceaddons.common.tile.bloodmagic.TileWillMultiChunkProvider;
+import github.alecsio.mmceaddons.common.tile.iceandfire.TileDragonBreathProvider;
 import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileRadiationProvider;
 import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileScrubberProvider;
 import github.alecsio.mmceaddons.common.tile.thaumcraft.MEEssentiaInputBus;
@@ -119,6 +121,12 @@ public class RegistryBlocks {
             prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockPotentialEnergyProviderOutput);
         }
 
+        if (Mods.ICE_AND_FIRE.isPresent()) {
+            ModularMachineryAddonsBlocks.blockDragonBreathProviderInput = prepareRegister(new BlockDragonBreathInput());
+
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDragonBreathProviderInput);
+        }
+
         // Always register
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockBiomeProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDimensionProviderInput);
@@ -159,6 +167,10 @@ public class RegistryBlocks {
         if (Mods.ABYSSALCRAFT.isPresent()) {
             registerTileEntity(TilePotentialEnergyProvider.Input.class);
             registerTileEntity(TilePotentialEnergyProvider.Output.class);
+        }
+
+        if (Mods.ICE_AND_FIRE.isPresent()) {
+            registerTileEntity(TileDragonBreathProvider.class);
         }
 
         // Always present

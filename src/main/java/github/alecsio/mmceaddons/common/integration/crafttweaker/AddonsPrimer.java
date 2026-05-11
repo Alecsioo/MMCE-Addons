@@ -2,10 +2,12 @@ package github.alecsio.mmceaddons.common.integration.crafttweaker;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
+import github.alecsio.mmceaddons.common.crafting.requirement.DragonType;
 import github.alecsio.mmceaddons.common.crafting.requirement.RequirementBiome;
 import github.alecsio.mmceaddons.common.crafting.requirement.RequirementDimension;
 import github.alecsio.mmceaddons.common.crafting.requirement.abyssalcraft.RequirementPotentialEnergy;
 import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementWillMultiChunk;
+import github.alecsio.mmceaddons.common.crafting.requirement.iceandfire.RequirementDragonBreath;
 import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementRadiation;
 import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementScrubber;
 import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementFlux;
@@ -172,5 +174,20 @@ public class AddonsPrimer {
     @ZenMethod
     public static RecipePrimer addPotentialEnergyOutput(RecipePrimer primer, float amount) {
         return addRequirement(primer, () -> RequirementPotentialEnergy.from(IOType.OUTPUT, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addFireDragonBreathInput(RecipePrimer primer, int amount) {
+        return addRequirement(primer, () -> RequirementDragonBreath.from(IOType.INPUT, DragonType.FIRE.name(), amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addIceDragonBreathInput(RecipePrimer primer, int amount) {
+        return addRequirement(primer, () -> RequirementDragonBreath.from(IOType.INPUT, DragonType.ICE.name(), amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addLightningDragonBreathInput(RecipePrimer primer, int amount) {
+        return addRequirement(primer, () -> RequirementDragonBreath.from(IOType.INPUT, DragonType.LIGHTNING.name(), amount));
     }
 }

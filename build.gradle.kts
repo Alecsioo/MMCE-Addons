@@ -238,6 +238,8 @@ dependencies {
     implementation(rfg.deobf("curse.maven:abyssal-53686:7384999"))
     compileOnly(rfg.deobf("curse.maven:bloodmagic-224791:2822288-sources-2822290"))
     implementation(rfg.deobf("curse.maven:bmdependency-228832:2645992"))
+    implementation("curse.maven:iceandfire-457668:5738729")
+    implementation("curse.maven:llibrary-243298:2505007")
     compileOnly(rfg.deobf("curse.maven:mantle-74924:2713386"))
     implementation(rfg.deobf("curse.maven:tx-loader-706505:4515357"))
 

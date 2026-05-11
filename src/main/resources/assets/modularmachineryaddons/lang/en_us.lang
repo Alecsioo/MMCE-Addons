@@ -42,6 +42,7 @@ commands.mmcea.getcacheinfo.usage=/getScrubbedChunksCacheInfo
 
 # errors
 error.modularmachineryaddons.component.invalid.biome=No biome hatch found
+error.modularmachineryaddons.component.invalid.dragon=No dragon breath hatch found
 error.modularmachineryaddons.component.invalid.dimension=No dimension hatch found
 error.modularmachineryaddons.component.invalid.essentia=No essentia hatch found
 error.modularmachineryaddons.component.invalid.vis=No vis hatch found
@@ -84,7 +85,6 @@ tooltip.modularmachineryaddons.radiationsponge=Removes all radiation from the us
 # blocks
 tooltip.modularmachineryaddons.scrubber=May still cause leaks for a short time window in-between recipes or on world restart. Scrub your base!
 
-
 # messages
 message.modularmachineryaddons.assembly.complete=Multiblock assembly completed successfully
 message.modularmachineryaddons.assembly.complete.error=Multiblock assembly completed, but some blocks were not placed
@@ -95,6 +95,11 @@ message.modularmachineryaddons.disassembly.error=Multiblock disassembly interrup
 message.modularmachineryaddons.advancedconstructtool.cleared=Cleared tool selection
 message.modularmachineryaddons.advancedconstructtool.invalid.selection=Please select two corners!
 message.modularmachineryaddons.advancedconstructtool.selection=Successfully selected corner
+message.modularmachineryaddons.dragonbreathhatch.locked=Hatch locked to type %s
+message.modularmachineryaddons.dragonbreathhatch.unlocked=Hatch unlocked successfully
+dragon.type.fire=fire
+dragon.type.ice=ice
+dragon.type.lightning=lightning
 
 #assembly
 message.assembly.missing.item.knowledge=Missing knowledge of item %s

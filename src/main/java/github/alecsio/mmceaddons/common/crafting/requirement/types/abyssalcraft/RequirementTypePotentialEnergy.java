@@ -13,8 +13,10 @@ import kport.modularmagic.common.utils.RequirementUtils;
 
 @RequiresMod(Mods.ABYSSALCRAFT_ID)
 public class RequirementTypePotentialEnergy extends BaseRequirementType<PotentialEnergy, RequirementPotentialEnergy> {
+
     @Override
     public ComponentRequirement<PotentialEnergy, ? extends RequirementType<PotentialEnergy, RequirementPotentialEnergy>> createRequirement(IOType ioType, JsonObject jsonObject) {
         return RequirementPotentialEnergy.from(ioType, RequirementUtils.getRequiredPositiveFloat(jsonObject, "potentialEnergy", "potentialEnergy"));
     }
+
 }

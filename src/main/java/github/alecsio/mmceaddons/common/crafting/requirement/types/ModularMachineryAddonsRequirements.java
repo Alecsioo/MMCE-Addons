@@ -5,6 +5,7 @@ import github.alecsio.mmceaddons.common.base.Mods;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.abyssalcraft.RequirementTypePotentialEnergy;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeMeteor;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.bloodmagic.RequirementTypeWillMultiChunk;
+import github.alecsio.mmceaddons.common.crafting.requirement.types.iceandfire.RequirementTypeDragonBreath;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeRadiation;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.nuclearcraft.RequirementTypeScrubber;
 import github.alecsio.mmceaddons.common.crafting.requirement.types.thaumcraft.RequirementTypeFlux;
@@ -16,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.ArrayList;
 
 public class ModularMachineryAddonsRequirements {
+
     public static final ResourceLocation KEY_REQUIREMENT_RADIATION = new ResourceLocation(ModularMachineryAddons.MODID, "radiation");
     public static final ResourceLocation KEY_REQUIREMENT_RADIATION_PER_TICK = new ResourceLocation(ModularMachineryAddons.MODID, "scrubber");
     public static final ResourceLocation KEY_REQUIREMENT_METEOR = new ResourceLocation(ModularMachineryAddons.MODID, "meteor");
@@ -26,6 +28,7 @@ public class ModularMachineryAddonsRequirements {
     public static final ResourceLocation KEY_REQUIREMENT_BIOME = new ResourceLocation(ModularMachineryAddons.MODID, "biome");
     public static final ResourceLocation KEY_REQUIREMENT_DIMENSION = new ResourceLocation(ModularMachineryAddons.MODID, "dimension");
     public static final ResourceLocation KEY_REQUIREMENT_POTENTIAL_ENERGY = new ResourceLocation(ModularMachineryAddons.MODID, "potentialEnergy");
+    public static final ResourceLocation KEY_REQUIREMENT_DRAGON_BREATH = new ResourceLocation(ModularMachineryAddons.MODID, "dragonBreath");
 
     public static final ArrayList<RequirementType<?, ?>> REQUIREMENTS = new ArrayList<>();
 
@@ -57,6 +60,10 @@ public class ModularMachineryAddonsRequirements {
 
         if (Mods.ABYSSALCRAFT.isPresent()) {
             registerRequirement(new RequirementTypePotentialEnergy(), KEY_REQUIREMENT_POTENTIAL_ENERGY);
+        }
+
+        if (Mods.ICE_AND_FIRE.isPresent()) {
+            registerRequirement(new RequirementTypeDragonBreath(), KEY_REQUIREMENT_DRAGON_BREATH);
         }
     }
 
