@@ -86,7 +86,6 @@ public class TileDragonBreathProvider extends TileColorableMachineComponent impl
         return lockedType;
     }
 
-
     @Nullable
     @Override
     public MachineComponent<?> provideComponent() {
@@ -145,5 +144,17 @@ public class TileDragonBreathProvider extends TileColorableMachineComponent impl
     @Override
     public void update() {
         lureDragons();
+    }
+
+    public DragonType getType() {
+        return type;
+    }
+
+    public boolean isTypeLocked() {
+        return typeLocked;
+    }
+
+    public int getCharges() {
+        return charges;
     }
 }

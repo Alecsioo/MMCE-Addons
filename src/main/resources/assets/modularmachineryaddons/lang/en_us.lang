@@ -130,3 +130,11 @@ jei.tooltip.modularmachineryaddons.dimension=Dimension
 jei.tooltip.modularmachineryaddons.biome=Biome
 jei.tooltip.modularmachineryaddons.meteor_contents=Meteor Contents
 jei.tooltip.modularmachineryaddons.scrubber_special=To Infinity and Beyond!
+
+# TOP
+
+top.modularmachineryaddons.potential_energy=Stored Potential Energy : %d
+top.modularmachineryaddons.dragon_breath.locked.true=Locked: true
+top.modularmachineryaddons.dragon_breath.locked.false=Locked: false
+top.modularmachineryaddons.dragon_breath.type=Type: %s
+top.modularmachineryaddons.dragon_breath.quantity=Stored: %d

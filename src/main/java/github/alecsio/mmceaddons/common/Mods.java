@@ -12,6 +12,7 @@ public enum Mods {
     ASTRALSORCERY("astralsorcery"),
     PROJECTE("projecte"),
     ICE_AND_FIRE("iceandfire"),
+    THE_ONE_PROBE("theoneprobe")
     ;
 
     // Used in annotations, which require compile-time constants. Yes, it's redundant. But it stil reduces boilerplate code

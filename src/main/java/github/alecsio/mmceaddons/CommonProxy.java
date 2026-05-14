@@ -1,6 +1,8 @@
 package github.alecsio.mmceaddons;
 
+import github.alecsio.mmceaddons.common.Mods;
 import github.alecsio.mmceaddons.common.hatch.vanilla.gui.ContainerSingularityItemBus;
+import github.alecsio.mmceaddons.common.integration.top.ModIntegrationTOP;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.registry.internal.EventHandler;
 import github.alecsio.mmceaddons.common.hatch.vanilla.TileSingularityItemBus;
@@ -51,7 +53,11 @@ public class CommonProxy implements IGuiHandler {
         ModularMachineryAddonsBlocks.initialise();
     }
 
-    public void init() {}
+    public void init() {
+        if (Mods.THE_ONE_PROBE.isPresent()) {
+            ModIntegrationTOP.registerProviders();
+        }
+    }
 
     // Optional methods to register models; these would be overridden on the client side
     public void registerItemModel(net.minecraft.item.Item item) {}
@@ -73,9 +79,8 @@ public class CommonProxy implements IGuiHandler {
             present = te;
         }
 
-        switch (type) {
-            case VACUUM_INVENTORY:
-                return new ContainerSingularityItemBus((TileItemBus) present, player);
+        if (type == GuiType.VACUUM_INVENTORY) {
+            return new ContainerSingularityItemBus((TileItemBus) present, player);
         }
         return null;
     }
