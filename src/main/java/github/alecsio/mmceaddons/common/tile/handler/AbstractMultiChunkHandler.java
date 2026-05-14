@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.tile.handler;
 
-import github.alecsio.mmceaddons.common.crafting.requirement.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.tile.handler.chunks.ChunksReader;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;

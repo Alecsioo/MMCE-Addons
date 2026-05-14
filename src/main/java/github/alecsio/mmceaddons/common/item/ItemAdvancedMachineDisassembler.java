@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.item;
 
-import github.alecsio.mmceaddons.common.assembly.AdvancedMachineDisassembly;
-import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
+import github.alecsio.mmceaddons.common.item.assembly.AdvancedMachineDisassembly;
+import github.alecsio.mmceaddons.common.item.assembly.IMachineAssembly;
 import hellfirepvp.modularmachinery.common.util.BlockArray;
 import hellfirepvp.modularmachinery.common.util.IBlockStateDescriptor;
 import ink.ikx.mmce.common.utils.StructureIngredient;

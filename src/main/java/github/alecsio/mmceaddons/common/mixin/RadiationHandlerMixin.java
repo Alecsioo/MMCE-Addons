@@ -1,8 +1,8 @@
 package github.alecsio.mmceaddons.common.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import github.alecsio.mmceaddons.common.cache.InterdimensionalChunkPos;
-import github.alecsio.mmceaddons.common.cache.ScrubbedChunksCache;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.cache.InterdimensionalChunkPos;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.cache.ScrubbedChunksCache;
 import nc.capability.radiation.source.IRadiationSource;
 import nc.radiation.RadiationHandler;
 import net.minecraft.world.World;

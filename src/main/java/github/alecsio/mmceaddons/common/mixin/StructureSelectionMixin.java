@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.mixin;
 
-import github.alecsio.mmceaddons.common.config.MMCEAConfig;
+import github.alecsio.mmceaddons.common.MMCEAConfig;
 import hellfirepvp.modularmachinery.common.selection.PlayerStructureSelectionHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.integration.jei.ingredient;
 
-import github.alecsio.mmceaddons.common.crafting.requirement.DragonType;
+import github.alecsio.mmceaddons.common.hatch.iceandfire.DragonType;
 import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;

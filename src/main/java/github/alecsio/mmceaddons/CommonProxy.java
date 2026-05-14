@@ -1,9 +1,9 @@
 package github.alecsio.mmceaddons;
 
-import github.alecsio.mmceaddons.common.gui.ContainerSingularityItemBus;
-import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
+import github.alecsio.mmceaddons.common.hatch.vanilla.gui.ContainerSingularityItemBus;
+import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.registry.internal.EventHandler;
-import github.alecsio.mmceaddons.common.tile.TileSingularityItemBus;
+import github.alecsio.mmceaddons.common.hatch.vanilla.TileSingularityItemBus;
 import hellfirepvp.modularmachinery.common.tiles.base.TileItemBus;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

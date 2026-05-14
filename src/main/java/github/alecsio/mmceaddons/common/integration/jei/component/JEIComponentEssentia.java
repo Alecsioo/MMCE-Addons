@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.integration.jei.component;
 
-import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.RequirementEssentia;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.RequirementEssentia;
 import github.alecsio.mmceaddons.common.integration.jei.component.base.JEIComponentBase;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Essentia;
 import github.alecsio.mmceaddons.common.integration.jei.recipelayoutpart.LayoutEssentia;

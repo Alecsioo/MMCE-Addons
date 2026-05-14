@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.item;
 
 import github.alecsio.mmceaddons.CommonProxy;
-import github.alecsio.mmceaddons.common.config.MMCEAConfig;
+import github.alecsio.mmceaddons.common.MMCEAConfig;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import mcp.MethodsReturnNonnullByDefault;
 import nc.capability.radiation.source.IRadiationSource;

@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.integration.jei;
 
 import com.google.common.collect.Lists;
-import github.alecsio.mmceaddons.common.base.Mods;
+import github.alecsio.mmceaddons.common.Mods;
 import github.alecsio.mmceaddons.common.integration.jei.helper.*;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.*;
 import github.alecsio.mmceaddons.common.integration.jei.render.*;

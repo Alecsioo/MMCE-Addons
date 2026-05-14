@@ -2,7 +2,7 @@ package github.alecsio.mmceaddons.common.mixin;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeInput;
-import github.alecsio.mmceaddons.common.tile.iceandfire.IDragonBreathAcceptor;
+import github.alecsio.mmceaddons.common.hatch.iceandfire.IDragonBreathAcceptor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

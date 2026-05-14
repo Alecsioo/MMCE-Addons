@@ -1,8 +1,8 @@
 package github.alecsio.mmceaddons.common.registry.internal;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
-import github.alecsio.mmceaddons.common.crafting.component.registry.ModularMachineryAddonsComponents;
-import github.alecsio.mmceaddons.common.crafting.requirement.types.ModularMachineryAddonsRequirements;
+import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsComponents;
+import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.registry.RegistryBlocks;
 import github.alecsio.mmceaddons.common.registry.RegistryItems;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;

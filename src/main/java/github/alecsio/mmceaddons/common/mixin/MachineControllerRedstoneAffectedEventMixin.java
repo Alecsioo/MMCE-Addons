@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.mixin;
 
-import github.alecsio.mmceaddons.common.event.MachineControllerRedstoneAffectedEvent;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.event.MachineControllerRedstoneAffectedEvent;
 import hellfirepvp.modularmachinery.common.tiles.TileMachineController;
 import hellfirepvp.modularmachinery.common.tiles.base.TileMultiblockMachineController;
 import org.spongepowered.asm.mixin.Mixin;

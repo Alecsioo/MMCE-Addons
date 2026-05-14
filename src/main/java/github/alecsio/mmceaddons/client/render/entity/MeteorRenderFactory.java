@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.client.render.entity;
 
-import github.alecsio.mmceaddons.common.entity.EntityImprovedMeteor;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.entity.EntityImprovedMeteor;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.registry.IRenderFactory;

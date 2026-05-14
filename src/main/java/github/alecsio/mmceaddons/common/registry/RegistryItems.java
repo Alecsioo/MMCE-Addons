@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
-import github.alecsio.mmceaddons.common.base.Mods;
+import github.alecsio.mmceaddons.common.Mods;
 import github.alecsio.mmceaddons.common.item.*;
 import net.minecraft.item.Item;
 
