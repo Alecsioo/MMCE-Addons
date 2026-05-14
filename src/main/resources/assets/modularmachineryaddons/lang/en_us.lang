@@ -130,6 +130,9 @@ jei.tooltip.modularmachineryaddons.dimension=Dimension
 jei.tooltip.modularmachineryaddons.biome=Biome
 jei.tooltip.modularmachineryaddons.meteor_contents=Meteor Contents
 jei.tooltip.modularmachineryaddons.scrubber_special=To Infinity and Beyond!
+jei.tooltip.modularmachineryaddons.breath_type=Breath Type
+jei.tooltip.modularmachineryaddons.breath_amount=Amount
+jei.tooltip.modularmachineryaddons.potential_energy=Potential Energy
 
 # TOP
 

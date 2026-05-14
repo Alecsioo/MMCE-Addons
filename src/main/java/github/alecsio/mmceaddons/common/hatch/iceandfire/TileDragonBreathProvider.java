@@ -34,11 +34,12 @@ public class TileDragonBreathProvider extends TileColorableMachineComponent impl
                 ticksSinceLastBreath = ticksPerBreath;
                 com.github.alexthe666.iceandfire.entity.DragonType dType = dragon.dragonType;
                 if (dType == null || (type != null && !dType.getName().equalsIgnoreCase(type.name()))) return;
+
                 if (isFull()) {
                     return;
                 }
 
-                if (dragon.canPositionBeSeen(this.pos.getX(), this.pos.getY(), this.pos.getZ())) {
+                if (dragon.canPositionBeSeen(this.pos.getX(), this.pos.getY(), this.pos.getZ()) && !dragon.isSleeping() && !dragon.isMobDead()) {
                     dragon.burningTarget = this.pos;
                     onHitWithFlame(DragonType.valueOf(dType.getName().toUpperCase()));
                 }
@@ -112,7 +113,7 @@ public class TileDragonBreathProvider extends TileColorableMachineComponent impl
     public void handle(RequirementDragonBreath requirement) {
         charges -= requirement.getAmount();
 
-        if (!typeLocked) {
+        if (!typeLocked && charges <= 0) {
             type = null;
         }
     }

@@ -2,26 +2,26 @@ package github.alecsio.mmceaddons.common.integration.jei.helper;
 
 import github.alecsio.mmceaddons.common.integration.jei.helper.base.BaseIngredientHelper;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Biome;
+import mcp.MethodsReturnNonnullByDefault;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BiomeHelper extends BaseIngredientHelper<Biome> {
 
     @Override
-    @Nonnull
-    public String getUniqueId(@Nonnull Biome biome) {
+    public String getUniqueId(Biome biome) {
         return biome.getRegistryName();
     }
 
     @Override
-    @Nonnull
-    public String getResourceId(@Nonnull Biome biome) {
+    public String getResourceId(Biome biome) {
         return getUniqueId(biome);
     }
 
     @Override
-    @Nonnull
-    public Biome copyIngredient(@Nonnull Biome biome) {
+    public Biome copyIngredient(Biome biome) {
         return new Biome(biome.getRegistryName(), biome.getName());
     }
 }

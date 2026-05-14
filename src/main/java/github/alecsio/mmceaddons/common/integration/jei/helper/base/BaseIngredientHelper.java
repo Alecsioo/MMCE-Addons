@@ -3,15 +3,19 @@ package github.alecsio.mmceaddons.common.integration.jei.helper.base;
 import com.google.common.collect.Iterables;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
+import mcp.MethodsReturnNonnullByDefault;
 import mezz.jei.api.ingredients.IIngredientHelper;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class BaseIngredientHelper<T extends IRequiresEquals<T>> implements IIngredientHelper<T> {
+
     @Nullable
     @Override
-    public T getMatch(@Nonnull Iterable<T> ingredients, @Nonnull T toMatch) {
+    public T getMatch(Iterable<T> ingredients, T toMatch) {
         if(Iterables.isEmpty(ingredients)) {return null;}
 
         for (T ingredient : ingredients) {
@@ -21,25 +25,21 @@ public abstract class BaseIngredientHelper<T extends IRequiresEquals<T>> impleme
     }
 
     @Override
-    @Nonnull
-    public String getDisplayName(@Nonnull T ingredient) {
+    public String getDisplayName(T ingredient) {
         return ingredient.getClass().getSimpleName();
     }
 
     @Override
-    @Nonnull
-    public String getWildcardId(@Nonnull T t) {
+    public String getWildcardId(T t) {
         return getUniqueId(t);
     }
 
     @Override
-    @Nonnull
-    public String getModId(@Nonnull T t) {
+    public String getModId(T t) {
         return ModularMachineryAddons.MODID;
     }
 
     @Override
-    @Nonnull
     public String getErrorInfo(@Nullable T t) {
         return "Encountered an error with ingredient";
     }

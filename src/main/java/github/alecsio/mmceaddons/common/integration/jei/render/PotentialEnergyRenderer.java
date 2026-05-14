@@ -6,6 +6,7 @@ import github.alecsio.mmceaddons.common.integration.jei.render.base.BaseIngredie
 import net.minecraft.util.ResourceLocation;
 
 public class PotentialEnergyRenderer extends BaseIngredientRenderer<PotentialEnergy> {
+
     @Override
     public ResourceLocation getTexture(PotentialEnergy ingredient) {
         return new ResourceLocation(ModularMachineryAddons.MODID, "textures/gui/jei/jei_potential_energy.png");

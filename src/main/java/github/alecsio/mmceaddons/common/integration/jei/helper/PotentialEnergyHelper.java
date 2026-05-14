@@ -2,26 +2,26 @@ package github.alecsio.mmceaddons.common.integration.jei.helper;
 
 import github.alecsio.mmceaddons.common.integration.jei.helper.base.BaseIngredientHelper;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.PotentialEnergy;
+import mcp.MethodsReturnNonnullByDefault;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class PotentialEnergyHelper extends BaseIngredientHelper<PotentialEnergy> {
 
     @Override
-    @Nonnull
-    public String getUniqueId(@Nonnull PotentialEnergy potentialEnergy) {
+    public String getUniqueId(PotentialEnergy potentialEnergy) {
         return getDisplayName(potentialEnergy);
     }
 
     @Override
-    @Nonnull
-    public String getResourceId(@Nonnull PotentialEnergy potentialEnergy) {
+    public String getResourceId(PotentialEnergy potentialEnergy) {
         return getUniqueId(potentialEnergy);
     }
 
     @Override
-    @Nonnull
-    public PotentialEnergy copyIngredient(@Nonnull PotentialEnergy potentialEnergy) {
+    public PotentialEnergy copyIngredient(PotentialEnergy potentialEnergy) {
         return new PotentialEnergy(potentialEnergy.getEnergy());
     }
 }
