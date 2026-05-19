@@ -28,6 +28,7 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
+// TODO: fix mod versions
 @Mod(
         modid = ModularMachineryAddons.MODID,
         name = ModularMachineryAddons.NAME,

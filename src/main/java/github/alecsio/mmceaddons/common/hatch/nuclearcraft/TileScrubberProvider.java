@@ -6,7 +6,7 @@ import github.alecsio.mmceaddons.common.hatch.bloodmagic.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.event.MachineControllerInvalidatedEvent;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.event.MachineControllerRedstoneAffectedEvent;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.event.MachineNotFormedEvent;
-import github.alecsio.mmceaddons.common.tile.handler.AbstractMultiChunkHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.AbstractMultiChunkHandler;
 import github.alecsio.mmceaddons.common.hatch.wrapper.RadiationHelperWrapper;
 import github.kasuminova.mmce.common.event.machine.MachineEvent;
 import hellfirepvp.modularmachinery.common.machine.IOType;

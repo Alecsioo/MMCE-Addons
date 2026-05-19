@@ -39,4 +39,8 @@ public abstract class BaseInfoProvider<T extends TileEntity> implements IProbeIn
         T typedTile = tileClass.cast(tileEntity);
         addProbeInfo(iProbeInfo, typedTile);
     }
+
+    protected String wrapInLoc(String string) {
+        return IProbeInfo.STARTLOC + string + IProbeInfo.ENDLOC;
+    }
 }

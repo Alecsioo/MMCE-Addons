@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.hatch.bloodmagic;
 
-import github.alecsio.mmceaddons.common.tile.handler.AbstractMultiChunkHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.AbstractMultiChunkHandler;
 import github.alecsio.mmceaddons.common.hatch.wrapper.WillHelperWrapper;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;

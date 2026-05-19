@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.hatch.nuclearcraft;
 
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsComponents;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.hatch.BaseMachineComponent;
 import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;

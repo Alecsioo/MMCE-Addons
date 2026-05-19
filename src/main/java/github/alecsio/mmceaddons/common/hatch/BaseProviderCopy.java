@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.hatch;
 
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 
 public abstract class BaseProviderCopy<T> {
 

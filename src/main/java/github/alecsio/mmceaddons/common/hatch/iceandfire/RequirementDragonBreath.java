@@ -5,7 +5,7 @@ import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentDragonBreath;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.DragonBreath;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;

@@ -3,7 +3,7 @@ package github.alecsio.mmceaddons.common.hatch.abyssalcraft;
 import com.shinoow.abyssalcraft.api.energy.IEnergyCollector;
 import com.shinoow.abyssalcraft.api.energy.IEnergyTransporter;
 import github.alecsio.mmceaddons.common.MMCEAConfig;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
@@ -42,11 +42,6 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
     }
 
     @Override
-    public void setEnergy(float v) {
-        storedEnergy = v;
-    }
-
-    @Override
     public TileEntity getContainerTile() {
         return this;
     }
@@ -54,6 +49,21 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
     @Override
     public void transferPE(EnumFacing enumFacing, float v) {
 
+    }
+
+    @Override
+    public void addEnergy(float v) {
+        this.storedEnergy += v;
+    }
+
+    @Override
+    public boolean canAcceptPE() {
+        return storedEnergy < getMaxEnergy();
+    }
+
+    @Override
+    public boolean canTransferPE() {
+        return storedEnergy > 0;
     }
 
     @Override

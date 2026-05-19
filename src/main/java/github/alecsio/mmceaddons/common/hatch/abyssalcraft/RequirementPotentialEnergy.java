@@ -3,7 +3,7 @@ package github.alecsio.mmceaddons.common.hatch.abyssalcraft;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentPotentialEnergy;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.PotentialEnergy;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;

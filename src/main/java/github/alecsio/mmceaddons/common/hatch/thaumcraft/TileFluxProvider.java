@@ -2,8 +2,8 @@ package github.alecsio.mmceaddons.common.hatch.thaumcraft;
 
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.exception.ConsistencyException;
-import github.alecsio.mmceaddons.common.tile.handler.AbstractMultiChunkHandler;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.AbstractMultiChunkHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.hatch.wrapper.AuraHelperWrapper;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;

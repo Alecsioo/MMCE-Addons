@@ -2,6 +2,7 @@ package github.alecsio.mmceaddons.common.integration.jei.ingredient;
 
 import com.google.common.collect.Lists;
 import github.alecsio.mmceaddons.common.integration.jei.IRequiresEquals;
+import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.FormatUtils;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.formatting.ITooltippable;
 import mezz.jei.api.recipe.IIngredientType;
 import net.minecraft.client.resources.I18n;
@@ -38,6 +39,6 @@ public class PotentialEnergy implements IRequiresEquals<PotentialEnergy>, IIngre
 
     @Override
     public List<String> getTooltip() {
-        return Lists.newArrayList(I18n.format("jei.tooltip.modularmachineryaddons.potential_energy"), String.valueOf(energy));
+        return Lists.newArrayList(FormatUtils.format(I18n.format("jei.tooltip.modularmachineryaddons.potential_energy"), String.valueOf(energy)));
     }
 }

@@ -1,4 +1,4 @@
-package github.alecsio.mmceaddons.common.tile.handler;
+package github.alecsio.mmceaddons.common.hatch.handler;
 
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 

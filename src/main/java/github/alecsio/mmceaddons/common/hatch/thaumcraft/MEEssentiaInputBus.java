@@ -4,7 +4,7 @@ import appeng.api.config.Actionable;
 import appeng.api.storage.IMEInventory;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.hatch.ae2.MEEssentiaBus;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import net.minecraft.item.ItemStack;

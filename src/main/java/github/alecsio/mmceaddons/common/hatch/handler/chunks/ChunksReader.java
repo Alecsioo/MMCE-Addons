@@ -1,4 +1,4 @@
-package github.alecsio.mmceaddons.common.tile.handler.chunks;
+package github.alecsio.mmceaddons.common.hatch.handler.chunks;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

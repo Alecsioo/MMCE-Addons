@@ -3,76 +3,132 @@ package github.alecsio.mmceaddons.common.hatch.iceandfire;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import github.alecsio.mmceaddons.common.MMCEAConfig;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
-import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
+import hellfirepvp.modularmachinery.common.tiles.base.TileEntityRestrictedTick;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class TileDragonBreathProvider extends TileColorableMachineComponent implements MachineComponentTile, IDragonBreathAcceptor, IRequirementHandler<RequirementDragonBreath>, ITickable {
+public class TileDragonBreathProvider extends TileEntityRestrictedTick implements MachineComponentTile, IDragonBreathAcceptor, IRequirementHandler<RequirementDragonBreath> {
 
-    private DragonType type;
+    // Shared by main and recipe thread
+    private final AtomicReference<DragonType> type = new AtomicReference<>(DragonType.EMPTY);
+    private final AtomicInteger charges = new AtomicInteger(0);
+
+    // Only used in main thread
     private boolean typeLocked;
-    private int charges;
+    private final int breathingTicks = 8 * 20;
+    private final Map<UUID, Integer> luredDragons = new HashMap<>();
 
-    private int ticksSinceLastBreath = 0;
-    private final int ticksPerBreath = 40;
+    public TileDragonBreathProvider(DragonType type) {
+        this.type.set(type);
+    }
 
     @Override
     public void lureDragons() {
-        for (EntityDragonBase dragon : world.getEntitiesWithinAABB(EntityDragonBase.class, new AxisAlignedBB(pos.getX() - 50, pos.getY() - 50, pos.getZ() - 50, pos.getX() + 50, pos.getY() + 50, pos.getZ() + 50))) {
-            ticksSinceLastBreath--;
-            if (ticksSinceLastBreath <= 0) {
-                ticksSinceLastBreath = ticksPerBreath;
-                com.github.alexthe666.iceandfire.entity.DragonType dType = dragon.dragonType;
-                if (dType == null || (type != null && !dType.getName().equalsIgnoreCase(type.name()))) return;
+        List<EntityDragonBase> dragons = world.getEntitiesWithinAABB(EntityDragonBase.class, new AxisAlignedBB(pos.getX() - 50, pos.getY() - 50, pos.getZ() - 50, pos.getX() + 50, pos.getY() + 50, pos.getZ() + 50));
 
-                if (isFull()) {
-                    return;
-                }
+        final DragonType dragonType = this.type.get();
 
-                if (dragon.canPositionBeSeen(this.pos.getX(), this.pos.getY(), this.pos.getZ()) && !dragon.isSleeping() && !dragon.isMobDead()) {
-                    dragon.burningTarget = this.pos;
-                    onHitWithFlame(DragonType.valueOf(dType.getName().toUpperCase()));
-                }
+        for (EntityDragonBase dragon : dragons) {
+            if (dragon.burningTarget != null && !dragon.burningTarget.equals(this.pos)) {
+                continue;
             }
+
+            if (isFull()) {
+                resetBurningTarget(dragon);
+                return;
+            }
+
+            com.github.alexthe666.iceandfire.entity.DragonType dType = dragon.dragonType;
+            if (dragonType != null && dragonType != DragonType.EMPTY && !dType.getName().equalsIgnoreCase(dragonType.name())) {
+                resetBurningTarget(dragon);
+                continue;
+            }
+
+            UUID id = dragon.getUniqueID();
+            int remaining = luredDragons.getOrDefault(id, breathingTicks);
+
+            if (remaining > 0) {
+                dragon.burningTarget = this.pos;
+                luredDragons.put(id, remaining - 1);
+            } else {
+                resetBurningTarget(dragon);
+            }
+        }
+    }
+
+    private void resetBurningTarget(EntityDragonBase dragon) {
+        if (this.pos.equals(dragon.burningTarget)) {
+            dragon.burningTarget = null;
+            dragon.setBreathingFire(false);
+            luredDragons.remove(dragon.getUniqueID());
         }
     }
 
     @Override
     public void onHitWithFlame(DragonType dragonType) {
-        if (isFull() || (type != null && dragonType != type)) return;
+        DragonType localType = this.type.get();
+        if (isFull() || (localType != null && localType != DragonType.EMPTY && dragonType != localType)) return;
 
-        type = dragonType;
-        ticksSinceLastBreath = ticksPerBreath;
-        charges = charges + 1;
+        type.set(dragonType);
+        charges.incrementAndGet();
+        if (!world.isRemote) {
+            world.setBlockState(this.pos, world.getBlockState(this.pos).withProperty(BlockDragonBreathInput.DRAGON_TYPE, dragonType));
+            markNoUpdateSync();
+        }
+    }
+
+    @Override
+    public void invalidate() {
+        luredDragons.clear();
+        super.invalidate();
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return false;
     }
 
     // Empty stack => unlock
     // Dragon heart => lock to heart type
     public DragonType onRightClicked(ItemStack stack) {
-        if (type == null && (stack == null || stack.isEmpty())) return null;
+        DragonType localType = this.type.get();
+        if (localType == DragonType.EMPTY && (stack == null || stack.isEmpty())) return null;
 
-        if (type != null && stack.isEmpty()) {
+        final int localCharges = charges.get();
+        if (localType != DragonType.EMPTY && stack.isEmpty()) {
             typeLocked = false;
+            if (localCharges <= 0) {
+                type.set(DragonType.EMPTY);
+                world.setBlockState(pos, world.getBlockState(this.pos).withProperty(BlockDragonBreathInput.DRAGON_TYPE, DragonType.EMPTY));
+            }
+            markNoUpdateSync();
             return null;
         }
 
-        // Can't lock to some other type while charges > 0
-        if (type != null && !stack.isEmpty() && charges > 0) {
-            return type;
+        if (localType != DragonType.EMPTY && !stack.isEmpty() && localCharges > 0) {
+            return localType;
         }
 
         Item item = stack.getItem();
-        DragonType lockedType = this.type;
+        DragonType lockedType = localType;
         if (item == IafItemRegistry.fire_dragon_heart) {
             lockedType = DragonType.FIRE;
         } else if (item == IafItemRegistry.ice_dragon_heart) {
@@ -81,9 +137,12 @@ public class TileDragonBreathProvider extends TileColorableMachineComponent impl
             lockedType = DragonType.LIGHTNING;
         }
 
+        type.set(lockedType);
         typeLocked = true;
-        type = lockedType;
-
+        if (!world.isRemote) {
+            world.setBlockState(pos, world.getBlockState(this.pos).withProperty(BlockDragonBreathInput.DRAGON_TYPE, lockedType));
+            markNoUpdateSync();
+        }
         return lockedType;
     }
 
@@ -95,8 +154,9 @@ public class TileDragonBreathProvider extends TileColorableMachineComponent impl
 
     @Override
     public CraftCheck canHandle(RequirementDragonBreath requirement) {
-        boolean typeMatches = this.type != null && this.type.equals(requirement.getType());
-        boolean enoughCharges = this.charges >= requirement.getAmount();
+        final DragonType localType = type.get();
+        boolean typeMatches = localType != DragonType.EMPTY && localType.equals(requirement.getType());
+        boolean enoughCharges = this.charges.get() >= requirement.getAmount();
 
         if (!typeMatches) {
             return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.type");
@@ -111,10 +171,11 @@ public class TileDragonBreathProvider extends TileColorableMachineComponent impl
 
     @Override
     public void handle(RequirementDragonBreath requirement) {
-        charges -= requirement.getAmount();
+        final int localCharges = charges.addAndGet(-requirement.getAmount());
 
-        if (!typeLocked && charges <= 0) {
-            type = null;
+        if (!typeLocked && localCharges <= 0) {
+            type.set(DragonType.EMPTY);
+            world.setBlockState(this.pos, world.getBlockState(this.pos).withProperty(BlockDragonBreathInput.DRAGON_TYPE, DragonType.EMPTY));
         }
     }
 
@@ -122,33 +183,29 @@ public class TileDragonBreathProvider extends TileColorableMachineComponent impl
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
         typeLocked = compound.getBoolean("typeLocked");
-        charges = compound.getInteger("charges");
-        if (compound.hasKey("type")) {
-            type = DragonType.valueOf(compound.getString("type"));
-        }
+        charges.set(compound.getInteger("charges"));
+        type.set(DragonType.valueOf(compound.getString("type")));
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         super.writeCustomNBT(compound);
         compound.setBoolean("typeLocked", typeLocked);
-        compound.setInteger("charges", charges);
-        if (type != null) {
-            compound.setString("type", type.name());
-        }
+        compound.setInteger("charges", charges.get());
+        compound.setString("type", type.get().toString());
     }
 
     private boolean isFull() {
-        return charges >= MMCEAConfig.dragonBreathChargesCapacity;
+        return charges.get() >= MMCEAConfig.dragonBreathChargesCapacity;
     }
 
     @Override
-    public void update() {
+    public void doRestrictedTick() {
         lureDragons();
     }
 
     public DragonType getType() {
-        return type;
+        return type.get();
     }
 
     public boolean isTypeLocked() {
@@ -156,6 +213,6 @@ public class TileDragonBreathProvider extends TileColorableMachineComponent impl
     }
 
     public int getCharges() {
-        return charges;
+        return charges.get();
     }
 }

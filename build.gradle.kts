@@ -48,6 +48,9 @@ minecraft {
     args.add("-Dmixin.hotSwap=true")
     args.add("-Dmixin.checks.interfaces=true")
     args.add("-Dmixin.debug.export=true")
+    args.add("-Dfml.queryResult=confirm")
+    args.add("-XX:+IgnoreUnrecognizedVMOptions")
+    args.add("-XX:+AllowEnhancedClassRedefinition")
     extraRunJvmArguments.addAll(args)
 
     // If needed, add extra tweaker classes like for mixins.
@@ -88,10 +91,6 @@ tasks.jar.configure {
 tasks.javadoc.configure {
     // No need for JavaDoc.
     actions = Collections.emptyList()
-}
-
-tasks.test {
-    useJUnitPlatform() // Required for Spock 2.x
 }
 
 // Create a new dependency type for runtime-only dependencies that don't get included in the maven publication
@@ -193,8 +192,8 @@ dependencies {
     }
 
 
-    implementation("curse.maven:ae2-570458:5378163")
-    implementation("curse.maven:ae2fc-623955:5751930")
+    implementation(rfg.deobf("curse.maven:ae2-570458:5378163"))
+    implementation(rfg.deobf("curse.maven:ae2fc-623955:5751930"))
     implementation(rfg.deobf("curse.maven:ModularMachineryCE-817377:7372951"))
     implementation(rfg.deobf("curse.maven:botonia-225643:3330934"))
     implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
@@ -235,12 +234,12 @@ dependencies {
     implementation(rfg.deobf("curse.maven:drawers-223852:5981297"))
     implementation(rfg.deobf("curse.maven:drawersChameleonDependency-230497:2450900"))
     implementation(rfg.deobf("curse.maven:chisel-278493:3319307"))
-    implementation(rfg.deobf("curse.maven:abyssal-53686:7384999"))
-    compileOnly(rfg.deobf("curse.maven:bloodmagic-224791:2822288-sources-2822290"))
+    implementation(rfg.deobf("curse.maven:abyssal-53686:7253998"))
+    implementation(rfg.deobf("curse.maven:bloodmagic-224791:2822288-sources-2822290"))
     implementation(rfg.deobf("curse.maven:bmdependency-228832:2645992"))
     implementation("curse.maven:iceandfire-457668:5738729")
     implementation("curse.maven:llibrary-243298:2505007")
-    compileOnly(rfg.deobf("curse.maven:mantle-74924:2713386"))
+    implementation(rfg.deobf("curse.maven:mantle-74924:2713386"))
     implementation(rfg.deobf("curse.maven:tx-loader-706505:4515357"))
 
     // GeckoLib

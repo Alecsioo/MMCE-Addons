@@ -15,7 +15,7 @@ public class RequirementTypePotentialEnergy extends BaseRequirementType<Potentia
 
     @Override
     public ComponentRequirement<PotentialEnergy, ? extends RequirementType<PotentialEnergy, RequirementPotentialEnergy>> createRequirement(IOType ioType, JsonObject jsonObject) {
-        return RequirementPotentialEnergy.from(ioType, RequirementUtils.getRequiredPositiveFloat(jsonObject, "potentialEnergy", "potentialEnergy"));
+        return RequirementPotentialEnergy.from(ioType, RequirementUtils.getRequiredPositiveFloat(jsonObject, "amount", "potentialEnergy"));
     }
 
 }

@@ -1,4 +1,4 @@
-package github.alecsio.mmceaddons.common.mixin;
+package github.alecsio.mmceaddons.common.mixin.iceandfire;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeInput;
@@ -20,7 +20,6 @@ public abstract class EntityDragonBaseMixin {
             )
     )
     private boolean MMCEA$allowDragonBreathAcceptor(Object obj, Class<?> originalClass) {
-        return obj instanceof TileEntityDragonforgeInput
-                || obj instanceof IDragonBreathAcceptor;
+        return obj instanceof TileEntityDragonforgeInput || obj instanceof IDragonBreathAcceptor;
     }
 }

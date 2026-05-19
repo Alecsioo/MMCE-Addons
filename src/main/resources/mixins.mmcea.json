@@ -8,12 +8,13 @@
   "mixins": [
     "BlockStateDescriptorMixin",
     "ContainerMixin",
-    "EntityDragonBaseMixin",
     "IBlockArrayInvoker",
     "IBlockInformationAccessor",
     "MachineControllerRedstoneAffectedEventMixin",
     "MachineNotFormedEventMixin",
     "RadiationHandlerMixin",
-    "StructureSelectionMixin"
+    "StructureSelectionMixin",
+    "iceandfire.EntityDragonBaseMixin",
+    "iceandfire.IafDragonDestructionManagerMixin"
   ]
 }

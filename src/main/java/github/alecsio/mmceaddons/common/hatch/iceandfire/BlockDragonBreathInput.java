@@ -1,10 +1,14 @@
-package github.alecsio.mmceaddons.common.hatch.iceandfire.block;
+package github.alecsio.mmceaddons.common.hatch.iceandfire;
 
 import github.alecsio.mmceaddons.common.hatch.BaseBlockMachineComponent;
-import github.alecsio.mmceaddons.common.hatch.iceandfire.DragonType;
-import github.alecsio.mmceaddons.common.hatch.iceandfire.TileDragonBreathProvider;
+import hellfirepvp.modularmachinery.common.block.BlockVariants;
+import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -16,11 +20,17 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class BlockDragonBreathInput extends BaseBlockMachineComponent {
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class BlockDragonBreathInput extends BaseBlockMachineComponent implements BlockVariants {
 
+    public static final PropertyEnum<DragonType> DRAGON_TYPE = PropertyEnum.create("dragon_type", DragonType.class);
     private static final Map<DragonType, String> TYPE_TO_KEY;
 
     static {
@@ -29,7 +39,15 @@ public class BlockDragonBreathInput extends BaseBlockMachineComponent {
         TYPE_TO_KEY.put(DragonType.FIRE, "dragon.type.fire");
         TYPE_TO_KEY.put(DragonType.ICE, "dragon.type.ice");
         TYPE_TO_KEY.put(DragonType.LIGHTNING, "dragon.type.lightning");
+        TYPE_TO_KEY.put(DragonType.EMPTY, "dragon.type.empty");
     }
+
+    public BlockDragonBreathInput() {
+        super();
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DRAGON_TYPE, DragonType.EMPTY));
+    }
+
+
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -53,6 +71,37 @@ public class BlockDragonBreathInput extends BaseBlockMachineComponent {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileDragonBreathProvider();
+        return new TileDragonBreathProvider(state.getValue(DRAGON_TYPE));
     }
+
+    @Override
+    public Iterable<IBlockState> getValidStates() {
+        List<IBlockState> states = new ArrayList<>();
+
+        for (DragonType type : DragonType.values()) {
+            states.add(this.getDefaultState().withProperty(DRAGON_TYPE, type));
+        }
+
+        return states;
+    }
+
+    @Override
+    public String getBlockStateName(IBlockState iBlockState) {
+        return iBlockState.getValue(DRAGON_TYPE).getName();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(DRAGON_TYPE, DragonType.values()[meta]);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(DRAGON_TYPE).ordinal();
+    }
+
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, DRAGON_TYPE);
+    }
+
 }

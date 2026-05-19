@@ -4,7 +4,7 @@ import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequireme
 import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentEssentia;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Essentia;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;

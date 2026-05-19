@@ -2,7 +2,7 @@ package github.alecsio.mmceaddons.common.hatch.bloodmagic;
 
 import WayofTime.bloodmagic.meteor.Meteor;
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.entity.EntityImprovedMeteor;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;

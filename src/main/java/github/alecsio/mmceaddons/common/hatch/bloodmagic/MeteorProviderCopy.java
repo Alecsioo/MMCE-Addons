@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.hatch.bloodmagic;
 
 import github.alecsio.mmceaddons.common.hatch.BaseProviderCopy;
-import github.alecsio.mmceaddons.common.tile.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 
 public class MeteorProviderCopy extends BaseProviderCopy<RequirementMeteor> implements IRequirementHandler<RequirementMeteor> {

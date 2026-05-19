@@ -12,7 +12,7 @@ import github.alecsio.mmceaddons.common.hatch.ae2.block.BlockMEEssentiaOutputBus
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.block.BlockMeteorProviderOutput;
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.block.BlockWillMultiChunkProviderInput;
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.block.BlockWillMultiChunkProviderOutput;
-import github.alecsio.mmceaddons.common.hatch.iceandfire.block.BlockDragonBreathInput;
+import github.alecsio.mmceaddons.common.hatch.iceandfire.BlockDragonBreathInput;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.block.BlockRadiationProviderInput;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.block.BlockRadiationProviderOutput;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.block.scrubber.BlockScrubberProviderInput;

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "dragon_type=empty": {
+      "model": "modularmachineryaddons:blockdragonbreathinput_empty"
+    },
+    "dragon_type=fire": {
+      "model": "modularmachineryaddons:blockdragonbreathinput_fire"
+    },
+    "dragon_type=ice": {
+      "model": "modularmachineryaddons:blockdragonbreathinput_ice"
+    },
+    "dragon_type=lightning": {
+      "model": "modularmachineryaddons:blockdragonbreathinput_lightning"
+    }
+  }
+}

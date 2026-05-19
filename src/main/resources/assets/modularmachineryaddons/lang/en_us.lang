@@ -30,6 +30,9 @@ tile.modularmachineryaddons.blocksingularityitemoutputbus.reinforced.name=Reinfo
 tile.modularmachineryaddons.blocksingularityitemoutputbus.big.name=Big Singularity Output Hatch
 tile.modularmachineryaddons.blocksingularityitemoutputbus.huge.name=Huge Singularity Output Hatch
 tile.modularmachineryaddons.blocksingularityitemoutputbus.ludicrous.name=Ludicrous Singularity Output Hatch
+tile.modularmachineryaddons.blockpotentialenergyproviderinput.name=Potential Energy Input
+tile.modularmachineryaddons.blockpotentialenergyprovideroutput.name=Potential Energy Output
+tile.modularmachineryaddons.blockdragonbreathinput.name=Dragon Breath Input
 
 item.modularmachineryaddons.itemadvancedconstructtool.name=Advanced Wrench
 item.modularmachineryaddons.itemadvancedmachineassembler.name=Advanced Machine Assembler
@@ -77,6 +80,9 @@ error.modularmachineryaddons.requirement.missing.meteor.missing=Meteor hatch cou
 error.modularmachineryaddons.requirement.missing.potentialenergy.input=Missing potential energy requirement
 error.modularmachineryaddons.requirement.missing.potentialenergy.output=Not enough space for potential energy output
 
+error.modularmachineryaddons.requirement.missing.type=Missing dragon breath type
+error.modularmachineryaddons.requirement.missing.charges=Not enough dragon breath charges
+
 
 # items
 item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and click on a machine controller to extract the entire multiblock definition. Selecting a third block will clear the selection.
@@ -100,6 +106,7 @@ message.modularmachineryaddons.dragonbreathhatch.unlocked=Hatch unlocked success
 dragon.type.fire=fire
 dragon.type.ice=ice
 dragon.type.lightning=lightning
+dragon.type.empty=none
 
 #assembly
 message.assembly.missing.item.knowledge=Missing knowledge of item %s
@@ -132,12 +139,12 @@ jei.tooltip.modularmachineryaddons.meteor_contents=Meteor Contents
 jei.tooltip.modularmachineryaddons.scrubber_special=To Infinity and Beyond!
 jei.tooltip.modularmachineryaddons.breath_type=Breath Type
 jei.tooltip.modularmachineryaddons.breath_amount=Amount
-jei.tooltip.modularmachineryaddons.potential_energy=Potential Energy
+jei.tooltip.modularmachineryaddons.potential_energy=Potential Energy:
 
 # TOP
 
-top.modularmachineryaddons.potential_energy=Stored Potential Energy : %d
+top.modularmachineryaddons.potential_energy=Stored Potential Energy :
 top.modularmachineryaddons.dragon_breath.locked.true=Locked: true
 top.modularmachineryaddons.dragon_breath.locked.false=Locked: false
-top.modularmachineryaddons.dragon_breath.type=Type: %s
-top.modularmachineryaddons.dragon_breath.quantity=Stored: %d
+top.modularmachineryaddons.dragon_breath.type=Type:
+top.modularmachineryaddons.dragon_breath.quantity=Stored:
