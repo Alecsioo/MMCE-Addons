@@ -1,5 +1,6 @@
 package github.alecsio.mmceaddons.common.hatch.abyssalcraft;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import com.shinoow.abyssalcraft.api.energy.IEnergyCollector;
 import com.shinoow.abyssalcraft.api.energy.IEnergyTransporter;
 import github.alecsio.mmceaddons.common.MMCEAConfig;
@@ -17,11 +18,11 @@ import javax.annotation.Nullable;
 
 public abstract class TilePotentialEnergyProvider extends TileColorableMachineComponent implements MachineComponentTile, IRequirementHandler<RequirementPotentialEnergy>, IEnergyCollector, IEnergyTransporter {
 
-    protected float storedEnergy;
+    protected AtomicDouble storedEnergy2 = new AtomicDouble(0);
 
     @Override
     public float getContainedEnergy() {
-        return storedEnergy;
+        return storedEnergy2.floatValue();
     }
 
     @Override
@@ -31,13 +32,13 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
 
     @Override
     public float consumeEnergy(float energy) {
-        if(energy < this.storedEnergy){
-            this.storedEnergy -= energy;
+        float localEnergy = storedEnergy2.floatValue();
+        if (energy < localEnergy) {
+            storedEnergy2.set(localEnergy - energy);
             return energy;
         } else {
-            float ret = this.storedEnergy;
-            this.storedEnergy = 0;
-            return ret;
+            storedEnergy2.set(0);
+            return localEnergy;
         }
     }
 
@@ -53,40 +54,40 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
 
     @Override
     public void addEnergy(float v) {
-        this.storedEnergy += v;
+        this.storedEnergy2.addAndGet(v);
     }
 
     @Override
     public boolean canAcceptPE() {
-        return storedEnergy < getMaxEnergy();
+        return storedEnergy2.doubleValue() < getMaxEnergy();
     }
 
     @Override
     public boolean canTransferPE() {
-        return storedEnergy > 0;
+        return storedEnergy2.doubleValue() > 0;
     }
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
-        storedEnergy = compound.getFloat("storedEnergy");
+        storedEnergy2.set(compound.getFloat("storedEnergy"));
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         super.writeCustomNBT(compound);
-        compound.setFloat("storedEnergy", storedEnergy);
+        compound.setFloat("storedEnergy", storedEnergy2.floatValue());
     }
 
     public static class Input extends TilePotentialEnergyProvider {
         @Override
         public CraftCheck canHandle(RequirementPotentialEnergy requirement) {
-            return storedEnergy + requirement.getAmount() <= getMaxEnergy() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.input");
+            return storedEnergy2.doubleValue() + requirement.getAmount() <= getMaxEnergy() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.input");
         }
 
         @Override
         public void handle(RequirementPotentialEnergy requirement) {
-            storedEnergy += requirement.getAmount();
+            storedEnergy2.set(storedEnergy2.doubleValue() + requirement.getAmount());
         }
 
         @Nullable
@@ -99,12 +100,12 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
     public static class Output extends TilePotentialEnergyProvider {
         @Override
         public CraftCheck canHandle(RequirementPotentialEnergy requirement) {
-            return (storedEnergy - requirement.getAmount()) >= 0.0f ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.output");
+            return (storedEnergy2.doubleValue() - requirement.getAmount()) >= 0.0f ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.output");
         }
 
         @Override
         public void handle(RequirementPotentialEnergy requirement) {
-            storedEnergy -= requirement.getAmount();
+            storedEnergy2.set(storedEnergy2.doubleValue() - requirement.getAmount());
         }
 
         @Nullable
