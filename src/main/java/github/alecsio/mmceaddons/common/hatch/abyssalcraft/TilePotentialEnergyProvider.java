@@ -18,11 +18,11 @@ import javax.annotation.Nullable;
 
 public abstract class TilePotentialEnergyProvider extends TileColorableMachineComponent implements MachineComponentTile, IRequirementHandler<RequirementPotentialEnergy>, IEnergyCollector, IEnergyTransporter {
 
-    protected AtomicDouble storedEnergy2 = new AtomicDouble(0);
+    protected AtomicDouble storedEnergy = new AtomicDouble(0);
 
     @Override
     public float getContainedEnergy() {
-        return storedEnergy2.floatValue();
+        return storedEnergy.floatValue();
     }
 
     @Override
@@ -32,12 +32,12 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
 
     @Override
     public float consumeEnergy(float energy) {
-        float localEnergy = storedEnergy2.floatValue();
+        float localEnergy = storedEnergy.floatValue();
         if (energy < localEnergy) {
-            storedEnergy2.set(localEnergy - energy);
+            storedEnergy.set(localEnergy - energy);
             return energy;
         } else {
-            storedEnergy2.set(0);
+            storedEnergy.set(0);
             return localEnergy;
         }
     }
@@ -54,40 +54,40 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
 
     @Override
     public void addEnergy(float v) {
-        this.storedEnergy2.addAndGet(v);
+        this.storedEnergy.addAndGet(v);
     }
 
     @Override
     public boolean canAcceptPE() {
-        return storedEnergy2.doubleValue() < getMaxEnergy();
+        return storedEnergy.doubleValue() < getMaxEnergy();
     }
 
     @Override
     public boolean canTransferPE() {
-        return storedEnergy2.doubleValue() > 0;
+        return storedEnergy.doubleValue() > 0;
     }
 
     @Override
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
-        storedEnergy2.set(compound.getFloat("storedEnergy"));
+        storedEnergy.set(compound.getFloat("storedEnergy"));
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound) {
         super.writeCustomNBT(compound);
-        compound.setFloat("storedEnergy", storedEnergy2.floatValue());
+        compound.setFloat("storedEnergy", storedEnergy.floatValue());
     }
 
     public static class Input extends TilePotentialEnergyProvider {
         @Override
         public CraftCheck canHandle(RequirementPotentialEnergy requirement) {
-            return storedEnergy2.doubleValue() + requirement.getAmount() <= getMaxEnergy() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.input");
+            return storedEnergy.doubleValue() + requirement.getAmount() <= getMaxEnergy() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.input");
         }
 
         @Override
         public void handle(RequirementPotentialEnergy requirement) {
-            storedEnergy2.set(storedEnergy2.doubleValue() + requirement.getAmount());
+            storedEnergy.set(storedEnergy.doubleValue() + requirement.getAmount());
         }
 
         @Nullable
@@ -100,12 +100,12 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
     public static class Output extends TilePotentialEnergyProvider {
         @Override
         public CraftCheck canHandle(RequirementPotentialEnergy requirement) {
-            return (storedEnergy2.doubleValue() - requirement.getAmount()) >= 0.0f ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.output");
+            return (storedEnergy.doubleValue() - requirement.getAmount()) >= 0.0f ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.output");
         }
 
         @Override
         public void handle(RequirementPotentialEnergy requirement) {
-            storedEnergy2.set(storedEnergy2.doubleValue() - requirement.getAmount());
+            storedEnergy.set(storedEnergy.doubleValue() - requirement.getAmount());
         }
 
         @Nullable

@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons.common.hatch.thaumcraft;
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.hatch.handler.AbstractMultiChunkHandler;
 import github.alecsio.mmceaddons.common.hatch.wrapper.AuraHelperWrapper;
+import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +15,16 @@ public abstract class TileVisProvider extends AbstractMultiChunkHandler<Requirem
     @Override
     protected double getAmountInChunk(IMultiChunkRequirement requirement, BlockPos blockPosInChunk) {
         return AuraHelperWrapper.Vis.getVis(this.world, blockPosInChunk);
+    }
+
+    @Override
+    protected void updateSnapshot() {
+
+    }
+
+    @Override
+    protected CraftCheck checkSnapshot(RequirementVis requirement) {
+        return null;
     }
 
     public static class Input extends TileVisProvider {

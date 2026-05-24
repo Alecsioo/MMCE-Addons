@@ -3,12 +3,11 @@ package github.alecsio.mmceaddons.common.hatch.iceandfire;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import github.alecsio.mmceaddons.common.MMCEAConfig;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.AbstractSnapshotMachineComponent;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
-import hellfirepvp.modularmachinery.common.tiles.base.TileEntityRestrictedTick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class TileDragonBreathProvider extends TileEntityRestrictedTick implements MachineComponentTile, IDragonBreathAcceptor, IRequirementHandler<RequirementDragonBreath> {
+@ParametersAreNonnullByDefault
+public class TileDragonBreathProvider extends AbstractSnapshotMachineComponent<RequirementDragonBreath> implements MachineComponentTile, IDragonBreathAcceptor {
 
     // Shared by main and recipe thread
     private final AtomicReference<DragonType> type = new AtomicReference<>(DragonType.EMPTY);
@@ -85,10 +86,14 @@ public class TileDragonBreathProvider extends TileEntityRestrictedTick implement
     @Override
     public void onHitWithFlame(DragonType dragonType) {
         DragonType localType = this.type.get();
-        if (isFull() || (localType != null && localType != DragonType.EMPTY && dragonType != localType)) return;
+        if (isFull() || (localType != null && localType != DragonType.EMPTY && dragonType != localType)) {
+            updateSnapshot();
+            return;
+        }
 
         type.set(dragonType);
         charges.incrementAndGet();
+        refreshScheduler.recordSuccess();
         if (!world.isRemote) {
             world.setBlockState(this.pos, world.getBlockState(this.pos).withProperty(BlockDragonBreathInput.DRAGON_TYPE, dragonType));
             markNoUpdateSync();
@@ -120,10 +125,12 @@ public class TileDragonBreathProvider extends TileEntityRestrictedTick implement
                 world.setBlockState(pos, world.getBlockState(this.pos).withProperty(BlockDragonBreathInput.DRAGON_TYPE, DragonType.EMPTY));
             }
             markNoUpdateSync();
+            updateSnapshot();
             return null;
         }
 
         if (localType != DragonType.EMPTY && !stack.isEmpty() && localCharges > 0) {
+            updateSnapshot();
             return localType;
         }
 
@@ -143,6 +150,7 @@ public class TileDragonBreathProvider extends TileEntityRestrictedTick implement
             world.setBlockState(pos, world.getBlockState(this.pos).withProperty(BlockDragonBreathInput.DRAGON_TYPE, lockedType));
             markNoUpdateSync();
         }
+        updateSnapshot();
         return lockedType;
     }
 
@@ -153,25 +161,9 @@ public class TileDragonBreathProvider extends TileEntityRestrictedTick implement
     }
 
     @Override
-    public CraftCheck canHandle(RequirementDragonBreath requirement) {
-        final DragonType localType = type.get();
-        boolean typeMatches = localType != DragonType.EMPTY && localType.equals(requirement.getType());
-        boolean enoughCharges = this.charges.get() >= requirement.getAmount();
-
-        if (!typeMatches) {
-            return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.type");
-        }
-
-        if (!enoughCharges) {
-            return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.charges");
-        }
-
-        return CraftCheck.success();
-    }
-
-    @Override
     public void handle(RequirementDragonBreath requirement) {
         final int localCharges = charges.addAndGet(-requirement.getAmount());
+        refreshScheduler.recordSuccess();
 
         if (!typeLocked && localCharges <= 0) {
             type.set(DragonType.EMPTY);
@@ -199,11 +191,6 @@ public class TileDragonBreathProvider extends TileEntityRestrictedTick implement
         return charges.get() >= MMCEAConfig.dragonBreathChargesCapacity;
     }
 
-    @Override
-    public void doRestrictedTick() {
-        lureDragons();
-    }
-
     public DragonType getType() {
         return type.get();
     }
@@ -214,5 +201,27 @@ public class TileDragonBreathProvider extends TileEntityRestrictedTick implement
 
     public int getCharges() {
         return charges.get();
+    }
+
+    @Override
+    protected void updateSnapshot() {
+        lureDragons();
+    }
+
+    @Override
+    protected CraftCheck checkSnapshot(RequirementDragonBreath requirement) {
+        final DragonType localType = type.get();
+        boolean typeMatches = localType != DragonType.EMPTY && localType.equals(requirement.getType());
+        boolean enoughCharges = this.charges.get() >= requirement.getAmount();
+
+        if (!typeMatches) {
+            return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.type");
+        }
+
+        if (!enoughCharges) {
+            return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.charges");
+        }
+
+        return CraftCheck.success();
     }
 }

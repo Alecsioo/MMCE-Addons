@@ -6,7 +6,6 @@ import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentWill;
 import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
-import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -16,7 +15,6 @@ import hellfirepvp.modularmachinery.common.util.ResultChance;
 import kport.modularmagic.common.integration.jei.ingredient.DemonWill;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
 import java.util.List;
 
 public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, RequirementTypeWillMultiChunk> implements IMultiChunkRequirement {
@@ -63,10 +61,8 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
 
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (!canStartCrafting(component, context, Collections.emptyList()).isSuccess()) return false;
-
         if (getActionType() == IOType.INPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getWillHandler(component).handle(this));
+            getWillHandler(component).handle(this);
         }
         return true;
     }
@@ -75,7 +71,7 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
     @Override
     public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.OUTPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getWillHandler(component).handle(this));
+            getWillHandler(component).handle(this);
         }
         return CraftCheck.success();
     }

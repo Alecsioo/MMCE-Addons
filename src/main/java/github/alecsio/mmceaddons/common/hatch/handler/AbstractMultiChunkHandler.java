@@ -1,10 +1,10 @@
 package github.alecsio.mmceaddons.common.hatch.handler;
 
+import github.alecsio.mmceaddons.common.hatch.AbstractSnapshotMachineComponent;
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.hatch.handler.chunks.ChunksReader;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
-import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 
@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 import static net.minecraft.util.math.MathHelper.clamp;
 
-public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement> extends TileColorableMachineComponent implements IRequirementHandler<T> {
+public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement> extends AbstractSnapshotMachineComponent<T> {
 
     protected final ChunksReader chunksReader = ChunksReader.getInstance();
 
@@ -144,7 +144,7 @@ public abstract class AbstractMultiChunkHandler<T extends IMultiChunkRequirement
         return amountToOutput; // Amount successfully output
     }
 
-    private String getKeyForRequirement(T requirement) {
+    protected String getKeyForRequirement(T requirement) {
         return requirement.getIOType().equals(IOType.INPUT) ? "error.modularmachineryaddons.requirement.missing.multichunk.input" : "error.modularmachineryaddons.requirement.missing.multichunk.output";
     }
 

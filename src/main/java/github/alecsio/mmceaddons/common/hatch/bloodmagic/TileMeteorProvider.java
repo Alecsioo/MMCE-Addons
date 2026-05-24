@@ -3,7 +3,6 @@ package github.alecsio.mmceaddons.common.hatch.bloodmagic;
 import WayofTime.bloodmagic.meteor.Meteor;
 import github.alecsio.mmceaddons.common.hatch.AbstractSnapshotMachineComponent;
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.entity.EntityImprovedMeteor;
-import github.alecsio.mmceaddons.common.hatch.handler.IAsyncRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
@@ -11,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public abstract class TileMeteorProvider extends AbstractSnapshotMachineComponent<RequirementMeteor> implements MachineComponentTile, IAsyncRequirementHandler<RequirementMeteor> {
+public abstract class TileMeteorProvider extends AbstractSnapshotMachineComponent<RequirementMeteor> implements MachineComponentTile {
 
     private static final int MAX_HEIGHT = 256;
     private static final int MAX_ALLOWED_BLOCKS_BETWEEN_TILE_AND_SKY = 1;
@@ -30,7 +29,7 @@ public abstract class TileMeteorProvider extends AbstractSnapshotMachineComponen
         }
 
         @Override
-        protected CraftCheck checkSnapshot() {
+        protected CraftCheck checkSnapshot(RequirementMeteor meteor) {
             if (!isMeteorDead) {
                 return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.alive");
             }

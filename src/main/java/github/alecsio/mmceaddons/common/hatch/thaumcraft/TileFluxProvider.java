@@ -5,6 +5,7 @@ import github.alecsio.mmceaddons.common.exception.ConsistencyException;
 import github.alecsio.mmceaddons.common.hatch.handler.AbstractMultiChunkHandler;
 import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.hatch.wrapper.AuraHelperWrapper;
+import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
@@ -24,6 +25,16 @@ public abstract class TileFluxProvider extends AbstractMultiChunkHandler<Require
             throw new ConsistencyException("This should never happen");
         }
         return (float) amount;
+    }
+
+    @Override
+    protected void updateSnapshot() {
+
+    }
+
+    @Override
+    protected CraftCheck checkSnapshot(RequirementFlux requirement) {
+        return null;
     }
 
     public static class Input extends TileFluxProvider {

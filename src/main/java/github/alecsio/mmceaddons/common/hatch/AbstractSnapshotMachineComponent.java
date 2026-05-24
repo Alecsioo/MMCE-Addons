@@ -14,7 +14,7 @@ public abstract class AbstractSnapshotMachineComponent<T> extends TileColorableM
     protected final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     protected abstract void updateSnapshot();
-    protected abstract CraftCheck checkSnapshot();
+    protected abstract CraftCheck checkSnapshot(T requirement);
 
 
     @Override
@@ -22,7 +22,7 @@ public abstract class AbstractSnapshotMachineComponent<T> extends TileColorableM
         lock.writeLock().lock();
         try {
             updateSnapshot();
-            return checkSnapshot();
+            return checkSnapshot(requirement);
         } finally {
             lock.writeLock().unlock();
         }
@@ -33,7 +33,7 @@ public abstract class AbstractSnapshotMachineComponent<T> extends TileColorableM
         refreshScheduler.maybeScheduleRefresh();
         lock.readLock().lock();
         try {
-            return checkSnapshot();
+            return checkSnapshot(requirement);
         } finally {
             lock.readLock().unlock();
         }

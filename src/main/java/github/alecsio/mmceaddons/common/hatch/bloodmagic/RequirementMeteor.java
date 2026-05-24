@@ -2,6 +2,7 @@ package github.alecsio.mmceaddons.common.hatch.bloodmagic;
 
 import WayofTime.bloodmagic.meteor.MeteorRegistry;
 import com.google.common.collect.Lists;
+import github.alecsio.mmceaddons.common.hatch.handler.IAsyncRequirementHandler;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentMeteor;
@@ -76,12 +77,13 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
 
     @Nonnull
     @Override
+    @SuppressWarnings("unchecked")
     public List<ProcessingComponent<?>> copyComponents(List<ProcessingComponent<?>> toCopy) {
         List<ProcessingComponent<?>> copy = new ArrayList<>(toCopy.size());
 
         toCopy.forEach(component -> {
-            MeteorProviderCopy meteorProvider = new MeteorProviderCopy(((MeteorProviderCopy) component.getProvidedComponent()).getOriginal());
-            copy.add(new ProcessingComponent<>((MachineComponent<Object>) component.getComponent() , meteorProvider, component.getTag()));
+            ProcessingComponent<?> cmp = new ProcessingComponent<>((MachineComponent<Object>) component.getComponent(), component.getProvidedComponent(), component.getTag());
+            copy.add(cmp);
         });
 
         return copy;
@@ -90,11 +92,11 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context) {
-        List<MeteorProviderCopy> copiedComponents = convertToMeteorProviderCopyList(components);
+        List<IAsyncRequirementHandler<RequirementMeteor>> handlers = getMeteorHandlers(components);
 
         CraftCheck check = CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.missing");
-        for (MeteorProviderCopy component : copiedComponents) {
-            check = component.canHandle(this);
+        for (IAsyncRequirementHandler<RequirementMeteor> handler : handlers) {
+            check = handler.canHandle(this);
 
             if (check.isSuccess()) {
                 return check;
@@ -106,11 +108,11 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
 
     @Override
     public void finishCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context, ResultChance chance) {
-        List<MeteorProviderCopy> copiedComponents = convertToMeteorProviderCopyList(components);
+        List<IAsyncRequirementHandler<RequirementMeteor>> handlers = getMeteorHandlers(components);
 
-        for (MeteorProviderCopy component : copiedComponents) {
-            if (component.canHandle(this).isSuccess()) {
-                component.handle(this);
+        for (IAsyncRequirementHandler<RequirementMeteor> handler : handlers) {
+            if (handler.canHandle(this).isSuccess()) {
+                handler.handle(this);
                 return;
             }
         }
@@ -120,7 +122,8 @@ public class RequirementMeteor extends ComponentRequirement.MultiComponentRequir
         return meteor;
     }
 
-    private static List<MeteorProviderCopy> convertToMeteorProviderCopyList(List<ProcessingComponent<?>> components) {
-        return Lists.transform(components, component -> component != null ? ((MeteorProviderCopy) component.getProvidedComponent()) : null);
+    @SuppressWarnings("unchecked")
+    private List<IAsyncRequirementHandler<RequirementMeteor>> getMeteorHandlers(List<ProcessingComponent<?>> components) {
+        return Lists.transform(components, component -> component != null ? (IAsyncRequirementHandler<RequirementMeteor>) component.getProvidedComponent() : null);
     }
 }

@@ -9,6 +9,7 @@ import github.alecsio.mmceaddons.common.hatch.nuclearcraft.event.MachineNotForme
 import github.alecsio.mmceaddons.common.hatch.handler.AbstractMultiChunkHandler;
 import github.alecsio.mmceaddons.common.hatch.wrapper.RadiationHelperWrapper;
 import github.kasuminova.mmce.common.event.machine.MachineEvent;
+import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTileNotifiable;
 import net.minecraft.util.math.BlockPos;
@@ -36,6 +37,16 @@ public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementS
     @Override
     protected double getAmountInChunk(IMultiChunkRequirement requirement, BlockPos randomBlockPos) {
         return RadiationHelperWrapper.getRadiationAmount(this.world.getChunk(randomBlockPos));
+    }
+
+    @Override
+    protected CraftCheck checkSnapshot(RequirementScrubber requirement) {
+        return null;
+    }
+
+    @Override
+    protected void updateSnapshot() {
+
     }
 
     @Override
