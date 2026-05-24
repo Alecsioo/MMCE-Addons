@@ -5,7 +5,6 @@ import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentEssentia;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Essentia;
 import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
-import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -57,7 +56,7 @@ public class RequirementEssentia extends ComponentRequirement<Essentia, Requirem
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.INPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addTask(() -> getEssentiaHandler(component).handle(this));
+            getEssentiaHandler(component).handle(this);
         }
         return true;
     }
@@ -66,7 +65,7 @@ public class RequirementEssentia extends ComponentRequirement<Essentia, Requirem
     @Override
     public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.OUTPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addTask(() -> getEssentiaHandler(component).handle(this));
+            getEssentiaHandler(component).handle(this);
         }
         return CraftCheck.success();
     }

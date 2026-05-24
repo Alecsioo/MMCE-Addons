@@ -2,24 +2,27 @@ package github.alecsio.mmceaddons.common.hatch.thaumcraft;
 
 import appeng.api.config.Actionable;
 import appeng.api.storage.IMEInventory;
+import appeng.api.storage.data.IItemList;
+import github.alecsio.mmceaddons.common.integration.jei.ingredient.Essentia;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsBlocks;
 import github.alecsio.mmceaddons.common.hatch.ae2.MEEssentiaBus;
 import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
+import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import net.minecraft.item.ItemStack;
-import thaumicenergistics.api.EssentiaStack;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.integration.appeng.AEEssentiaStack;
+import thaumicenergistics.integration.appeng.EssentiaList;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class MEEssentiaInputBus extends MEEssentiaBus {
 
-    private static final Lock lock = new ReentrantLock();
+    private Map<String, Long> aspectAmounts = new HashMap<>();
 
     @Override
     public ItemStack getVisualItemStack() {
@@ -33,16 +36,45 @@ public class MEEssentiaInputBus extends MEEssentiaBus {
     }
 
     @Override
-    protected boolean canPerformOperation(Actionable actionable, EssentiaStack essentia) {
-        lock.lock();
-        try {
-            Optional<IMEInventory<IAEEssentiaStack>> optInventory = getStorageInventory();
-            if (!optInventory.isPresent()) {return false;}
+    protected void updateSnapshot() {
+        Map<String, Long> localAspectAmounts = new HashMap<>();
 
-            IAEEssentiaStack imported = optInventory.get().extractItems(AEEssentiaStack.fromEssentiaStack(essentia), actionable, this.source);
-            return imported != null && imported.getStackSize() >= essentia.getAmount();
-        } finally {
-            lock.unlock();
+        Optional<IMEInventory<IAEEssentiaStack>> optInventory = getStorageInventory();
+        if (!optInventory.isPresent()) {
+            return;
         }
+
+        IItemList<IAEEssentiaStack> essentiaList = optInventory.get().getAvailableItems(new EssentiaList());
+
+        for (IAEEssentiaStack ess : essentiaList) {
+            localAspectAmounts.put(ess.getAspect().getTag(), ess.getStackSize());
+        }
+
+        lock.writeLock().lock();
+        try {
+            aspectAmounts = localAspectAmounts;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    protected CraftCheck checkSnapshot(RequirementEssentia requirement) {
+         Essentia essentia = requirement.getEssentiaStack();
+        Long amount = aspectAmounts.getOrDefault(essentia.getAspectTag(), 0L);
+        return amount >= essentia.getAmount() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.essentia.input");
+    }
+
+
+    @Override
+    public void handle(RequirementEssentia requirement) {
+        Optional<IMEInventory<IAEEssentiaStack>> optInventory = getStorageInventory();
+        if (!optInventory.isPresent()) {
+            return;
+        }
+
+        optInventory.get().extractItems(AEEssentiaStack.fromEssentiaStack(requirement.getEssentiaStack()), Actionable.MODULATE, this.source);
+
+        super.handle(requirement);
     }
 }

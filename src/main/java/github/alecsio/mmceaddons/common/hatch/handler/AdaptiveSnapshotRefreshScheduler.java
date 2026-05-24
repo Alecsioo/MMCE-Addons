@@ -5,8 +5,8 @@ import hellfirepvp.modularmachinery.ModularMachinery;
 
 public class AdaptiveSnapshotRefreshScheduler {
 
-    private static final long MIN_INTERVAL_MS = 500;
-    private static final long MAX_INTERVAL_MS = 30_000;
+    public static final int MIN_INTERVAL_MS = 500;
+    public static final int MAX_INTERVAL_MS = 30_000;
 
     private volatile long lastSuccessTimestamp = 0L;
     private volatile long lastScheduledAt = 0L;
@@ -54,6 +54,10 @@ public class AdaptiveSnapshotRefreshScheduler {
      */
     public long getSecondsUntilNextRefresh() {
         return Math.max(0L, getNextRefreshTimestamp() - System.currentTimeMillis()) / 1000;
+    }
+
+    public long getLastSuccessTimestamp() {
+        return lastSuccessTimestamp;
     }
 
     /**

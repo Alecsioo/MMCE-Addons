@@ -1,7 +1,6 @@
 package github.alecsio.mmceaddons.common.hatch.ae2;
 
 import appeng.api.AEApi;
-import appeng.api.config.Actionable;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.networking.ticking.IGridTickable;
@@ -9,20 +8,64 @@ import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.storage.IMEInventory;
 import appeng.api.util.AEPartLocation;
+import github.alecsio.mmceaddons.common.hatch.handler.AdaptiveSnapshotRefreshScheduler;
+import github.alecsio.mmceaddons.common.hatch.handler.IAsyncRequirementHandler;
 import github.alecsio.mmceaddons.common.hatch.thaumcraft.RequirementEssentia;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import github.kasuminova.mmce.common.tile.base.MEMachineComponent;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
-import hellfirepvp.modularmachinery.common.machine.IOType;
-import thaumicenergistics.api.EssentiaStack;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-// Code was somehow adapted from a mix of whatever is being done in Thaumic Enenrgistics and in other ME hatches in MMCE
-public abstract class MEEssentiaBus extends MEMachineComponent implements IGridTickable, IRequirementHandler<RequirementEssentia> {
+import static github.alecsio.mmceaddons.common.hatch.handler.AdaptiveSnapshotRefreshScheduler.MAX_INTERVAL_MS;
+import static github.alecsio.mmceaddons.common.hatch.handler.AdaptiveSnapshotRefreshScheduler.MIN_INTERVAL_MS;
+
+// Code was somehow adapted from a mix of whatever is being done in Thaumic Energistics and in other ME hatches in MMCE
+public abstract class MEEssentiaBus extends MEMachineComponent implements IGridTickable, IAsyncRequirementHandler<RequirementEssentia> {
+
+    protected final AdaptiveSnapshotRefreshScheduler refreshScheduler = new AdaptiveSnapshotRefreshScheduler(this::updateSnapshot);
+    protected final ReadWriteLock lock = new ReentrantReadWriteLock();
+
+    protected abstract void updateSnapshot();
+    protected abstract CraftCheck checkSnapshot(RequirementEssentia requirement);
+
+    @Override
+    public CraftCheck canHandleSync(RequirementEssentia requirement) {
+        lock.writeLock().lock();
+        try {
+            updateSnapshot();
+            return checkSnapshot(requirement);
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public CraftCheck canHandleAsync(RequirementEssentia requirement) {
+        refreshScheduler.maybeScheduleRefresh();
+        lock.readLock().lock();
+        try {
+            return checkSnapshot(requirement);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public void handle(RequirementEssentia requirement) {
+        updateSnapshot();
+        refreshScheduler.maybeScheduleRefresh();
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        updateSnapshot();
+    }
 
     protected Optional<IMEInventory<IAEEssentiaStack>> getStorageInventory() {
         IGridNode gridNode = this.getGridNode(AEPartLocation.UP);
@@ -38,31 +81,38 @@ public abstract class MEEssentiaBus extends MEMachineComponent implements IGridT
         return AEApi.instance().storage().getStorageChannel(IEssentiaStorageChannel.class);
     }
 
-    protected abstract boolean canPerformOperation(Actionable actionable, EssentiaStack essentia);
-
     @Nonnull
     @Override
     public TickingRequest getTickingRequest(@Nonnull IGridNode iGridNode) {
-        return new TickingRequest(5, 40, true, true) {}; // Magic numbers
+        long now = System.currentTimeMillis();
+        long idleMs = now - refreshScheduler.getLastSuccessTimestamp();
+        boolean sleep = idleMs >= MAX_INTERVAL_MS;
+        return new TickingRequest(Math.floorDiv(MIN_INTERVAL_MS, 50), Math.floorDiv(MAX_INTERVAL_MS, 50), sleep, true);
     }
 
     @Nonnull
     @Override
     public TickRateModulation tickingRequest(@Nonnull IGridNode iGridNode, int i) {
+        updateSnapshot();
+
+        long now = System.currentTimeMillis();
+        long idleMs = now - refreshScheduler.getLastSuccessTimestamp();
+
+        if (idleMs <= 0) {
+            return TickRateModulation.URGENT;
+        }
+
+        if (idleMs >= MAX_INTERVAL_MS) {
+            return TickRateModulation.SLEEP;
+        }
+
+        double ratio = Math.log1p(idleMs) / Math.log1p(MAX_INTERVAL_MS);
+
+        if (ratio < 0.10) return TickRateModulation.URGENT;
+        if (ratio < 0.25) return TickRateModulation.FASTER;
+        if (ratio < 0.45) return TickRateModulation.SAME;
+        if (ratio < 0.65) return TickRateModulation.SLOWER;
+        if (ratio < 0.85) return TickRateModulation.IDLE;
         return TickRateModulation.SLEEP;
-    }
-
-    @Override
-    public CraftCheck canHandle(RequirementEssentia essentia) {
-        return canPerformOperation(Actionable.SIMULATE, essentia.getEssentiaStack()) ? CraftCheck.success() : CraftCheck.failure(getKeyForRequirement(essentia));
-    }
-
-    @Override
-    public void handle(RequirementEssentia essentia) {
-        canPerformOperation(Actionable.MODULATE, essentia.getEssentiaStack());
-    }
-
-    private String getKeyForRequirement(RequirementEssentia requirement) {
-        return requirement.getActionType().equals(IOType.INPUT) ? "error.modularmachineryaddons.requirement.missing.essentia.input" : "error.modularmachineryaddons.requirement.missing.essentia.output";
     }
 }

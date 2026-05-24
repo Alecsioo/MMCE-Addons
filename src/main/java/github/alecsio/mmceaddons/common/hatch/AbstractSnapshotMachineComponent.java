@@ -54,6 +54,4 @@ public abstract class AbstractSnapshotMachineComponent<T> extends TileColorableM
         super.onLoad();
         updateSnapshot();
     }
-
-
 }
