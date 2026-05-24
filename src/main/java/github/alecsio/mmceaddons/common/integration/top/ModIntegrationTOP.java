@@ -8,6 +8,7 @@ public class ModIntegrationTOP {
     public static void registerProviders() {
         TheOneProbeImp theOneProbeImp = TheOneProbe.theOneProbeImp;
 
+        theOneProbeImp.registerProvider(new SnapshotMachineComponentInfoProvider());
         theOneProbeImp.registerProvider(new PotentialEnergyInfoProvider());
         theOneProbeImp.registerProvider(new DragonBreathInfoProvider());
     }

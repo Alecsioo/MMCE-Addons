@@ -16,4 +16,9 @@ public abstract class BaseMachineComponentCopy<T> extends MachineComponent<BaseP
     public BaseProviderCopy<T> getContainerProvider() {
         return handlerCopy;
     }
+
+    @Override
+    public boolean isAsyncSupported() {
+        return false;
+    }
 }

@@ -1,6 +1,7 @@
 package github.alecsio.mmceaddons.common.hatch.bloodmagic.entity;
 
 import WayofTime.bloodmagic.entity.projectile.EntityMeteor;
+import github.kasuminova.mmce.common.util.concurrent.Action;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -16,6 +17,7 @@ public class EntityImprovedMeteor extends EntityMeteor {
     private static final double FILLER_CHANCE = 0d;
 
     private final BlockPos spawnPos;
+    private Action onHitAction;
 
     // Used by ... something. For some reason this constructor is being retrieved with reflection and if it's not there
     // it will crash during init
@@ -29,6 +31,11 @@ public class EntityImprovedMeteor extends EntityMeteor {
         this.spawnPos = spawnPos;
     }
 
+    public EntityImprovedMeteor(World world, double x, double z, BlockPos spawnPos, Action onHit) {
+        this(world, x, z, spawnPos);
+        this.onHitAction = onHit;
+    }
+
     /**
      * Custom imp that disregards impact with entities and spawns the meteor at a predefined block position instead of
      * the hit pos
@@ -38,6 +45,18 @@ public class EntityImprovedMeteor extends EntityMeteor {
         if (mop.typeOfHit == RayTraceResult.Type.BLOCK) {
             generateMeteor(spawnPos);
             this.setDead();
+            if (onHitAction != null) {
+                onHitAction.doAction();
+            }
         }
     }
+
+    @Override
+    public void onKillCommand() {
+        super.onKillCommand();
+        if (onHitAction != null) {
+            onHitAction.doAction();
+        }
+    }
+
 }

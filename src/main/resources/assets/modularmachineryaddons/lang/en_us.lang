@@ -148,3 +148,4 @@ top.modularmachineryaddons.dragon_breath.locked.true=Locked: true
 top.modularmachineryaddons.dragon_breath.locked.false=Locked: false
 top.modularmachineryaddons.dragon_breath.type=Type:
 top.modularmachineryaddons.dragon_breath.quantity=Stored:
+top.modularmachineryaddons.next_refresh=Next state refresh in

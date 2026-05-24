@@ -1,19 +1,17 @@
 package github.alecsio.mmceaddons.common.hatch.bloodmagic;
 
 import WayofTime.bloodmagic.meteor.Meteor;
+import github.alecsio.mmceaddons.common.hatch.AbstractSnapshotMachineComponent;
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.entity.EntityImprovedMeteor;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IAsyncRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
-import hellfirepvp.modularmachinery.common.tiles.base.TileColorableMachineComponent;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public abstract class TileMeteorProvider extends TileColorableMachineComponent implements MachineComponentTile, IRequirementHandler<RequirementMeteor> {
+public abstract class TileMeteorProvider extends AbstractSnapshotMachineComponent<RequirementMeteor> implements MachineComponentTile, IAsyncRequirementHandler<RequirementMeteor> {
 
     private static final int MAX_HEIGHT = 256;
     private static final int MAX_ALLOWED_BLOCKS_BETWEEN_TILE_AND_SKY = 1;
@@ -21,8 +19,9 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
     public static class Output extends TileMeteorProvider {
 
         private EntityImprovedMeteor currentMeteor;
-        private BlockPos spawnPos;
-        private final ReadWriteLock lock = new ReentrantReadWriteLock();
+        private boolean isMeteorDead = true;
+        private boolean canSeeSky = false;
+        private BlockPos spawnPosition = null;
 
         @Nullable
         @Override
@@ -31,49 +30,57 @@ public abstract class TileMeteorProvider extends TileColorableMachineComponent i
         }
 
         @Override
-        public CraftCheck canHandle(RequirementMeteor requirement) {
-            lock.readLock().lock();
-            try {
-                if (currentMeteor != null && !currentMeteor.isDead) {
-                    return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.alive");
-                }
+        protected CraftCheck checkSnapshot() {
+            if (!isMeteorDead) {
+                return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor.alive");
+            }
+            if (!canSeeSky) {
+                return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor");
+            }
+            return CraftCheck.success();
+        }
 
+        @Override
+        protected void updateSnapshot() {
+            BlockPos pos = this.getPos();
+            BlockPos spawnPos = pos;
+            boolean localCanSeeSky = true;
 
-                BlockPos pos = this.getPos();
-                BlockPos spawnPos = this.getPos();
-                if (!world.canSeeSky(pos)) {
-                    int obstructedBlocks = 0;
-                    for (int y = pos.getY() + 1; y <= MAX_HEIGHT; y++) {
-                        BlockPos toCheck = pos.up(y - pos.getY());
-                        if (!world.isAirBlock(toCheck)) {
-                            obstructedBlocks++;
-                            spawnPos = toCheck.toImmutable();
-                            if (obstructedBlocks > MAX_ALLOWED_BLOCKS_BETWEEN_TILE_AND_SKY) {
-                                return CraftCheck.failure("error.modularmachineryaddons.requirement.missing.meteor");
-                            }
+            if (!world.canSeeSky(pos)) {
+                int obstructedBlocks = 0;
+                for (int y = pos.getY() + 1; y <= MAX_HEIGHT; y++) {
+                    BlockPos toCheck = pos.up(y - pos.getY());
+                    if (!world.isAirBlock(toCheck)) {
+                        obstructedBlocks++;
+                        spawnPos = toCheck.toImmutable();
+                        if (obstructedBlocks > MAX_ALLOWED_BLOCKS_BETWEEN_TILE_AND_SKY) {
+                            localCanSeeSky = false;
+                            break;
                         }
                     }
                 }
+            }
 
-                this.spawnPos = spawnPos;
-                return CraftCheck.success();
+            lock.writeLock().lock();
+            try {
+                isMeteorDead = currentMeteor == null || currentMeteor.isDead;
+                this.canSeeSky = localCanSeeSky;
+                this.spawnPosition = spawnPos;
             } finally {
-                lock.readLock().unlock();
+                lock.writeLock().unlock();
             }
         }
 
         @Override
         public void handle(RequirementMeteor requirement) {
-            lock.writeLock().lock();
-            try {
-                Meteor meteor = requirement.getMeteor();
-                this.currentMeteor = new EntityImprovedMeteor(world, pos.getX(), pos.getZ(), spawnPos == null ? this.pos : spawnPos);
-                this.currentMeteor.setMeteorStack(meteor.getCatalystStack());
-                world.spawnEntity(this.currentMeteor);
-                markNoUpdateSync();
-            } finally {
-                lock.writeLock().unlock();
-            }
+            Meteor meteor = requirement.getMeteor();
+            this.currentMeteor = new EntityImprovedMeteor(world, pos.getX(), pos.getZ(), spawnPosition == null ? this.pos : spawnPosition, () -> {
+                refreshScheduler.recordSuccess();
+                updateSnapshot();
+            });
+            this.currentMeteor.setMeteorStack(meteor.getCatalystStack());
+            world.spawnEntity(this.currentMeteor);
+            markNoUpdateSync();
         }
     }
 }
