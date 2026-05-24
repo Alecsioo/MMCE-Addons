@@ -39,6 +39,12 @@ public abstract class AbstractSnapshotMachineComponent<T> extends TileColorableM
         }
     }
 
+    @Override
+    public void handle(T requirement) {
+        updateSnapshot();
+        refreshScheduler.maybeScheduleRefresh();
+    }
+
     public long getSecondsUntilNextRefresh() {
         return refreshScheduler.getSecondsUntilNextRefresh();
     }

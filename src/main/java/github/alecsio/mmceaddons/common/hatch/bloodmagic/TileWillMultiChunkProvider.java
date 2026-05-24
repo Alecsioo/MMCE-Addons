@@ -101,8 +101,7 @@ public abstract class TileWillMultiChunkProvider extends AbstractSnapshotMachine
                 remaining -= toDrain;
             }
 
-            updateSnapshot();
-            refreshScheduler.recordSuccess();
+            super.handle(requirement);
         }
     }
 
@@ -170,8 +169,7 @@ public abstract class TileWillMultiChunkProvider extends AbstractSnapshotMachine
                 }
             }
 
-            updateSnapshot();
-            refreshScheduler.recordSuccess();
+            super.handle(requirement);
         }
     }
 }

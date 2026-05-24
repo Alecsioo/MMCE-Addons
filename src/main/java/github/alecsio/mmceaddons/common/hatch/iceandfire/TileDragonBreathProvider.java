@@ -163,12 +163,12 @@ public class TileDragonBreathProvider extends AbstractSnapshotMachineComponent<R
     @Override
     public void handle(RequirementDragonBreath requirement) {
         final int localCharges = charges.addAndGet(-requirement.getAmount());
-        refreshScheduler.recordSuccess();
 
         if (!typeLocked && localCharges <= 0) {
             type.set(DragonType.EMPTY);
             world.setBlockState(this.pos, world.getBlockState(this.pos).withProperty(BlockDragonBreathInput.DRAGON_TYPE, DragonType.EMPTY));
         }
+        super.handle(requirement);
     }
 
     @Override
