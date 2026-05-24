@@ -7,19 +7,19 @@ import github.alecsio.mmceaddons.common.hatch.vanilla.BlockSingularityItemInputB
 import github.alecsio.mmceaddons.common.hatch.vanilla.BlockSingularityItemOutputBus;
 import github.alecsio.mmceaddons.common.hatch.abyssalcraft.block.BlockPotentialEnergyProviderInput;
 import github.alecsio.mmceaddons.common.hatch.abyssalcraft.block.BlockPotentialEnergyProviderOutput;
-import github.alecsio.mmceaddons.common.hatch.ae2.block.BlockMEEssentiaInputBus;
-import github.alecsio.mmceaddons.common.hatch.ae2.block.BlockMEEssentiaOutputBus;
-import github.alecsio.mmceaddons.common.hatch.bloodmagic.block.BlockMeteorProviderOutput;
-import github.alecsio.mmceaddons.common.hatch.bloodmagic.block.BlockWillMultiChunkProviderInput;
-import github.alecsio.mmceaddons.common.hatch.bloodmagic.block.BlockWillMultiChunkProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.ae2.essentia.BlockMEEssentiaInputBus;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.ae2.essentia.BlockMEEssentiaOutputBus;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.meteor.BlockMeteorProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.will.BlockWillMultiChunkProviderInput;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.will.BlockWillMultiChunkProviderOutput;
 import github.alecsio.mmceaddons.common.hatch.iceandfire.BlockDragonBreathInput;
-import github.alecsio.mmceaddons.common.hatch.nuclearcraft.block.BlockRadiationProviderInput;
-import github.alecsio.mmceaddons.common.hatch.nuclearcraft.block.BlockRadiationProviderOutput;
-import github.alecsio.mmceaddons.common.hatch.nuclearcraft.block.scrubber.BlockScrubberProviderInput;
-import github.alecsio.mmceaddons.common.hatch.thaumcraft.block.BlockFluxProviderInput;
-import github.alecsio.mmceaddons.common.hatch.thaumcraft.block.BlockFluxProviderOutput;
-import github.alecsio.mmceaddons.common.hatch.thaumcraft.block.BlockVisProviderInput;
-import github.alecsio.mmceaddons.common.hatch.thaumcraft.block.BlockVisProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.BlockRadiationProviderInput;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.BlockRadiationProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.BlockScrubberProviderInput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.flux.BlockFluxProviderInput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.flux.BlockFluxProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.vis.BlockVisProviderInput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.vis.BlockVisProviderOutput;
 
 public class ModularMachineryAddonsBlocks {
 

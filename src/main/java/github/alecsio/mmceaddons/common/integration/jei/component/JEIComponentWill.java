@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.integration.jei.component;
 
-import github.alecsio.mmceaddons.common.hatch.bloodmagic.RequirementWillMultiChunk;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.will.RequirementWillMultiChunk;
 import github.alecsio.mmceaddons.common.integration.jei.component.base.JEIComponentBase;
 import hellfirepvp.modularmachinery.common.integration.recipe.RecipeLayoutPart;
 import kport.modularmagic.common.integration.jei.ingredient.DemonWill;

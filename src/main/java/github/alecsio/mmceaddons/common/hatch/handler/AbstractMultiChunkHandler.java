@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.hatch.handler;
 
 import github.alecsio.mmceaddons.common.hatch.AbstractSnapshotMachineComponent;
-import github.alecsio.mmceaddons.common.hatch.bloodmagic.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.hatch.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.hatch.handler.chunks.ChunksReader;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;

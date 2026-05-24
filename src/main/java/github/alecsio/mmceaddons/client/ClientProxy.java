@@ -4,7 +4,7 @@ import github.alecsio.mmceaddons.CommonProxy;
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.client.render.entity.MeteorRenderFactory;
 import github.alecsio.mmceaddons.common.Mods;
-import github.alecsio.mmceaddons.common.hatch.bloodmagic.entity.EntityImprovedMeteor;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.meteor.entity.EntityImprovedMeteor;
 import github.alecsio.mmceaddons.common.hatch.vanilla.gui.GuiContainerSingularityItemBus;
 import hellfirepvp.modularmachinery.common.block.BlockDynamicColor;
 import hellfirepvp.modularmachinery.common.block.BlockVariants;
