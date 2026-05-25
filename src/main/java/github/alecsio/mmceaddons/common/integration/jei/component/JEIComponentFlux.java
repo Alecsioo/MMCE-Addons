@@ -9,8 +9,8 @@ import java.awt.*;
 
 public class JEIComponentFlux extends JEIComponentBase<Flux> {
 
-    public JEIComponentFlux(Flux requirement, Class<Flux> requirementType) {
-        super(requirement, requirementType);
+    public JEIComponentFlux(Flux requirement) {
+        super(requirement, Flux.class);
     }
 
     @Override

@@ -12,7 +12,8 @@ public enum Mods {
     ASTRALSORCERY("astralsorcery"),
     PROJECTE("projecte"),
     ICE_AND_FIRE("iceandfire"),
-    THE_ONE_PROBE("theoneprobe")
+    THE_ONE_PROBE("theoneprobe"),
+    MEKANISM("mekanism")
     ;
 
     // Used in annotations, which require compile-time constants. Yes, it's redundant. But it stil reduces boilerplate code
@@ -24,6 +25,7 @@ public enum Mods {
     public static final String APPLIEDENERGISTICS_ID = "appliedenergistics2";
     public static final String PROJECTE_ID = "projecte";
     public static final String ICE_AND_FIRE_ID = "iceandfire";
+    public static final String MEKANISM_ID = "mekanism";
 
     public final String modid;
     private final boolean loaded;

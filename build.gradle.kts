@@ -13,7 +13,7 @@ plugins {
 
 // Project properties
 group = "alecsio.modularmachineryaddons"
-version = "1.2.5"
+version = "2.0.0"
 
 // Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
 java {
@@ -214,6 +214,8 @@ dependencies {
     implementation(rfg.deobf("curse.maven:lazyae2-322347:3254160"))
 
     implementation(rfg.deobf("curse.maven:astral-241721:3044416"))
+
+    implementation(rfg.deobf("curse.maven:mekanism-268560:2835175"))
 
     implementation(rfg.deobf("curse.maven:thermal-69163:2926431"))
     implementation(rfg.deobf("curse.maven:thermalfoundation-222880:2926428"))

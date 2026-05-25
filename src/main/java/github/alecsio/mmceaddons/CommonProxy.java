@@ -49,7 +49,6 @@ public class CommonProxy implements IGuiHandler {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(ModularMachineryAddons.MODID, this);
 
-
         ModularMachineryAddonsBlocks.initialise();
     }
 

@@ -125,7 +125,7 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
 
     @Override
     public JEIComponent<Flux> provideJEIComponent() {
-        return new JEIComponentFlux(new Flux((float) this.amount, chunkRange), Flux.class);
+        return new JEIComponentFlux(new Flux((float) this.amount, chunkRange));
     }
 
     @SuppressWarnings("unchecked")

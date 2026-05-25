@@ -2,6 +2,8 @@ package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
 import github.alecsio.mmceaddons.common.Mods;
+import github.alecsio.mmceaddons.common.hatch.mekanism.laser.BlockLaserInput;
+import github.alecsio.mmceaddons.common.hatch.mekanism.laser.TileLaserProvider;
 import github.alecsio.mmceaddons.common.hatch.vanilla.BlockBiomeProviderInput;
 import github.alecsio.mmceaddons.common.hatch.vanilla.BlockDimensionProviderInput;
 import github.alecsio.mmceaddons.common.hatch.vanilla.BlockSingularityItemInputBus;
@@ -126,6 +128,12 @@ public class RegistryBlocks {
             prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDragonBreathProviderInput);
         }
 
+        if (Mods.MEKANISM.isPresent()) {
+            ModularMachineryAddonsBlocks.blockLaserProviderInput = prepareRegister(new BlockLaserInput());
+
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockLaserProviderInput);
+        }
+
         // Always register
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockBiomeProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDimensionProviderInput);
@@ -170,6 +178,10 @@ public class RegistryBlocks {
 
         if (Mods.ICE_AND_FIRE.isPresent()) {
             registerTileEntity(TileDragonBreathProvider.class);
+        }
+
+        if (Mods.MEKANISM.isPresent()) {
+            registerTileEntity(TileLaserProvider.class);
         }
 
         // Always present

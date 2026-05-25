@@ -11,5 +11,6 @@ public class ModIntegrationTOP {
         theOneProbeImp.registerProvider(new SnapshotMachineComponentInfoProvider());
         theOneProbeImp.registerProvider(new PotentialEnergyInfoProvider());
         theOneProbeImp.registerProvider(new DragonBreathInfoProvider());
+        theOneProbeImp.registerProvider(new LaserInfoProvider());
     }
 }

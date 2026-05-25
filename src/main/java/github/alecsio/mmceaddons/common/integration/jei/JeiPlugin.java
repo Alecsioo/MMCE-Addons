@@ -61,6 +61,10 @@ public class JeiPlugin implements IModPlugin {
             registerIngredient(new DragonBreath(), new DragonBreathHelper(), new DragonBreathRenderer());
         }
 
+        if (Mods.MEKANISM.isPresent()) {
+            registerIngredient(new Laser(DEFAULT_AMOUNT_UNUSED), new LaserHelper(), new LaserRenderer());
+        }
+
         this.registry = null;
     }
 
