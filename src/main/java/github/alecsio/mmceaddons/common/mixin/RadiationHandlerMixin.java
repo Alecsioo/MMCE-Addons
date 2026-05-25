@@ -24,7 +24,7 @@ public class RadiationHandlerMixin {
             at = @At(value = "INVOKE_ASSIGN", target = "Lnc/radiation/RadiationHelper;getRadiationSource(Lnet/minecraftforge/common/capabilities/ICapabilityProvider;)Lnc/capability/radiation/source/IRadiationSource;")
     , cancellable = true, remap = false
     )
-    private void radiationSpreadMixin(TickEvent.WorldTickEvent event, CallbackInfo ci, @Local Chunk chunk, @Local IRadiationSource chunkRadiationSource) {
+    private void radiationSpreadMixin(TickEvent.WorldTickEvent event, CallbackInfo ci, @Local(name = "chunk") Chunk chunk, @Local(name = "chunkSource") IRadiationSource chunkRadiationSource) {
         World world = chunk.getWorld();
         if (ScrubbedChunksCache.isChunkScrubbed(InterdimensionalChunkPos.of(world.provider.getDimension(), chunk.getPos()), world)) {
             chunkRadiationSource.setRadiationBuffer(0);
@@ -46,6 +46,5 @@ public class RadiationHandlerMixin {
         }
         return to;
     }
-
 
 }

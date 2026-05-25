@@ -39,7 +39,7 @@ import org.apache.logging.log4j.Logger;
                 + "after:bloodmagic@[0.0.0,);"
                 + "after:thaumcraft@[0.0.0,);"
                 + "after:thaumicenergistics@[0.0.0,);"
-                + "after:nuclearcraft@[0.0.0,);"
+                + "after:nuclearcraft@[2.19b,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
         acceptableRemoteVersions = "[1.2.4]"

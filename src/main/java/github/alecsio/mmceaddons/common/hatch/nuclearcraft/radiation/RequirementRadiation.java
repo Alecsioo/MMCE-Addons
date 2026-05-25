@@ -6,7 +6,6 @@ import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
 import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
-import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -58,7 +57,7 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.INPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getRadiationHandler(component).handle(this));
+            getRadiationHandler(component).handle(this);
         }
         return true;
     }
@@ -67,7 +66,7 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Override
     public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.OUTPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getRadiationHandler(component).handle(this));
+            getRadiationHandler(component).handle(this);
         }
         return CraftCheck.success();
     }

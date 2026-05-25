@@ -6,7 +6,6 @@ import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentFlux;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Flux;
 import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
-import hellfirepvp.modularmachinery.ModularMachinery;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -94,7 +93,7 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
     @Override
     public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.INPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getFluxHandler(component).handle(this));
+            getFluxHandler(component).handle(this);
         }
         return true;
     }
@@ -103,7 +102,7 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
     @Override
     public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
         if (getActionType() == IOType.OUTPUT) {
-            ModularMachinery.EXECUTE_MANAGER.addSyncTask(() -> getFluxHandler(component).handle(this));
+            getFluxHandler(component).handle(this);
         }
         return CraftCheck.success();
     }

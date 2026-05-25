@@ -1,30 +1,25 @@
 package github.alecsio.mmceaddons.common.hatch.bloodmagic.will;
 
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
+import github.alecsio.mmceaddons.common.hatch.AbstractSnapshot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DemonWillSnapshot {
+public class DemonWillSnapshot extends AbstractSnapshot<RequirementWillMultiChunk> {
 
     private final Map<Long, Map<EnumDemonWillType, Double>> chunkToWill;
-    private final int coveredRange;
-    private final BlockPos pos;
 
     public DemonWillSnapshot(Map<Long, Map<EnumDemonWillType, Double>> chunkToWill, int coveredRange, BlockPos pos) {
+        super(coveredRange, pos);
         this.chunkToWill = chunkToWill;
-        this.coveredRange = coveredRange;
-        this.pos = pos;
     }
 
-    public int getCoveredRange() {
-        return coveredRange;
-    }
-
+    @Override
     public DemonWillSnapshot getSnapshotForRange(int range) {
-        ChunkPos center = new ChunkPos(this.pos);
+        ChunkPos center = new ChunkPos(this.center);
         Map<Long, Map<EnumDemonWillType, Double>> result = new HashMap<>();
 
         for (Map.Entry<Long, Map<EnumDemonWillType, Double>> entry : chunkToWill.entrySet()) {
@@ -33,9 +28,10 @@ public class DemonWillSnapshot {
             }
         }
 
-        return new DemonWillSnapshot(result, coveredRange, pos);
+        return new DemonWillSnapshot(result, coveredRange, this.center);
     }
 
+    @Override
     public boolean canHandleInput(RequirementWillMultiChunk requirement) {
         int chunkRange = requirement.getChunkRange();
         if (chunkRange > coveredRange) {
@@ -61,6 +57,7 @@ public class DemonWillSnapshot {
         return false;
     }
 
+    @Override
     public boolean canHandleOutput(RequirementWillMultiChunk requirement) {
         int chunkRange = requirement.getChunkRange();
         if (chunkRange > coveredRange) {
@@ -84,21 +81,5 @@ public class DemonWillSnapshot {
         }
 
         return false;
-    }
-
-    private boolean isChunkWithinRange(long chunkPosLong, ChunkPos center, int range) {
-        int chunkX = getChunkX(chunkPosLong);
-        int chunkZ = getChunkZ(chunkPosLong);
-
-        return Math.abs(chunkX - center.x) <= range
-                && Math.abs(chunkZ - center.z) <= range;
-    }
-
-    private static int getChunkX(long chunkPosLong) {
-        return (int) chunkPosLong;
-    }
-
-    private static int getChunkZ(long chunkPosLong) {
-        return (int) (chunkPosLong >>> 32);
     }
 }

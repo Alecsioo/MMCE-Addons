@@ -230,7 +230,7 @@ dependencies {
     implementation(rfg.deobf("curse.maven:rftools-dep-mcjtylib-233105:2745846"))
     implementation(rfg.deobf("curse.maven:trash-394535:4606884"))
     implementation(rfg.deobf("curse.maven:trashdep-454372:6034694"))
-    implementation(rfg.deobf("curse.maven:nuclearcraft-226254:6151363-sources-6151372"))
+    implementation(rfg.deobf("curse.maven:nuclearcraft-226254:8087650-sources-8087658"))
     implementation(rfg.deobf("curse.maven:drawers-223852:5981297"))
     implementation(rfg.deobf("curse.maven:drawersChameleonDependency-230497:2450900"))
     implementation(rfg.deobf("curse.maven:chisel-278493:3319307"))

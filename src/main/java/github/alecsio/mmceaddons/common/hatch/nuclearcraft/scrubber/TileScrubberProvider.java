@@ -1,13 +1,12 @@
 package github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber;
 
+import github.alecsio.mmceaddons.common.hatch.AbstractSnapshotMachineComponent;
+import github.alecsio.mmceaddons.common.hatch.handler.chunks.ChunksReader;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.cache.InterdimensionalChunkPos;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.cache.ScrubbedChunksCache;
-import github.alecsio.mmceaddons.common.hatch.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.event.MachineControllerInvalidatedEvent;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.event.MachineControllerRedstoneAffectedEvent;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.event.MachineNotFormedEvent;
-import github.alecsio.mmceaddons.common.hatch.handler.AbstractMultiChunkHandler;
-import github.alecsio.mmceaddons.common.hatch.wrapper.RadiationHelperWrapper;
 import github.kasuminova.mmce.common.event.machine.MachineEvent;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -25,9 +24,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementScrubber> implements MachineComponentTileNotifiable {
+public class TileScrubberProvider extends AbstractSnapshotMachineComponent<RequirementScrubber> implements MachineComponentTileNotifiable {
 
     private int currentChunkRange = -1;
+    protected final ChunksReader chunksReader = ChunksReader.getInstance();
     // Not persisted on purpose, since the cache is not persisted either, it needs a refresh if there's a restart
     private final AtomicBoolean redstonePowered = new AtomicBoolean(false);
     private final AtomicBoolean needsRefresh = new AtomicBoolean(false);
@@ -35,13 +35,8 @@ public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementS
     private final Lock scrubbedChunksLock = new ReentrantLock();
 
     @Override
-    protected double getAmountInChunk(IMultiChunkRequirement requirement, BlockPos randomBlockPos) {
-        return RadiationHelperWrapper.getRadiationAmount(this.world.getChunk(randomBlockPos));
-    }
-
-    @Override
     protected CraftCheck checkSnapshot(RequirementScrubber requirement) {
-        return null;
+        return CraftCheck.success();
     }
 
     @Override
@@ -54,11 +49,6 @@ public class TileScrubberProvider extends AbstractMultiChunkHandler<RequirementS
         if (currentChunkRange != requirement.getChunkRange() || needsRefresh.compareAndSet(true, false)) {
             replaceScrubbedChunks(requirement.getChunkRange());
         }
-    }
-
-    @Override
-    protected void handleAmount(IMultiChunkRequirement requirement, BlockPos blockPosInChunk, double amountToHandle) {
-        RadiationHelperWrapper.scrubRadiation(world.getChunk(blockPosInChunk));
     }
 
     @Nullable
