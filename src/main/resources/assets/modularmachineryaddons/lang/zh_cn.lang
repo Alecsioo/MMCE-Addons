@@ -139,13 +139,13 @@ jei.tooltip.modularmachineryaddons.meteor_contents=陨石内容
 jei.tooltip.modularmachineryaddons.scrubber_special=无穷无尽！
 jei.tooltip.modularmachineryaddons.breath_type=龙息类型
 jei.tooltip.modularmachineryaddons.breath_amount=数量
-jei.tooltip.modularmachineryaddons.potential_energy=位能
+jei.tooltip.modularmachineryaddons.potential_energy=位能：
 
 # TOP
 
-top.modularmachineryaddons.potential_energy=已储存位能：%d
+top.modularmachineryaddons.potential_energy=已储存位能：
 top.modularmachineryaddons.dragon_breath.locked.true=已锁定：是
 top.modularmachineryaddons.dragon_breath.locked.false=已锁定：否
-top.modularmachineryaddons.dragon_breath.type=类型：%s
-top.modularmachineryaddons.dragon_breath.quantity=已储存：%d
+top.modularmachineryaddons.dragon_breath.type=类型：
+top.modularmachineryaddons.dragon_breath.quantity=已储存：
 top.modularmachineryaddons.next_refresh=状态刷新倒计时：
