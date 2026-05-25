@@ -2,17 +2,20 @@ package github.alecsio.mmceaddons.common.integration.crafttweaker;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
-import github.alecsio.mmceaddons.common.crafting.requirement.RequirementBiome;
-import github.alecsio.mmceaddons.common.crafting.requirement.RequirementDimension;
-import github.alecsio.mmceaddons.common.crafting.requirement.bloodmagic.RequirementWillMultiChunk;
-import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementRadiation;
-import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.RequirementScrubber;
-import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementFlux;
-import github.alecsio.mmceaddons.common.crafting.requirement.thaumcraft.RequirementVis;
-import github.alecsio.mmceaddons.common.crafting.requirement.thaumicenergistics.RequirementEssentia;
+import github.alecsio.mmceaddons.common.hatch.iceandfire.DragonType;
+import github.alecsio.mmceaddons.common.hatch.vanilla.RequirementBiome;
+import github.alecsio.mmceaddons.common.hatch.vanilla.RequirementDimension;
+import github.alecsio.mmceaddons.common.hatch.abyssalcraft.RequirementPotentialEnergy;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.will.RequirementWillMultiChunk;
+import github.alecsio.mmceaddons.common.hatch.iceandfire.RequirementDragonBreath;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.RequirementRadiation;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.RequirementScrubber;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.flux.RequirementFlux;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.vis.RequirementVis;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.ae2.essentia.RequirementEssentia;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
-import github.alecsio.mmceaddons.common.tile.thaumcraft.TileFluxProvider;
-import github.alecsio.mmceaddons.common.tile.thaumcraft.TileVisProvider;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.flux.TileFluxProvider;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.vis.TileVisProvider;
 import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
 import hellfirepvp.modularmachinery.common.integration.crafttweaker.RecipePrimer;
 import hellfirepvp.modularmachinery.common.machine.IOType;
@@ -161,5 +164,30 @@ public class AddonsPrimer {
     @ZenMethod
     public static RecipePrimer addDimensionInput(RecipePrimer primer, int id) {
         return addRequirement(primer, () -> RequirementDimension.from(IOType.INPUT, id));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addPotentialEnergyInput(RecipePrimer primer, float amount) {
+        return addRequirement(primer, () -> RequirementPotentialEnergy.from(IOType.INPUT, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addPotentialEnergyOutput(RecipePrimer primer, float amount) {
+        return addRequirement(primer, () -> RequirementPotentialEnergy.from(IOType.OUTPUT, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addFireDragonBreathInput(RecipePrimer primer, int amount) {
+        return addRequirement(primer, () -> RequirementDragonBreath.from(IOType.INPUT, DragonType.FIRE.name(), amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addIceDragonBreathInput(RecipePrimer primer, int amount) {
+        return addRequirement(primer, () -> RequirementDragonBreath.from(IOType.INPUT, DragonType.ICE.name(), amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addLightningDragonBreathInput(RecipePrimer primer, int amount) {
+        return addRequirement(primer, () -> RequirementDragonBreath.from(IOType.INPUT, DragonType.LIGHTNING.name(), amount));
     }
 }

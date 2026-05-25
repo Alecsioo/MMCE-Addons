@@ -4,10 +4,10 @@ import appeng.api.features.INetworkEncodable;
 import appeng.util.Platform;
 import github.alecsio.mmceaddons.CommonProxy;
 import github.alecsio.mmceaddons.client.MouseScrollHandler;
-import github.alecsio.mmceaddons.common.assembly.AssemblyModes;
-import github.alecsio.mmceaddons.common.assembly.IMachineAssembly;
-import github.alecsio.mmceaddons.common.assembly.MachineAssemblyManager;
-import github.alecsio.mmceaddons.common.config.MMCEAConfig;
+import github.alecsio.mmceaddons.common.item.assembly.AssemblyModes;
+import github.alecsio.mmceaddons.common.item.assembly.IMachineAssembly;
+import github.alecsio.mmceaddons.common.item.assembly.MachineAssemblyManager;
+import github.alecsio.mmceaddons.common.MMCEAConfig;
 import github.alecsio.mmceaddons.common.mixin.BlockStateDescriptorMixin;
 import github.alecsio.mmceaddons.common.mixin.IBlockArrayInvoker;
 import github.alecsio.mmceaddons.common.mixin.IBlockInformationAccessor;
@@ -49,7 +49,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler.ASSEMBLY_ACCESS_TOKEN;
+import static github.alecsio.mmceaddons.common.item.assembly.handler.MachineAssemblyEventHandler.ASSEMBLY_ACCESS_TOKEN;
 
 @Optional.Interface(modid = "appliedenergistics2", iface = "appeng.api.features.INetworkEncodable")
 @MethodsReturnNonnullByDefault

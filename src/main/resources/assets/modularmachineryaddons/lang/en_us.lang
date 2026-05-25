@@ -30,6 +30,9 @@ tile.modularmachineryaddons.blocksingularityitemoutputbus.reinforced.name=Reinfo
 tile.modularmachineryaddons.blocksingularityitemoutputbus.big.name=Big Singularity Output Hatch
 tile.modularmachineryaddons.blocksingularityitemoutputbus.huge.name=Huge Singularity Output Hatch
 tile.modularmachineryaddons.blocksingularityitemoutputbus.ludicrous.name=Ludicrous Singularity Output Hatch
+tile.modularmachineryaddons.blockpotentialenergyproviderinput.name=Potential Energy Input
+tile.modularmachineryaddons.blockpotentialenergyprovideroutput.name=Potential Energy Output
+tile.modularmachineryaddons.blockdragonbreathinput.name=Dragon Breath Input
 
 item.modularmachineryaddons.itemadvancedconstructtool.name=Advanced Wrench
 item.modularmachineryaddons.itemadvancedmachineassembler.name=Advanced Machine Assembler
@@ -42,6 +45,7 @@ commands.mmcea.getcacheinfo.usage=/getScrubbedChunksCacheInfo
 
 # errors
 error.modularmachineryaddons.component.invalid.biome=No biome hatch found
+error.modularmachineryaddons.component.invalid.dragon=No dragon breath hatch found
 error.modularmachineryaddons.component.invalid.dimension=No dimension hatch found
 error.modularmachineryaddons.component.invalid.essentia=No essentia hatch found
 error.modularmachineryaddons.component.invalid.vis=No vis hatch found
@@ -50,6 +54,7 @@ error.modularmachineryaddons.component.invalid.scrubber=No scrubber hatch found
 error.modularmachineryaddons.component.invalid.radiation=No radiation hatch found
 error.modularmachineryaddons.component.invalid.will=No will hatch found
 error.modularmachineryaddons.component.invalid.meteor=No meteor hatch found
+error.modularmachineryaddons.component.invalid.potential_energy=No potential energy hatch found
 error.assembler.not.found=Could not locate an advanced machine assembler item in the player's inventory
 error.encryption.key.not.found=The assembler must be linked to an ME system via a security station to allow item extraction
 error.security.station.not.found=Could not locate security station
@@ -72,6 +77,12 @@ error.modularmachineryaddons.requirement.missing.meteor.alive=Meteor is still al
 error.modularmachineryaddons.requirement.missing.meteor=Line of sight is obstructed (max 1 block allowed)
 error.modularmachineryaddons.requirement.missing.meteor.missing=Meteor hatch could not handle meteor. You should never see this message
 
+error.modularmachineryaddons.requirement.missing.potentialenergy.input=Missing potential energy requirement
+error.modularmachineryaddons.requirement.missing.potentialenergy.output=Not enough space for potential energy output
+
+error.modularmachineryaddons.requirement.missing.type=Missing dragon breath type
+error.modularmachineryaddons.requirement.missing.charges=Not enough dragon breath charges
+
 
 # items
 item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and click on a machine controller to extract the entire multiblock definition. Selecting a third block will clear the selection.
@@ -79,7 +90,6 @@ tooltip.modularmachineryaddons.radiationsponge=Removes all radiation from the us
 
 # blocks
 tooltip.modularmachineryaddons.scrubber=May still cause leaks for a short time window in-between recipes or on world restart. Scrub your base!
-
 
 # messages
 message.modularmachineryaddons.assembly.complete=Multiblock assembly completed successfully
@@ -91,6 +101,12 @@ message.modularmachineryaddons.disassembly.error=Multiblock disassembly interrup
 message.modularmachineryaddons.advancedconstructtool.cleared=Cleared tool selection
 message.modularmachineryaddons.advancedconstructtool.invalid.selection=Please select two corners!
 message.modularmachineryaddons.advancedconstructtool.selection=Successfully selected corner
+message.modularmachineryaddons.dragonbreathhatch.locked=Hatch locked to type %s
+message.modularmachineryaddons.dragonbreathhatch.unlocked=Hatch unlocked successfully
+dragon.type.fire=fire
+dragon.type.ice=ice
+dragon.type.lightning=lightning
+dragon.type.empty=none
 
 #assembly
 message.assembly.missing.item.knowledge=Missing knowledge of item %s
@@ -121,3 +137,15 @@ jei.tooltip.modularmachineryaddons.dimension=Dimension
 jei.tooltip.modularmachineryaddons.biome=Biome
 jei.tooltip.modularmachineryaddons.meteor_contents=Meteor Contents
 jei.tooltip.modularmachineryaddons.scrubber_special=To Infinity and Beyond!
+jei.tooltip.modularmachineryaddons.breath_type=Breath Type
+jei.tooltip.modularmachineryaddons.breath_amount=Amount
+jei.tooltip.modularmachineryaddons.potential_energy=Potential Energy:
+
+# TOP
+
+top.modularmachineryaddons.potential_energy=Stored Potential Energy :
+top.modularmachineryaddons.dragon_breath.locked.true=Locked: true
+top.modularmachineryaddons.dragon_breath.locked.false=Locked: false
+top.modularmachineryaddons.dragon_breath.type=Type:
+top.modularmachineryaddons.dragon_breath.quantity=Stored:
+top.modularmachineryaddons.next_refresh=Next state refresh in

@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.mixin;
 
-import github.alecsio.mmceaddons.common.event.MachineControllerInvalidatedEvent;
-import github.alecsio.mmceaddons.common.event.MachineNotFormedEvent;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.event.MachineControllerInvalidatedEvent;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.event.MachineNotFormedEvent;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftingStatus;
 import hellfirepvp.modularmachinery.common.tiles.TileMachineController;
 import hellfirepvp.modularmachinery.common.tiles.base.TileMultiblockMachineController;

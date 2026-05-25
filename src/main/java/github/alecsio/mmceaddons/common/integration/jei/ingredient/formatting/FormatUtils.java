@@ -16,10 +16,4 @@ public class FormatUtils {
     public static String format(TextFormatting color, String toFormat) {
         return String.format("%s%s", color, toFormat);
     }
-
-    public static String concat(String first, String second) {
-        return first + System.lineSeparator() + second + System.lineSeparator();
-    }
-
-
 }

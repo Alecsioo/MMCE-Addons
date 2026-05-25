@@ -1,7 +1,7 @@
 package github.alecsio.mmceaddons.common.integration.jei;
 
 import com.google.common.collect.Lists;
-import github.alecsio.mmceaddons.common.base.Mods;
+import github.alecsio.mmceaddons.common.Mods;
 import github.alecsio.mmceaddons.common.integration.jei.helper.*;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.*;
 import github.alecsio.mmceaddons.common.integration.jei.render.*;
@@ -51,6 +51,14 @@ public class JeiPlugin implements IModPlugin {
         if (Mods.THAUMCRAFT.isPresent()) {
             registerIngredient(new Flux(DEFAULT_AMOUNT_UNUSED, DEFAULT_AMOUNT_UNUSED), new FluxHelper(), new FluxRenderer());
             registerIngredient(new Vis(), new VisHelper(), new VisRenderer());
+        }
+
+        if (Mods.ABYSSALCRAFT.isPresent()) {
+            registerIngredient(new PotentialEnergy(), new PotentialEnergyHelper(), new PotentialEnergyRenderer());
+        }
+
+        if (Mods.ICE_AND_FIRE.isPresent()) {
+            registerIngredient(new DragonBreath(), new DragonBreathHelper(), new DragonBreathRenderer());
         }
 
         this.registry = null;

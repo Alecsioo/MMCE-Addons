@@ -1,36 +1,40 @@
 package github.alecsio.mmceaddons.common.registry;
 
 import github.alecsio.mmceaddons.ModularMachineryAddons;
-import github.alecsio.mmceaddons.common.base.Mods;
-import github.alecsio.mmceaddons.common.block.BlockBiomeProviderInput;
-import github.alecsio.mmceaddons.common.block.BlockDimensionProviderInput;
-import github.alecsio.mmceaddons.common.block.BlockSingularityItemInputBus;
-import github.alecsio.mmceaddons.common.block.BlockSingularityItemOutputBus;
-import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaInputBus;
-import github.alecsio.mmceaddons.common.block.ae2.BlockMEEssentiaOutputBus;
-import github.alecsio.mmceaddons.common.block.bloodmagic.BlockMeteorProviderOutput;
-import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderInput;
-import github.alecsio.mmceaddons.common.block.bloodmagic.BlockWillMultiChunkProviderOutput;
-import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderInput;
-import github.alecsio.mmceaddons.common.block.nuclearcraft.BlockRadiationProviderOutput;
-import github.alecsio.mmceaddons.common.block.nuclearcraft.scrubber.BlockScrubberProviderInput;
-import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderInput;
-import github.alecsio.mmceaddons.common.block.thaumcraft.BlockFluxProviderOutput;
-import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderInput;
-import github.alecsio.mmceaddons.common.block.thaumcraft.BlockVisProviderOutput;
-import github.alecsio.mmceaddons.common.lib.ModularMachineryAddonsBlocks;
-import github.alecsio.mmceaddons.common.tile.TileBiomeProvider;
-import github.alecsio.mmceaddons.common.tile.TileDimensionProvider;
-import github.alecsio.mmceaddons.common.tile.TileSingularityItemInputBus;
-import github.alecsio.mmceaddons.common.tile.TileSingularityItemOutputBus;
-import github.alecsio.mmceaddons.common.tile.bloodmagic.TileMeteorProvider;
-import github.alecsio.mmceaddons.common.tile.bloodmagic.TileWillMultiChunkProvider;
-import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileRadiationProvider;
-import github.alecsio.mmceaddons.common.tile.nuclearcraft.TileScrubberProvider;
-import github.alecsio.mmceaddons.common.tile.thaumcraft.MEEssentiaInputBus;
-import github.alecsio.mmceaddons.common.tile.thaumcraft.MEEssentiaOutputBus;
-import github.alecsio.mmceaddons.common.tile.thaumcraft.TileFluxProvider;
-import github.alecsio.mmceaddons.common.tile.thaumcraft.TileVisProvider;
+import github.alecsio.mmceaddons.common.Mods;
+import github.alecsio.mmceaddons.common.hatch.vanilla.BlockBiomeProviderInput;
+import github.alecsio.mmceaddons.common.hatch.vanilla.BlockDimensionProviderInput;
+import github.alecsio.mmceaddons.common.hatch.vanilla.BlockSingularityItemInputBus;
+import github.alecsio.mmceaddons.common.hatch.vanilla.BlockSingularityItemOutputBus;
+import github.alecsio.mmceaddons.common.hatch.abyssalcraft.block.BlockPotentialEnergyProviderInput;
+import github.alecsio.mmceaddons.common.hatch.abyssalcraft.block.BlockPotentialEnergyProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.ae2.essentia.BlockMEEssentiaInputBus;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.ae2.essentia.BlockMEEssentiaOutputBus;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.meteor.BlockMeteorProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.will.BlockWillMultiChunkProviderInput;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.will.BlockWillMultiChunkProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.iceandfire.BlockDragonBreathInput;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.BlockRadiationProviderInput;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.BlockRadiationProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.BlockScrubberProviderInput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.flux.BlockFluxProviderInput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.flux.BlockFluxProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.vis.BlockVisProviderInput;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.vis.BlockVisProviderOutput;
+import github.alecsio.mmceaddons.common.hatch.vanilla.TileBiomeProvider;
+import github.alecsio.mmceaddons.common.hatch.vanilla.TileDimensionProvider;
+import github.alecsio.mmceaddons.common.hatch.vanilla.TileSingularityItemInputBus;
+import github.alecsio.mmceaddons.common.hatch.vanilla.TileSingularityItemOutputBus;
+import github.alecsio.mmceaddons.common.hatch.abyssalcraft.TilePotentialEnergyProvider;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.meteor.TileMeteorProvider;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.will.TileWillMultiChunkProvider;
+import github.alecsio.mmceaddons.common.hatch.iceandfire.TileDragonBreathProvider;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.TileRadiationProvider;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.TileScrubberProvider;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.ae2.essentia.MEEssentiaInputBus;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.ae2.essentia.MEEssentiaOutputBus;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.flux.TileFluxProvider;
+import github.alecsio.mmceaddons.common.hatch.thaumcraft.vis.TileVisProvider;
 import github.kasuminova.mmce.common.block.appeng.BlockMEMachineComponent;
 import hellfirepvp.modularmachinery.common.block.BlockCustomName;
 import hellfirepvp.modularmachinery.common.block.BlockMachineComponent;
@@ -108,6 +112,20 @@ public class RegistryBlocks {
             prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockVisProviderOutput);
         }
 
+        if (Mods.ABYSSALCRAFT.isPresent()) {
+            ModularMachineryAddonsBlocks.blockPotentialEnergyProviderInput = prepareRegister(new BlockPotentialEnergyProviderInput());
+            ModularMachineryAddonsBlocks.blockPotentialEnergyProviderOutput = prepareRegister(new BlockPotentialEnergyProviderOutput());
+
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockPotentialEnergyProviderInput);
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockPotentialEnergyProviderOutput);
+        }
+
+        if (Mods.ICE_AND_FIRE.isPresent()) {
+            ModularMachineryAddonsBlocks.blockDragonBreathProviderInput = prepareRegister(new BlockDragonBreathInput());
+
+            prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDragonBreathProviderInput);
+        }
+
         // Always register
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockBiomeProviderInput);
         prepareItemBlockRegister(ModularMachineryAddonsBlocks.blockDimensionProviderInput);
@@ -143,6 +161,15 @@ public class RegistryBlocks {
             registerTileEntity(TileFluxProvider.Output.class);
             registerTileEntity(TileVisProvider.Input.class);
             registerTileEntity(TileVisProvider.Output.class);
+        }
+
+        if (Mods.ABYSSALCRAFT.isPresent()) {
+            registerTileEntity(TilePotentialEnergyProvider.Input.class);
+            registerTileEntity(TilePotentialEnergyProvider.Output.class);
+        }
+
+        if (Mods.ICE_AND_FIRE.isPresent()) {
+            registerTileEntity(TileDragonBreathProvider.class);
         }
 
         // Always present

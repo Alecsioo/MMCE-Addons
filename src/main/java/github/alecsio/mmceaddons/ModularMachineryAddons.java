@@ -3,10 +3,10 @@ package github.alecsio.mmceaddons;
 import github.alecsio.mmceaddons.client.ClientTickHandler;
 import github.alecsio.mmceaddons.client.MouseScrollHandler;
 import github.alecsio.mmceaddons.client.network.handler.MachineAssemblyMessageHandler;
-import github.alecsio.mmceaddons.common.assembly.handler.MachineAssemblyEventHandler;
-import github.alecsio.mmceaddons.common.base.Mods;
-import github.alecsio.mmceaddons.common.commands.CommandGetCacheInfo;
-import github.alecsio.mmceaddons.common.entity.EntityImprovedMeteor;
+import github.alecsio.mmceaddons.common.item.assembly.handler.MachineAssemblyEventHandler;
+import github.alecsio.mmceaddons.common.Mods;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.commands.CommandGetCacheInfo;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.meteor.entity.EntityImprovedMeteor;
 import github.alecsio.mmceaddons.common.item.handler.RightClickHandler;
 import github.alecsio.mmceaddons.common.network.MachineAssemblyMessage;
 import github.alecsio.mmceaddons.common.network.MouseScrollMessage;
@@ -28,6 +28,7 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
+// TODO: fix mod versions
 @Mod(
         modid = ModularMachineryAddons.MODID,
         name = ModularMachineryAddons.NAME,
@@ -38,7 +39,7 @@ import org.apache.logging.log4j.Logger;
                 + "after:bloodmagic@[0.0.0,);"
                 + "after:thaumcraft@[0.0.0,);"
                 + "after:thaumicenergistics@[0.0.0,);"
-                + "after:nuclearcraft@[0.0.0,);"
+                + "after:nuclearcraft@[2.19b,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
         acceptableRemoteVersions = "[1.2.4]"

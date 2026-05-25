@@ -19,7 +19,7 @@ public class MMCEALateMixinLoader implements ILateMixinLoader {
     @Override
     public boolean shouldMixinConfigQueue(final String mixinConfig) {
         return switch (mixinConfig) {
-            case "mixins.mmcea.json" -> Loader.isModLoaded("modularmachinery") && Loader.isModLoaded("nuclearcraft");
+            case "mixins.mmcea.json" -> Loader.isModLoaded("modularmachinery") && Loader.isModLoaded("nuclearcraft") && Loader.isModLoaded("iceandfire");
             default -> true;
         };
     }

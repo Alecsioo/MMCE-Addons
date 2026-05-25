@@ -2,7 +2,7 @@ package github.alecsio.mmceaddons.client.render.entity;
 
 import WayofTime.bloodmagic.BloodMagic;
 import WayofTime.bloodmagic.client.render.entity.RenderEntityMeteor;
-import github.alecsio.mmceaddons.common.entity.EntityImprovedMeteor;
+import github.alecsio.mmceaddons.common.hatch.bloodmagic.meteor.entity.EntityImprovedMeteor;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;

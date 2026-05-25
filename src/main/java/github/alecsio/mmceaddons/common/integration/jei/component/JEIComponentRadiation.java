@@ -1,6 +1,6 @@
 package github.alecsio.mmceaddons.common.integration.jei.component;
 
-import github.alecsio.mmceaddons.common.crafting.requirement.nuclearcraft.IRequirementRadiation;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.IRequirementRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.component.base.JEIComponentBase;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
 import github.alecsio.mmceaddons.common.integration.jei.recipelayoutpart.LayoutRadiation;

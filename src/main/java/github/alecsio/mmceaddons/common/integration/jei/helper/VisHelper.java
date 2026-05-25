@@ -2,26 +2,26 @@ package github.alecsio.mmceaddons.common.integration.jei.helper;
 
 import github.alecsio.mmceaddons.common.integration.jei.helper.base.BaseIngredientHelper;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Vis;
+import mcp.MethodsReturnNonnullByDefault;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class VisHelper extends BaseIngredientHelper<Vis> {
 
     @Override
-    @Nonnull
-    public String getUniqueId(@Nonnull Vis vis) {
+    public String getUniqueId(Vis vis) {
         return "Vis";
     }
 
     @Override
-    @Nonnull
-    public String getResourceId(@Nonnull Vis vis) {
+    public String getResourceId(Vis vis) {
         return getUniqueId(vis);
     }
 
     @Override
-    @Nonnull
-    public Vis copyIngredient(@Nonnull Vis vis) {
+    public Vis copyIngredient(Vis vis) {
         return new Vis(vis.getAmount(), vis.getChunkRange(), vis.getMinPerChunk(), vis.getMaxPerChunk());
     }
 }

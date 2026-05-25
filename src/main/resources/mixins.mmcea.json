@@ -13,6 +13,8 @@
     "MachineControllerRedstoneAffectedEventMixin",
     "MachineNotFormedEventMixin",
     "RadiationHandlerMixin",
-    "StructureSelectionMixin"
+    "StructureSelectionMixin",
+    "iceandfire.EntityDragonBaseMixin",
+    "iceandfire.IafDragonDestructionManagerMixin"
   ]
 }
