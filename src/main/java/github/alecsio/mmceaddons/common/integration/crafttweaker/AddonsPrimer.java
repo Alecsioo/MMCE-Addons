@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons.common.integration.crafttweaker;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
 import github.alecsio.mmceaddons.common.hatch.iceandfire.DragonType;
+import github.alecsio.mmceaddons.common.hatch.mekanism.heat.RequirementHeat;
 import github.alecsio.mmceaddons.common.hatch.mekanism.laser.RequirementLaser;
 import github.alecsio.mmceaddons.common.hatch.vanilla.RequirementBiome;
 import github.alecsio.mmceaddons.common.hatch.vanilla.RequirementDimension;
@@ -195,5 +196,15 @@ public class AddonsPrimer {
     @ZenMethod
     public static RecipePrimer addLaserInput(RecipePrimer primer, double amount) {
         return addRequirement(primer, () -> RequirementLaser.from(IOType.INPUT, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addHeatInput(RecipePrimer primer, double amount) {
+        return addRequirement(primer, () -> RequirementHeat.from(IOType.INPUT, amount));
+    }
+
+    @ZenMethod
+    public static RecipePrimer addHeatOutput(RecipePrimer primer, double amount) {
+        return addRequirement(primer, () -> RequirementHeat.from(IOType.OUTPUT, amount));
     }
 }

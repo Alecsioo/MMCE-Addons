@@ -23,6 +23,9 @@ public class MMCEAConfig {
     @Config.Comment("The maximum amount of energy that laser hatches can hold. Default: 2^31 - 1")
     public static double laserHatchesCapacity = Integer.MAX_VALUE;
 
+    @Config.Comment("The maximum amount of heat that heat hatches can hold. Default: 2^16")
+    public static double heatHatchesCapacity = Math.pow(2, 16);
+
     @Config.Comment("The maximum amount of dragon breath charges that the dragon breath input hatch can hold. Default: 8")
     public static int dragonBreathChargesCapacity = 8;
 

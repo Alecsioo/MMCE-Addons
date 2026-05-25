@@ -3,7 +3,6 @@ package github.alecsio.mmceaddons.common.hatch.mekanism.laser;
 import com.google.common.util.concurrent.AtomicDouble;
 import github.alecsio.mmceaddons.common.MMCEAConfig;
 import github.alecsio.mmceaddons.common.hatch.handler.IAsyncRequirementHandler;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
@@ -41,12 +40,7 @@ public class TileLaserProvider extends TileColorableMachineComponent implements 
 
     @Override
     public CraftCheck canHandleAsync(RequirementLaser requirement) {
-        lock.readLock().lock();
-        try {
-            return storedEnergy.doubleValue() >= requirement.getPower() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.laser.input");
-        } finally {
-            lock.readLock().unlock();
-        }
+        return canHandleSync(requirement);
     }
 
     @Override

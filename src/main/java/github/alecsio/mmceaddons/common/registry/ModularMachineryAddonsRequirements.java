@@ -6,6 +6,7 @@ import github.alecsio.mmceaddons.common.hatch.abyssalcraft.RequirementTypePotent
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.meteor.RequirementTypeMeteor;
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.will.RequirementTypeWillMultiChunk;
 import github.alecsio.mmceaddons.common.hatch.iceandfire.RequirementTypeDragonBreath;
+import github.alecsio.mmceaddons.common.hatch.mekanism.heat.RequirementTypeHeat;
 import github.alecsio.mmceaddons.common.hatch.mekanism.laser.RequirementTypeLaser;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.RequirementTypeRadiation;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.RequirementTypeScrubber;
@@ -33,6 +34,7 @@ public class ModularMachineryAddonsRequirements {
     public static final ResourceLocation KEY_REQUIREMENT_POTENTIAL_ENERGY = new ResourceLocation(ModularMachineryAddons.MODID, "potentialEnergy");
     public static final ResourceLocation KEY_REQUIREMENT_DRAGON_BREATH = new ResourceLocation(ModularMachineryAddons.MODID, "dragonBreath");
     public static final ResourceLocation KEY_REQUIREMENT_LASER = new ResourceLocation(ModularMachineryAddons.MODID, "laser");
+    public static final ResourceLocation KEY_REQUIREMENT_HEAT = new ResourceLocation(ModularMachineryAddons.MODID, "heat");
 
     public static final ArrayList<RequirementType<?, ?>> REQUIREMENTS = new ArrayList<>();
 
@@ -72,6 +74,7 @@ public class ModularMachineryAddonsRequirements {
 
         if (Mods.MEKANISM.isPresent()) {
             registerRequirement(new RequirementTypeLaser(), KEY_REQUIREMENT_LASER);
+            registerRequirement(new RequirementTypeHeat(), KEY_REQUIREMENT_HEAT);
         }
     }
 

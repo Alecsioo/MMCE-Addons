@@ -1,6 +1,8 @@
 package github.alecsio.mmceaddons.common.hatch.mekanism.laser;
 
 import com.google.common.collect.Lists;
+import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
+import github.alecsio.mmceaddons.common.hatch.handler.IAsyncRequirementHandler;
 import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentLaser;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Laser;
@@ -19,6 +21,8 @@ import java.util.List;
 
 public class RequirementLaser extends ComponentRequirement.MultiComponentRequirement<Laser, RequirementTypeLaser> {
 
+    private static final RequirementValidator REQUIREMENT_VALIDATOR = RequirementValidator.getInstance();
+
     private final Laser laser;
 
     public RequirementLaser(IOType actionType, Laser laser) {
@@ -27,6 +31,7 @@ public class RequirementLaser extends ComponentRequirement.MultiComponentRequire
     }
 
     public static RequirementLaser from(IOType ioType, double power) {
+        REQUIREMENT_VALIDATOR.validateNotNegative(power, "power");
         return new RequirementLaser(ioType, new Laser(power));
     }
 
@@ -45,7 +50,7 @@ public class RequirementLaser extends ComponentRequirement.MultiComponentRequire
     @Nonnull
     @Override
     public CraftCheck canStartCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context) {
-        List<IRequirementHandler<RequirementLaser>> handlers = getLaserHandlers(components);
+        List<IAsyncRequirementHandler<RequirementLaser>> handlers = getLaserHandlers(components);
 
         CraftCheck check = CraftCheck.failure("error.modularmachineryaddons.requirement.missing.laser.input");
         for (IRequirementHandler<RequirementLaser> handler : handlers) {
@@ -61,9 +66,9 @@ public class RequirementLaser extends ComponentRequirement.MultiComponentRequire
 
     @Override
     public void startCrafting(List<ProcessingComponent<?>> components, RecipeCraftingContext context, ResultChance chance) {
-        List<IRequirementHandler<RequirementLaser>> handlers = getLaserHandlers(components);
+        List<IAsyncRequirementHandler<RequirementLaser>> handlers = getLaserHandlers(components);
 
-        for (IRequirementHandler<RequirementLaser> handler : handlers) {
+        for (IAsyncRequirementHandler<RequirementLaser> handler : handlers) {
             if (handler.canHandle(this).isSuccess()) {
                 handler.handle(this);
                 return;
@@ -93,8 +98,8 @@ public class RequirementLaser extends ComponentRequirement.MultiComponentRequire
     }
 
     @SuppressWarnings("unchecked")
-    private List<IRequirementHandler<RequirementLaser>> getLaserHandlers(List<ProcessingComponent<?>> components) {
-        return Lists.transform(components, component -> component != null ? (IRequirementHandler<RequirementLaser>) component.getProvidedComponent() : null);
+    private List<IAsyncRequirementHandler<RequirementLaser>> getLaserHandlers(List<ProcessingComponent<?>> components) {
+        return Lists.transform(components, component -> component != null ? (IAsyncRequirementHandler<RequirementLaser>) component.getProvidedComponent() : null);
     }
 
     @Nonnull
