@@ -12,9 +12,6 @@
     "IBlockInformationAccessor",
     "MachineControllerRedstoneAffectedEventMixin",
     "MachineNotFormedEventMixin",
-    "RadiationHandlerMixin",
-    "StructureSelectionMixin",
-    "iceandfire.EntityDragonBaseMixin",
-    "iceandfire.IafDragonDestructionManagerMixin"
+    "StructureSelectionMixin"
   ]
 }

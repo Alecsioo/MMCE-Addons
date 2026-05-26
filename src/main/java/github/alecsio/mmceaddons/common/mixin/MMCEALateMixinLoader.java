@@ -12,14 +12,18 @@ public class MMCEALateMixinLoader implements ILateMixinLoader {
     @Override
     public List<String> getMixinConfigs() {
         return Arrays.asList(
-                "mixins.mmcea.json"
+                "mixins.mmcea_iceandfire.json",
+                "mixins.mmcea_modularmachinery.json",
+                "mixins.mmcea_nuclearcraft.json"
         );
     }
 
     @Override
     public boolean shouldMixinConfigQueue(final String mixinConfig) {
         return switch (mixinConfig) {
-            case "mixins.mmcea.json" -> Loader.isModLoaded("modularmachinery") && Loader.isModLoaded("nuclearcraft") && Loader.isModLoaded("iceandfire");
+            case "mixins.mmcea_modularmachinery.json" -> Loader.isModLoaded("modularmachinery");
+            case "mixins.mmcea_iceandfire.json" -> Loader.isModLoaded("iceandfire");
+            case "mixins.mmcea_nuclearcraft.json" -> Loader.isModLoaded("nuclearcraft");
             default -> true;
         };
     }
