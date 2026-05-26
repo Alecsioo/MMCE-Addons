@@ -97,6 +97,7 @@ error.modularmachineryaddons.requirement.missing.heat.output=Not enough space fo
 # items
 item.modularmachineryaddons.advancedconstructtool.tooltip=Select two corners and click on a machine controller to extract the entire multiblock definition. Selecting a third block will clear the selection.
 tooltip.modularmachineryaddons.radiationsponge=Removes all radiation from the user as well as from the current chunk the user is in
+tooltip.modularmachineryaddons.dragonbreath=Click with a dragon heart to lock it to the corresponding type. Clicking with an empty hand will unlock the type
 
 # blocks
 tooltip.modularmachineryaddons.scrubber=May still cause leaks for a short time window in-between recipes or on world restart. Scrub your base!

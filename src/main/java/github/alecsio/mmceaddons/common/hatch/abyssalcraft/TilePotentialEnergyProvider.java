@@ -82,12 +82,12 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
     public static class Input extends TilePotentialEnergyProvider {
         @Override
         public CraftCheck canHandle(RequirementPotentialEnergy requirement) {
-            return storedEnergy.doubleValue() + requirement.getAmount() <= getMaxEnergy() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.input");
+            return storedEnergy.doubleValue() - requirement.getAmount() >= 0 ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.input");
         }
 
         @Override
         public void handle(RequirementPotentialEnergy requirement) {
-            storedEnergy.set(storedEnergy.doubleValue() + requirement.getAmount());
+            storedEnergy.set(storedEnergy.doubleValue() - requirement.getAmount());
         }
 
         @Nullable
@@ -100,12 +100,12 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
     public static class Output extends TilePotentialEnergyProvider {
         @Override
         public CraftCheck canHandle(RequirementPotentialEnergy requirement) {
-            return (storedEnergy.doubleValue() - requirement.getAmount()) >= 0.0f ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.output");
+            return (storedEnergy.doubleValue() + requirement.getAmount()) <= MMCEAConfig.potentialEnergyHatchesCapacity ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.output");
         }
 
         @Override
         public void handle(RequirementPotentialEnergy requirement) {
-            storedEnergy.set(storedEnergy.doubleValue() - requirement.getAmount());
+            storedEnergy.set(storedEnergy.doubleValue() + requirement.getAmount());
         }
 
         @Nullable

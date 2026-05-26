@@ -53,6 +53,7 @@ public abstract class TileFluxProvider extends AbstractSnapshotMachineComponent<
         lock.writeLock().lock();
         try {
             this.fluxSnapshot = localSnapshot;
+            markNoUpdateSync();
         } finally {
             lock.writeLock().unlock();
         }
@@ -114,6 +115,7 @@ public abstract class TileFluxProvider extends AbstractSnapshotMachineComponent<
         protected CraftCheck checkSnapshot(RequirementFlux requirement) {
             if (requirement.getChunkRange() > fluxSnapshot.getCoveredRange()) {
                 largestChunkRange = requirement.getChunkRange();
+                markNoUpdateSync();
                 return CraftCheck.failure(getKeyForRequirement(requirement));
             }
 

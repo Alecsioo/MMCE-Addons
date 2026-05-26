@@ -3,12 +3,11 @@ package github.alecsio.mmceaddons.common.hatch.iceandfire;
 import github.alecsio.mmceaddons.common.hatch.BaseBlockMachineComponent;
 import hellfirepvp.modularmachinery.common.block.BlockVariants;
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -47,7 +46,14 @@ public class BlockDragonBreathInput extends BaseBlockMachineComponent implements
         this.setDefaultState(this.blockState.getBaseState().withProperty(DRAGON_TYPE, DragonType.EMPTY));
     }
 
-
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        if (worldIn == null || !worldIn.isRemote) {
+            super.addInformation(stack, worldIn, tooltip, flagIn);
+        }
+        tooltip.add(I18n.format("tooltip.modularmachineryaddons.dragonbreath"));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+    }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {

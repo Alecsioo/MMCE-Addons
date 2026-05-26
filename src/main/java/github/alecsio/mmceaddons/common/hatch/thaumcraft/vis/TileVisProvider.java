@@ -3,7 +3,6 @@ package github.alecsio.mmceaddons.common.hatch.thaumcraft.vis;
 import github.alecsio.mmceaddons.common.hatch.AbstractSnapshotMachineComponent;
 import github.alecsio.mmceaddons.common.hatch.ISnapshot;
 import github.alecsio.mmceaddons.common.hatch.handler.chunks.ChunksReader;
-import github.alecsio.mmceaddons.common.hatch.thaumcraft.flux.RequirementFlux;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.tiles.base.MachineComponentTile;
@@ -52,6 +51,7 @@ public abstract class TileVisProvider extends AbstractSnapshotMachineComponent<R
         lock.writeLock().lock();
         try {
             this.visSnapshot = localSnapshot;
+            markNoUpdateSync();
         } finally {
             lock.writeLock().unlock();
         }
@@ -69,6 +69,7 @@ public abstract class TileVisProvider extends AbstractSnapshotMachineComponent<R
         protected CraftCheck checkSnapshot(RequirementVis requirement) {
             if (requirement.getChunkRange() > visSnapshot.getCoveredRange()) {
                 largestChunkRange = requirement.getChunkRange();
+                markNoUpdateSync();
                 return CraftCheck.failure(getKeyForRequirement(requirement));
             }
 
@@ -114,6 +115,7 @@ public abstract class TileVisProvider extends AbstractSnapshotMachineComponent<R
         protected CraftCheck checkSnapshot(RequirementVis requirement) {
             if (requirement.getChunkRange() > visSnapshot.getCoveredRange()) {
                 largestChunkRange = requirement.getChunkRange();
+                markNoUpdateSync();
                 return CraftCheck.failure(getKeyForRequirement(requirement));
             }
 

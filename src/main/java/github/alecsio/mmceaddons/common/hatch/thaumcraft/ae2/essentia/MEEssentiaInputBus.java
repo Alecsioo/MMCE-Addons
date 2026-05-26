@@ -52,6 +52,7 @@ public class MEEssentiaInputBus extends MEEssentiaBus {
         lock.writeLock().lock();
         try {
             aspectAmounts = localAspectAmounts;
+            markNoUpdateSync();
         } finally {
             lock.writeLock().unlock();
         }
@@ -59,7 +60,7 @@ public class MEEssentiaInputBus extends MEEssentiaBus {
 
     @Override
     protected CraftCheck checkSnapshot(RequirementEssentia requirement) {
-         Essentia essentia = requirement.getEssentiaStack();
+        Essentia essentia = requirement.getEssentiaStack();
         Long amount = aspectAmounts.getOrDefault(essentia.getAspectTag(), 0L);
         return amount >= essentia.getAmount() ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.essentia.input");
     }

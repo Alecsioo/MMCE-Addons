@@ -116,6 +116,7 @@ public class MEEssentiaOutputBus extends MEEssentiaBus {
             }
             if (anyInserted || anyRemaining) {
                 refreshScheduler.recordSuccess();
+                markNoUpdateSync();
             }
             return super.tickingRequest(iGridNode, i);
         } finally {
@@ -147,6 +148,7 @@ public class MEEssentiaOutputBus extends MEEssentiaBus {
             lock.writeLock().lock();
             try {
                 aspectAmounts.merge(aspectName, leftover, Long::sum);
+                markNoUpdateSync();
             } finally {
                 lock.writeLock().unlock();
             }

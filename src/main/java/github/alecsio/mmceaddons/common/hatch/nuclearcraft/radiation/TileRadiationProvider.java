@@ -60,6 +60,7 @@ public abstract class TileRadiationProvider extends AbstractSnapshotMachineCompo
         lock.writeLock().lock();
         try {
             this.radiationSnapshot = localSnapshot;
+            markNoUpdateSync();
         } finally {
             lock.writeLock().unlock();
         }
@@ -76,6 +77,7 @@ public abstract class TileRadiationProvider extends AbstractSnapshotMachineCompo
         protected CraftCheck checkSnapshot(RequirementRadiation requirement) {
             if (requirement.getChunkRange() > radiationSnapshot.getCoveredRange()) {
                 largestChunkRange = requirement.getChunkRange();
+                markNoUpdateSync();
                 return CraftCheck.failure(getKeyForRequirement(requirement));
             }
 
@@ -93,13 +95,13 @@ public abstract class TileRadiationProvider extends AbstractSnapshotMachineCompo
             for (Chunk chunk : chunks) {
                 if (remaining <= 0.0D) break;
 
-                BlockPos pos = getBlockInChunk(chunk);
-                float stored = AuraHelper.getFlux(this.world, pos);
+                IRadiationSource source = RadiationHelper.getRadiationSource(chunk);
+                double stored = source.getRadiationLevel();
                 double available = Math.max(0.0D, stored - minPerChunk);
                 if (available <= 0.0D) continue;
 
                 double toDrain = Math.min(available, remaining);
-                AuraHelper.drainFlux(this.world, pos, (float) toDrain, false);
+                source.setRadiationLevel(stored - toDrain);
                 remaining -= toDrain;
             }
 
@@ -118,6 +120,7 @@ public abstract class TileRadiationProvider extends AbstractSnapshotMachineCompo
         protected CraftCheck checkSnapshot(RequirementRadiation requirement) {
             if (requirement.getChunkRange() > radiationSnapshot.getCoveredRange()) {
                 largestChunkRange = requirement.getChunkRange();
+                markNoUpdateSync();
                 return CraftCheck.failure(getKeyForRequirement(requirement));
             }
 
@@ -137,13 +140,13 @@ public abstract class TileRadiationProvider extends AbstractSnapshotMachineCompo
             for (Chunk chunk : chunks) {
                 if (remaining <= 0.0D) break;
 
-                BlockPos pos = getBlockInChunk(chunk);
-                float stored = AuraHelper.getFlux(this.world, pos);
+                IRadiationSource source = RadiationHelper.getRadiationSource(chunk);
+                double stored = source.getRadiationLevel();
                 double capacity = Math.max(0.0D, maxPerChunk - stored);
                 if (capacity <= 0.0D) continue;
 
                 double toFill = Math.min(capacity, remaining);
-                AuraHelper.polluteAura(this.world, pos, (float) toFill, true);
+                source.setRadiationLevel(stored + toFill);
                 remaining -= toFill;
             }
 
