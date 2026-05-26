@@ -8,31 +8,31 @@
 
 ## • Features:
 
-- 🔧 **Multi-Chunk Hatches**: Hatches that can interact and use nearby chunks.
-- 🌀 **Thaumcraft Integration**: Hatches that allow the consumption, production, or scrubbing of vis and/or Flux.
-- ☢️ **NuclearCraft Radiation Support**: Hatches that allow the consumption, production, or scrubbing of radiation.
-- 🌍 **Biome and Dimension Requirements**: Hatches that allow recipes to work only when in specific biomes or dimensions.
-- ⚗️ **Essentia Hatches**: Hatches that directly connect to **Thaumic Energistics** Essentia storage within a ME Network.
-- 🔥 **Blood Magic Meteors**: Hatches that spawn blood magic meteors from the falling tower ritual.
-- 🛠️ **Advanced Wrench**: A wrench which lets you click two corners of your build, goodbye clicking each block one by one!
-- 📘 **JEI Support**: All custom requirements are visible in the recipe display.
-- 📜 **ZenScript or Json Integration**: Define requirements via CraftTweaker ZenScript OR Json mattering on your own preferences.
+- **Multi-Chunk Hatches**: Hatches that can interact and use nearby chunks.
+- **Thaumcraft Integration**: Hatches that allow the consumption, production, or scrubbing of vis and/or Flux.
+- **NuclearCraft Radiation Support**: Hatches that allow the consumption, production, or scrubbing of radiation.
+- **Biome and Dimension Requirements**: Hatches that allow recipes to work only when in specific biomes or dimensions.
+- **Essentia Hatches**: Hatches that directly connect to **Thaumic Energistics** Essentia storage within a ME Network.
+- **Blood Magic Meteors**: Hatches that spawn blood magic meteors from the falling tower ritual.
+- **Advanced Wrench**: A wrench which lets you click two corners of your build, goodbye clicking each block one by one!
+- **JEI Support**: All custom requirements are visible in the recipe display.
+**ZenScript or Json Integration**: Define requirements via CraftTweaker ZenScript OR Json mattering on your own preferences.
 
 ---
 
-## 📚 Wiki & Documentation
+## Wiki & Documentation
 
 Interested? You can find more details about each hatch and how they work for developers on the [Wiki](https://github.com/Alecsioo/MMCE-Addons/wiki).
 
 ---
 
-## 🐛 Issues & Feature Requests
+## Issues & Feature Requests
 
 If you encounter a bug or want to suggest a feature, please [open an issue](https://github.com/Alecsioo/MMCE-Addons/issues). PRs are welcome!
 
 ---
 
-## 📦 Installation
+## Installation
 
 1. Download the mod from [CurseForge](https://legacy.curseforge.com/minecraft/mc-mods/modular-machinery-community-edition-addons).
 2. Place the `.jar` file in your `mods` folder.
@@ -40,9 +40,10 @@ If you encounter a bug or want to suggest a feature, please [open an issue](http
 
 ---
 
-## 🧾 Credits & Licenses
+## Credits & Licenses
 
 - Some assets adapted from **Blood Magic, Thaumic Energistics, MMCE, and MM.**
+- Thanks to DaedalusGame for some of the Modular Diversity assets: https://github.com/DaedalusGame/Modular-Diversity
 - Special thanks to **NerdySpider** for contribution of assets and hatch ideas.
 
 If any license is misapplied or violated, please [contact me](https://github.com/Alecsioo) so it can be corrected. No harm is intended — this is my first mod!

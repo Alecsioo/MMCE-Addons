@@ -16,7 +16,6 @@ public abstract class AbstractSnapshotMachineComponent<T> extends TileColorableM
     protected abstract void updateSnapshot();
     protected abstract CraftCheck checkSnapshot(T requirement);
 
-
     @Override
     public CraftCheck canHandleSync(T requirement) {
         lock.writeLock().lock();

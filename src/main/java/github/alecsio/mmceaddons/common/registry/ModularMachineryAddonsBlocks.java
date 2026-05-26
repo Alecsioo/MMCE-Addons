@@ -1,6 +1,9 @@
 package github.alecsio.mmceaddons.common.registry;
 
 
+import github.alecsio.mmceaddons.common.hatch.mekanism.heat.BlockHeatInput;
+import github.alecsio.mmceaddons.common.hatch.mekanism.heat.BlockHeatOutput;
+import github.alecsio.mmceaddons.common.hatch.mekanism.laser.BlockLaserInput;
 import github.alecsio.mmceaddons.common.hatch.vanilla.BlockBiomeProviderInput;
 import github.alecsio.mmceaddons.common.hatch.vanilla.BlockDimensionProviderInput;
 import github.alecsio.mmceaddons.common.hatch.vanilla.BlockSingularityItemInputBus;
@@ -56,6 +59,11 @@ public class ModularMachineryAddonsBlocks {
 
     // Ice & Fire
     public static BlockDragonBreathInput blockDragonBreathProviderInput;
+
+    // Mekanism
+    public static BlockLaserInput blockLaserProviderInput;
+    public static BlockHeatInput blockHeatProviderInput;
+    public static BlockHeatOutput blockHeatProviderOutput;
 
     public static BlockSingularityItemInputBus blockSingularityItemInput;
     public static BlockSingularityItemOutputBus blockSingularityItemOutput;

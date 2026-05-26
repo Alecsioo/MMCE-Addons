@@ -7,6 +7,7 @@ import hellfirepvp.modularmachinery.common.crafting.ComponentType;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 
 public class MachineComponentPotentialEnergyProvider extends BaseMachineComponent<RequirementPotentialEnergy> {
+
     public MachineComponentPotentialEnergyProvider(IOType ioType, IRequirementHandler<RequirementPotentialEnergy> handler) {
         super(ioType, handler);
     }

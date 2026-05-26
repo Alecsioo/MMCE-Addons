@@ -32,7 +32,10 @@ tile.modularmachineryaddons.blocksingularityitemoutputbus.huge.name=Huge Singula
 tile.modularmachineryaddons.blocksingularityitemoutputbus.ludicrous.name=Ludicrous Singularity Output Hatch
 tile.modularmachineryaddons.blockpotentialenergyproviderinput.name=Potential Energy Input
 tile.modularmachineryaddons.blockpotentialenergyprovideroutput.name=Potential Energy Output
-tile.modularmachineryaddons.blockdragonbreathinput.name=Dragon Breath Input
+tile.modularmachineryaddons.blockdragonbreathinput.name=Dragon Breath Input Hatch
+tile.modularmachineryaddons.blocklaserinput.name=Laser Input Hatch
+tile.modularmachineryaddons.blockheatinput.name=Heat Input Hatch
+tile.modularmachineryaddons.blockheatoutput.name=Heat Output Hatch
 
 item.modularmachineryaddons.itemadvancedconstructtool.name=Advanced Wrench
 item.modularmachineryaddons.itemadvancedmachineassembler.name=Advanced Machine Assembler
@@ -55,6 +58,8 @@ error.modularmachineryaddons.component.invalid.radiation=No radiation hatch foun
 error.modularmachineryaddons.component.invalid.will=No will hatch found
 error.modularmachineryaddons.component.invalid.meteor=No meteor hatch found
 error.modularmachineryaddons.component.invalid.potential_energy=No potential energy hatch found
+error.modularmachineryaddons.component.invalid.laser=No laser hatch found
+error.modularmachineryaddons.component.invalid.heat=No heat hatch found
 error.assembler.not.found=Could not locate an advanced machine assembler item in the player's inventory
 error.encryption.key.not.found=The assembler must be linked to an ME system via a security station to allow item extraction
 error.security.station.not.found=Could not locate security station
@@ -82,6 +87,11 @@ error.modularmachineryaddons.requirement.missing.potentialenergy.output=Not enou
 
 error.modularmachineryaddons.requirement.missing.type=Missing dragon breath type
 error.modularmachineryaddons.requirement.missing.charges=Not enough dragon breath charges
+
+error.modularmachineryaddons.requirement.missing.laser.input=Missing laser requirement
+
+error.modularmachineryaddons.requirement.missing.heat.input=Not enough heat
+error.modularmachineryaddons.requirement.missing.heat.output=Not enough space for heat output
 
 
 # items
@@ -140,6 +150,8 @@ jei.tooltip.modularmachineryaddons.scrubber_special=To Infinity and Beyond!
 jei.tooltip.modularmachineryaddons.breath_type=Breath Type
 jei.tooltip.modularmachineryaddons.breath_amount=Amount
 jei.tooltip.modularmachineryaddons.potential_energy=Potential Energy:
+jei.tooltip.modularmachineryaddons.laser=Laser Energy:
+jei.tooltip.modularmachineryaddons.heat=Heat:
 
 # TOP
 
@@ -149,3 +161,5 @@ top.modularmachineryaddons.dragon_breath.locked.false=Locked: false
 top.modularmachineryaddons.dragon_breath.type=Type:
 top.modularmachineryaddons.dragon_breath.quantity=Stored:
 top.modularmachineryaddons.next_refresh=Next state refresh in
+top.modularmachineryaddons.laser=Stored:
+top.modularmachineryaddons.heat=Temperature:

@@ -6,6 +6,8 @@ import github.alecsio.mmceaddons.common.hatch.abyssalcraft.ComponentPotentialEne
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.meteor.ComponentMeteor;
 import github.alecsio.mmceaddons.common.hatch.bloodmagic.will.ComponentWillMultiChunk;
 import github.alecsio.mmceaddons.common.hatch.iceandfire.ComponentDragonBreath;
+import github.alecsio.mmceaddons.common.hatch.mekanism.heat.ComponentHeat;
+import github.alecsio.mmceaddons.common.hatch.mekanism.laser.ComponentLaser;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.ComponentRadiation;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.ComponentScrubber;
 import github.alecsio.mmceaddons.common.hatch.thaumcraft.ae2.essentia.ComponentEssentia;
@@ -34,6 +36,8 @@ public class ModularMachineryAddonsComponents {
     public static final ResourceLocation KEY_COMPONENT_DIMENSION = new ResourceLocation(ModularMachineryAddons.MODID, "dimension");
     public static final ResourceLocation KEY_COMPONENT_POTENTIAL_ENERGY = new ResourceLocation(ModularMachineryAddons.MODID, "potentialEnergy");
     public static final ResourceLocation KEY_COMPONENT_DRAGON_BREATH = new ResourceLocation(ModularMachineryAddons.MODID, "dragonBreath");
+    public static final ResourceLocation KEY_COMPONENT_LASER = new ResourceLocation(ModularMachineryAddons.MODID, "laser");
+    public static final ResourceLocation KEY_COMPONENT_HEAT = new ResourceLocation(ModularMachineryAddons.MODID, "heat");
 
     public static final ArrayList<ComponentType> COMPONENTS = new ArrayList<>();
 
@@ -68,6 +72,11 @@ public class ModularMachineryAddonsComponents {
 
         if (Mods.ICE_AND_FIRE.isPresent()) {
             registerComponent(new ComponentDragonBreath(), KEY_COMPONENT_DRAGON_BREATH);
+        }
+
+        if (Mods.MEKANISM.isPresent()) {
+            registerComponent(new ComponentLaser(), KEY_COMPONENT_LASER);
+            registerComponent(new ComponentHeat(), KEY_COMPONENT_HEAT);
         }
     }
 
