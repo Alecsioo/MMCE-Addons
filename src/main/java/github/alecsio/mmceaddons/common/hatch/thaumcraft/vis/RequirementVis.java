@@ -1,22 +1,19 @@
 package github.alecsio.mmceaddons.common.hatch.thaumcraft.vis;
 
+import github.alecsio.mmceaddons.common.hatch.AbstractMultiComponentRequirement;
 import github.alecsio.mmceaddons.common.hatch.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentVis;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Vis;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
-import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
-import hellfirepvp.modularmachinery.common.util.ResultChance;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis> implements IMultiChunkRequirement {
+public class RequirementVis extends AbstractMultiComponentRequirement<Vis, RequirementTypeVis> implements IMultiChunkRequirement {
 
     private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
 
@@ -50,37 +47,9 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
                 cmp.ioType == getActionType();
     }
 
-    @Nonnull
-    @Override
-    public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        return getVisHandler(component).canHandle(this);
-    }
-
-    @Override
-    public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.INPUT) {
-            getVisHandler(component).handle(this);
-        }
-        return true;
-    }
-
-    @Nonnull
-    @Override
-    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.OUTPUT) {
-            getVisHandler(component).handle(this);
-        }
-        return CraftCheck.success();
-    }
-
     @Override
     public ComponentRequirement<Vis, RequirementTypeVis> deepCopy() {
         return new RequirementVis(this.actionType, this.vis.getChunkRange(), this.vis.getAmount(), this.vis.getMinPerChunk(), this.vis.getMaxPerChunk());
-    }
-
-    @Override
-    public ComponentRequirement<Vis, RequirementTypeVis> deepCopyModified(List<RecipeModifier> modifiers) {
-        return deepCopy();
     }
 
     @Nonnull
@@ -92,11 +61,6 @@ public class RequirementVis extends ComponentRequirement<Vis, RequirementTypeVis
     @Override
     public JEIComponent<Vis> provideJEIComponent() {
         return new JEIComponentVis(this.vis);
-    }
-
-    @SuppressWarnings("unchecked")
-    private IRequirementHandler<RequirementVis> getVisHandler(ProcessingComponent<?> component) {
-        return (IRequirementHandler<RequirementVis>) component.getComponent().getContainerProvider();
     }
 
     @Override

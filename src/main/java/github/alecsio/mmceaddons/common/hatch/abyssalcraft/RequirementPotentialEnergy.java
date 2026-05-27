@@ -1,20 +1,17 @@
 package github.alecsio.mmceaddons.common.hatch.abyssalcraft;
 
+import github.alecsio.mmceaddons.common.hatch.AbstractMultiComponentRequirement;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentPotentialEnergy;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.PotentialEnergy;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
-import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
-import hellfirepvp.modularmachinery.common.util.ResultChance;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class RequirementPotentialEnergy extends ComponentRequirement<PotentialEnergy, RequirementTypePotentialEnergy> {
+public class RequirementPotentialEnergy extends AbstractMultiComponentRequirement<PotentialEnergy, RequirementTypePotentialEnergy> {
 
     private final PotentialEnergy potentialEnergy;
 
@@ -39,37 +36,9 @@ public class RequirementPotentialEnergy extends ComponentRequirement<PotentialEn
                 cmp.ioType == getActionType();
     }
 
-    @Nonnull
-    @Override
-    public CraftCheck canStartCrafting(ProcessingComponent<?> processingComponent, RecipeCraftingContext recipeCraftingContext, List<ComponentOutputRestrictor> list) {
-        return getPotentialEnergyHandler(processingComponent).canHandle(this);
-    }
-
-    @Override
-    public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.INPUT) {
-            getPotentialEnergyHandler(component).handle(this);
-        }
-        return true;
-    }
-
-    @Nonnull
-    @Override
-    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.OUTPUT) {
-            getPotentialEnergyHandler(component).handle(this);
-        }
-        return CraftCheck.success();
-    }
-
     @Override
     public ComponentRequirement<PotentialEnergy, RequirementTypePotentialEnergy> deepCopy() {
         return new RequirementPotentialEnergy(this.actionType, new PotentialEnergy(this.potentialEnergy.getEnergy()));
-    }
-
-    @Override
-    public ComponentRequirement<PotentialEnergy, RequirementTypePotentialEnergy> deepCopyModified(List<RecipeModifier> list) {
-        return deepCopy();
     }
 
     @Nonnull
@@ -81,10 +50,5 @@ public class RequirementPotentialEnergy extends ComponentRequirement<PotentialEn
     @Override
     public JEIComponent<PotentialEnergy> provideJEIComponent() {
         return new JEIComponentPotentialEnergy(this.potentialEnergy);
-    }
-
-    @SuppressWarnings("unchecked")
-    private IRequirementHandler<RequirementPotentialEnergy> getPotentialEnergyHandler(ProcessingComponent<?> component) {
-        return (IRequirementHandler<RequirementPotentialEnergy>) component.getComponent().getContainerProvider();
     }
 }

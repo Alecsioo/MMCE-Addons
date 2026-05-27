@@ -1,22 +1,19 @@
 package github.alecsio.mmceaddons.common.hatch.thaumcraft.flux;
 
+import github.alecsio.mmceaddons.common.hatch.AbstractMultiComponentRequirement;
 import github.alecsio.mmceaddons.common.hatch.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentFlux;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Flux;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
-import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
-import hellfirepvp.modularmachinery.common.util.ResultChance;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeFlux> implements IMultiChunkRequirement {
+public class RequirementFlux extends AbstractMultiComponentRequirement<Flux, RequirementTypeFlux> implements IMultiChunkRequirement {
 
     private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
 
@@ -84,37 +81,9 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
                 cmp.ioType == getActionType();
     }
 
-    @Nonnull
-    @Override
-    public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        return getFluxHandler(component).canHandle(this);
-    }
-
-    @Override
-    public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.INPUT) {
-            getFluxHandler(component).handle(this);
-        }
-        return true;
-    }
-
-    @Nonnull
-    @Override
-    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.OUTPUT) {
-            getFluxHandler(component).handle(this);
-        }
-        return CraftCheck.success();
-    }
-
     @Override
     public ComponentRequirement<Flux, RequirementTypeFlux> deepCopy() {
         return new RequirementFlux(getActionType(), chunkRange, amount, minPerChunk, maxPerChunk);
-    }
-
-    @Override
-    public ComponentRequirement<Flux, RequirementTypeFlux> deepCopyModified(List<RecipeModifier> modifiers) {
-        return deepCopy();
     }
 
     @Nonnull
@@ -126,10 +95,5 @@ public class RequirementFlux extends ComponentRequirement<Flux, RequirementTypeF
     @Override
     public JEIComponent<Flux> provideJEIComponent() {
         return new JEIComponentFlux(new Flux((float) this.amount, chunkRange));
-    }
-
-    @SuppressWarnings("unchecked")
-    private IRequirementHandler<RequirementFlux> getFluxHandler(ProcessingComponent<?> component) {
-        return (IRequirementHandler<RequirementFlux>) component.getComponent().getContainerProvider();
     }
 }

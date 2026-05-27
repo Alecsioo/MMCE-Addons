@@ -1,22 +1,19 @@
 package github.alecsio.mmceaddons.common.hatch.iceandfire;
 
+import github.alecsio.mmceaddons.common.hatch.AbstractMultiComponentRequirement;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentDragonBreath;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.DragonBreath;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
-import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
-import hellfirepvp.modularmachinery.common.util.ResultChance;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class RequirementDragonBreath extends ComponentRequirement<DragonBreath, RequirementTypeDragonBreath> {
+public class RequirementDragonBreath extends AbstractMultiComponentRequirement<DragonBreath, RequirementTypeDragonBreath> {
 
     private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
 
@@ -56,28 +53,9 @@ public class RequirementDragonBreath extends ComponentRequirement<DragonBreath, 
         return dragonBreath.getDragonType();
     }
 
-    @Nonnull
-    @Override
-    public CraftCheck canStartCrafting(ProcessingComponent<?> processingComponent, RecipeCraftingContext recipeCraftingContext, List<ComponentOutputRestrictor> list) {
-        return getDragonBreathHandler(processingComponent).canHandle(this);
-    }
-
-    @Override
-    public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.INPUT) {
-            getDragonBreathHandler(component).handle(this);
-        }
-        return true;
-    }
-
     @Override
     public ComponentRequirement<DragonBreath, RequirementTypeDragonBreath> deepCopy() {
         return new RequirementDragonBreath(actionType, new DragonBreath(dragonBreath.getDragonType(), dragonBreath.getAmount()));
-    }
-
-    @Override
-    public ComponentRequirement<DragonBreath, RequirementTypeDragonBreath> deepCopyModified(List<RecipeModifier> list) {
-        return deepCopy();
     }
 
     @Nonnull
@@ -89,10 +67,5 @@ public class RequirementDragonBreath extends ComponentRequirement<DragonBreath, 
     @Override
     public JEIComponent<DragonBreath> provideJEIComponent() {
         return new JEIComponentDragonBreath(dragonBreath);
-    }
-
-    @SuppressWarnings("unchecked")
-    private IRequirementHandler<RequirementDragonBreath> getDragonBreathHandler(ProcessingComponent<?> component) {
-        return (IRequirementHandler<RequirementDragonBreath>) component.getComponent().getContainerProvider();
     }
 }

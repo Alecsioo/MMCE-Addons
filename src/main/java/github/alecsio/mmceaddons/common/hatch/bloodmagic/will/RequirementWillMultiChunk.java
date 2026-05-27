@@ -1,24 +1,21 @@
 package github.alecsio.mmceaddons.common.hatch.bloodmagic.will;
 
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
+import github.alecsio.mmceaddons.common.hatch.AbstractMultiComponentRequirement;
 import github.alecsio.mmceaddons.common.hatch.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.exception.RequirementPrerequisiteFailedException;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentWill;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
-import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
-import hellfirepvp.modularmachinery.common.util.ResultChance;
 import kport.modularmagic.common.integration.jei.ingredient.DemonWill;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, RequirementTypeWillMultiChunk> implements IMultiChunkRequirement {
+public class RequirementWillMultiChunk extends AbstractMultiComponentRequirement<DemonWill, RequirementTypeWillMultiChunk> implements IMultiChunkRequirement {
 
     private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
 
@@ -61,36 +58,8 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
     }
 
     @Override
-    public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.INPUT) {
-            getWillHandler(component).handle(this);
-        }
-        return true;
-    }
-
-    @Nonnull
-    @Override
-    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.OUTPUT) {
-            getWillHandler(component).handle(this);
-        }
-        return CraftCheck.success();
-    }
-
-    @Nonnull
-    @Override
-    public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        return getWillHandler(component).canHandle(this);
-    }
-
-    @Override
     public ComponentRequirement<DemonWill, RequirementTypeWillMultiChunk> deepCopy() {
         return new RequirementWillMultiChunk(this.actionType, this.chunkRange, this.amount, this.minPerChunk, this.maxPerChunk, this.willType);
-    }
-
-    @Override
-    public ComponentRequirement<DemonWill, RequirementTypeWillMultiChunk> deepCopyModified(List<RecipeModifier> list) {
-        return deepCopy();
     }
 
     @Nonnull
@@ -102,11 +71,6 @@ public class RequirementWillMultiChunk extends ComponentRequirement<DemonWill, R
     @Override
     public JEIComponent<DemonWill> provideJEIComponent() {
         return new JEIComponentWill(this);
-    }
-
-    @SuppressWarnings("unchecked")
-    private IRequirementHandler<RequirementWillMultiChunk> getWillHandler(ProcessingComponent<?> component) {
-        return (IRequirementHandler<RequirementWillMultiChunk>) component.getComponent().getContainerProvider();
     }
 
     @Override

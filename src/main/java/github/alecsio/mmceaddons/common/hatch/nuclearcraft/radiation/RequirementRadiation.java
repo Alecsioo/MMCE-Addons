@@ -1,22 +1,19 @@
 package github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation;
 
+import github.alecsio.mmceaddons.common.hatch.AbstractMultiComponentRequirement;
 import github.alecsio.mmceaddons.common.hatch.IMultiChunkRequirement;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.*;
 import hellfirepvp.modularmachinery.common.lib.RegistriesMM;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
-import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
-import hellfirepvp.modularmachinery.common.util.ResultChance;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class RequirementRadiation extends ComponentRequirement<Radiation, RequirementTypeRadiation> implements IMultiChunkRequirement, IRequirementRadiation {
+public class RequirementRadiation extends AbstractMultiComponentRequirement<Radiation, RequirementTypeRadiation> implements IMultiChunkRequirement, IRequirementRadiation {
 
     private static final RequirementValidator requirementValidator = RequirementValidator.getInstance();
 
@@ -48,36 +45,8 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
                 cmp.ioType == getActionType();
     }
 
-    @Nonnull
-    @Override
-    public CraftCheck canStartCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, List<ComponentOutputRestrictor> restrictions) {
-        return getRadiationHandler(component).canHandle(this);
-    }
-
-    @Override
-    public boolean startCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.INPUT) {
-            getRadiationHandler(component).handle(this);
-        }
-        return true;
-    }
-
-    @Nonnull
-    @Override
-    public CraftCheck finishCrafting(ProcessingComponent<?> component, RecipeCraftingContext context, ResultChance chance) {
-        if (getActionType() == IOType.OUTPUT) {
-            getRadiationHandler(component).handle(this);
-        }
-        return CraftCheck.success();
-    }
-
     @Override
     public ComponentRequirement<Radiation, RequirementTypeRadiation> deepCopy() {
-        return this;
-    }
-
-    @Override
-    public ComponentRequirement<Radiation, RequirementTypeRadiation> deepCopyModified(List<RecipeModifier> modifiers) {
         return this;
     }
 
@@ -120,10 +89,5 @@ public class RequirementRadiation extends ComponentRequirement<Radiation, Requir
     @Override
     public double getMaxPerChunk() {
         return maxPerChunk;
-    }
-
-    @SuppressWarnings("unchecked")
-    private IRequirementHandler<RequirementRadiation> getRadiationHandler(ProcessingComponent<?> component) {
-        return (IRequirementHandler<RequirementRadiation>) component.getComponent().getContainerProvider();
     }
 }
