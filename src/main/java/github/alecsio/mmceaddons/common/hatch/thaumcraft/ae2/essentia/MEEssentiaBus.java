@@ -8,6 +8,7 @@ import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.storage.IMEInventory;
 import appeng.api.util.AEPartLocation;
+import github.alecsio.mmceaddons.common.MMCEAConfig;
 import github.alecsio.mmceaddons.common.hatch.handler.AdaptiveSnapshotRefreshScheduler;
 import github.alecsio.mmceaddons.common.hatch.handler.IAsyncRequirementHandler;
 import github.kasuminova.mmce.common.tile.base.MEMachineComponent;
@@ -19,9 +20,6 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import static github.alecsio.mmceaddons.common.hatch.handler.AdaptiveSnapshotRefreshScheduler.MAX_INTERVAL_MS;
-import static github.alecsio.mmceaddons.common.hatch.handler.AdaptiveSnapshotRefreshScheduler.MIN_INTERVAL_MS;
 
 // Code was somehow adapted from a mix of whatever is being done in Thaumic Energistics and in other ME hatches in MMCE
 public abstract class MEEssentiaBus extends MEMachineComponent implements IGridTickable, IAsyncRequirementHandler<RequirementEssentia> {
@@ -85,8 +83,8 @@ public abstract class MEEssentiaBus extends MEMachineComponent implements IGridT
     public TickingRequest getTickingRequest(@Nonnull IGridNode iGridNode) {
         long now = System.currentTimeMillis();
         long idleMs = now - refreshScheduler.getLastSuccessTimestamp();
-        boolean sleep = idleMs >= MAX_INTERVAL_MS;
-        return new TickingRequest(Math.floorDiv(MIN_INTERVAL_MS, 50), Math.floorDiv(MAX_INTERVAL_MS, 50), sleep, true);
+        boolean sleep = idleMs >= MMCEAConfig.maxIntervalMs;
+        return new TickingRequest(Math.floorDiv(MMCEAConfig.minIntervalMs, 50), Math.floorDiv(MMCEAConfig.maxIntervalMs, 50), sleep, true);
     }
 
     @Nonnull
@@ -101,11 +99,11 @@ public abstract class MEEssentiaBus extends MEMachineComponent implements IGridT
             return TickRateModulation.URGENT;
         }
 
-        if (idleMs >= MAX_INTERVAL_MS) {
+        if (idleMs >= MMCEAConfig.maxIntervalMs) {
             return TickRateModulation.SLEEP;
         }
 
-        double ratio = Math.log1p(idleMs) / Math.log1p(MAX_INTERVAL_MS);
+        double ratio = Math.log1p(idleMs) / Math.log1p(MMCEAConfig.maxIntervalMs);
 
         if (ratio < 0.10) return TickRateModulation.URGENT;
         if (ratio < 0.25) return TickRateModulation.FASTER;

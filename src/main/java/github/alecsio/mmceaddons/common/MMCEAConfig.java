@@ -17,6 +17,12 @@ public class MMCEAConfig {
     @Config.Comment("Whether the cooldown for assemblies/disassemblies should be enabled or not. Default: true")
     public static boolean cooldownEnabled = true;
 
+    @Config.Comment("Hatches capture periodic snapshots of the game state and process them asynchronously. The snapshot update frequency is adjusted dynamically. This sets the minimum interval between updates (in ms). Default: 500")
+    public static int minIntervalMs = 500;
+
+    @Config.Comment("Hatches capture periodic snapshots of the game state and process them asynchronously. The snapshot update frequency is adjusted dynamically. This sets the maximum interval between updates (in ms). Default: 30_000")
+    public static int maxIntervalMs = 30_000;
+
     @Config.Comment("The maximum amount of potential energy that potential energy hatches (input and output) can hold. Default: 4096")
     public static int potentialEnergyHatchesCapacity = 4096;
 

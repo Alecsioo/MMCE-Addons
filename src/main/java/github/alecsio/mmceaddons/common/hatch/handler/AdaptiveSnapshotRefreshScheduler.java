@@ -1,12 +1,10 @@
 package github.alecsio.mmceaddons.common.hatch.handler;
 
+import github.alecsio.mmceaddons.common.MMCEAConfig;
 import github.kasuminova.mmce.common.util.concurrent.Action;
 import hellfirepvp.modularmachinery.ModularMachinery;
 
 public class AdaptiveSnapshotRefreshScheduler {
-
-    public static final int MIN_INTERVAL_MS = 500;
-    public static final int MAX_INTERVAL_MS = 30_000;
 
     private volatile long lastSuccessTimestamp = 0L;
     private volatile long lastScheduledAt = 0L;
@@ -73,10 +71,10 @@ public class AdaptiveSnapshotRefreshScheduler {
      * @return the interval to wait before the next refresh, in milliseconds
      */
     private long computeInterval(long idleMs) {
-        if (idleMs <= 0) return MIN_INTERVAL_MS;
-        if (idleMs >= MAX_INTERVAL_MS) return MAX_INTERVAL_MS;
-        double ratio = Math.log1p(idleMs) / Math.log1p(MAX_INTERVAL_MS);
-        return MIN_INTERVAL_MS + (long) (ratio * (MAX_INTERVAL_MS - MIN_INTERVAL_MS));
+        if (idleMs <= 0) return MMCEAConfig.minIntervalMs;
+        if (idleMs >= MMCEAConfig.maxIntervalMs) return MMCEAConfig.maxIntervalMs;
+        double ratio = Math.log1p(idleMs) / Math.log1p(MMCEAConfig.maxIntervalMs);
+        return MMCEAConfig.minIntervalMs + (long) (ratio * (MMCEAConfig.maxIntervalMs - MMCEAConfig.minIntervalMs));
     }
 
 }

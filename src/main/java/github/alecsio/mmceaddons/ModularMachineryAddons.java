@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
                 + "after:jei@[4.13.1.222,);"
                 + "after:bloodmagic@[0.0.0,);"
                 + "after:thaumcraft@[0.0.0,);"
-                + "after:thaumicenergistics@[0.0.0,);"
+                + "after:thaumicenergistics@[2.2.3,);"
                 + "after:nuclearcraft@[2.19b,);"
                 + "after:mekanism@[1.12.2-9.8.3.390,);"
         ,
