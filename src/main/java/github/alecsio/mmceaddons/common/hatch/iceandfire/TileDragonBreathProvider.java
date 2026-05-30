@@ -37,6 +37,10 @@ public class TileDragonBreathProvider extends AbstractSnapshotMachineComponent<R
     private final int breathingTicks = 8 * 20;
     private final Map<UUID, Integer> luredDragons = new HashMap<>();
 
+    public TileDragonBreathProvider() {
+        this.type.set(DragonType.EMPTY);
+    }
+
     public TileDragonBreathProvider(DragonType type) {
         this.type.set(type);
     }

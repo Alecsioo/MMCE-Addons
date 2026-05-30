@@ -12,6 +12,8 @@ import javax.annotation.Nullable;
 
 public class TileSingularityItemOutputBus extends TileSingularityItemBus implements MachineComponentTile {
 
+    public TileSingularityItemOutputBus() {}
+
     public TileSingularityItemOutputBus(ItemBusSize type) {
         super(type);
     }

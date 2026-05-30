@@ -5,6 +5,8 @@ import hellfirepvp.modularmachinery.common.tiles.base.TileItemBus;
 
 abstract public class TileSingularityItemBus extends TileItemBus {
 
+    public TileSingularityItemBus() {}
+
     public TileSingularityItemBus(ItemBusSize size) {
         super(size);
     }
