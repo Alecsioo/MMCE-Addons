@@ -15,6 +15,28 @@ tile.modularmachineryaddons.blockscrubberproviderinput.name=洗涤仓
 tile.modularmachineryaddons.blockbiomeproviderinput.name=生物群系仓
 tile.modularmachineryaddons.blockdimensionproviderinput.name=维度仓
 
+tile.modularmachineryaddons.blocksingularityiteminputbus.tiny.name=微型奇点输入仓
+tile.modularmachineryaddons.blocksingularityiteminputbus.small.name=小型奇点输入仓
+tile.modularmachineryaddons.blocksingularityiteminputbus.normal.name=中型奇点输入仓
+tile.modularmachineryaddons.blocksingularityiteminputbus.reinforced.name=强化奇点输入仓
+tile.modularmachineryaddons.blocksingularityiteminputbus.big.name=大型奇点输入仓
+tile.modularmachineryaddons.blocksingularityiteminputbus.huge.name=巨型奇点输入仓
+tile.modularmachineryaddons.blocksingularityiteminputbus.ludicrous.name=超级奇点输入仓
+
+tile.modularmachineryaddons.blocksingularityitemoutputbus.tiny.name=微型奇点输出仓
+tile.modularmachineryaddons.blocksingularityitemoutputbus.small.name=小型奇点输出仓
+tile.modularmachineryaddons.blocksingularityitemoutputbus.normal.name=中型奇点输出仓
+tile.modularmachineryaddons.blocksingularityitemoutputbus.reinforced.name=强化奇点输出仓
+tile.modularmachineryaddons.blocksingularityitemoutputbus.big.name=大型奇点输出仓
+tile.modularmachineryaddons.blocksingularityitemoutputbus.huge.name=巨型奇点输出仓
+tile.modularmachineryaddons.blocksingularityitemoutputbus.ludicrous.name=超级奇点输出仓
+tile.modularmachineryaddons.blockpotentialenergyproviderinput.name=位能输入仓
+tile.modularmachineryaddons.blockpotentialenergyprovideroutput.name=位能输出仓
+tile.modularmachineryaddons.blockdragonbreathinput.name=龙息输入仓
+tile.modularmachineryaddons.blocklaserinput.name=激光输入仓
+tile.modularmachineryaddons.blockheatinput.name=热量输入仓
+tile.modularmachineryaddons.blockheatoutput.name=热量输出仓
+
 item.modularmachineryaddons.itemadvancedconstructtool.name=高级扳手
 item.modularmachineryaddons.itemadvancedmachineassembler.name=高级机械组装器
 item.modularmachineryaddons.itemadvancedmachinedisassembler.name=高级机械拆卸器
@@ -26,6 +48,7 @@ commands.mmcea.getcacheinfo.usage=/getScrubbedChunksCacheInfo
 
 # errors
 error.modularmachineryaddons.component.invalid.biome=没有找到生物群系仓
+error.modularmachineryaddons.component.invalid.dragon=没有找到龙息仓
 error.modularmachineryaddons.component.invalid.dimension=没有找到维度仓
 error.modularmachineryaddons.component.invalid.essentia=没有找到源质仓
 error.modularmachineryaddons.component.invalid.vis=没有找到魔力仓
@@ -34,6 +57,9 @@ error.modularmachineryaddons.component.invalid.scrubber=没有找到洗涤仓
 error.modularmachineryaddons.component.invalid.radiation=没有找到辐射仓
 error.modularmachineryaddons.component.invalid.will=没有找到意志仓
 error.modularmachineryaddons.component.invalid.meteor=没有找到坠星仓
+error.modularmachineryaddons.component.invalid.potential_energy=没有找到位能仓
+error.modularmachineryaddons.component.invalid.laser=没有找到激光仓
+error.modularmachineryaddons.component.invalid.heat=没有找到热量仓
 error.assembler.not.found=玩家物品栏中没有找到高级机械组装器
 error.encryption.key.not.found=组装器必须通过安全终端连接到ME系统才可进行物品提取
 error.security.station.not.found=无法定位安全终端
@@ -56,14 +82,25 @@ error.modularmachineryaddons.requirement.missing.meteor.alive=存在已有陨石
 error.modularmachineryaddons.requirement.missing.meteor=视线受阻（最多允许1个方块的障碍物）
 error.modularmachineryaddons.requirement.missing.meteor.missing=坠星仓无法处理陨石。你不应该能看到这条信息
 
+error.modularmachineryaddons.requirement.missing.potentialenergy.input=未满足位能需求
+error.modularmachineryaddons.requirement.missing.potentialenergy.output=没有足够的空间用于位能输出
+
+error.modularmachineryaddons.requirement.missing.type=缺少所需类型龙息
+error.modularmachineryaddons.requirement.missing.charges=龙息充能不足
+
+error.modularmachineryaddons.requirement.missing.laser.input=未满足激光需求
+
+error.modularmachineryaddons.requirement.missing.heat.input=热量不足
+error.modularmachineryaddons.requirement.missing.heat.output=没有足够的空间用于热量输出
+
 
 # items
 item.modularmachineryaddons.advancedconstructtool.tooltip=选择两个角落并点击机械控制器以提取整个多方块结构定义。选择第三个方块则会清除区域选择。
 tooltip.modularmachineryaddons.radiationsponge=清除使用者自身，以及当前所处区块内的所有辐射
+tooltip.modularmachineryaddons.dragonbreath=手持龙心点击，可将其锁定为对应的龙息类型。空手点击解除锁定
 
 # blocks
 tooltip.modularmachineryaddons.scrubber=在配方切换或世界重启后的短暂时间窗口内仍可能会发生辐射泄漏。洗涤你的基地！
-
 
 # messages
 message.modularmachineryaddons.assembly.complete=多方块组装成功完成
@@ -75,6 +112,12 @@ message.modularmachineryaddons.disassembly.error=多方块拆卸中断
 message.modularmachineryaddons.advancedconstructtool.cleared=已清除工具选择
 message.modularmachineryaddons.advancedconstructtool.invalid.selection=请选择两个角落！
 message.modularmachineryaddons.advancedconstructtool.selection=已成功选择角落
+message.modularmachineryaddons.dragonbreathhatch.locked=龙息仓类型已锁定为%s
+message.modularmachineryaddons.dragonbreathhatch.unlocked=龙息仓已成功解锁
+dragon.type.fire=火
+dragon.type.ice=冰
+dragon.type.lightning=电
+dragon.type.empty=无
 
 #assembly
 message.assembly.missing.item.knowledge=缺少对物品：%s的知识
@@ -105,3 +148,19 @@ jei.tooltip.modularmachineryaddons.dimension=维度
 jei.tooltip.modularmachineryaddons.biome=生物群系
 jei.tooltip.modularmachineryaddons.meteor_contents=陨石内容
 jei.tooltip.modularmachineryaddons.scrubber_special=无穷无尽！
+jei.tooltip.modularmachineryaddons.breath_type=龙息类型
+jei.tooltip.modularmachineryaddons.breath_amount=数量
+jei.tooltip.modularmachineryaddons.potential_energy=位能：
+jei.tooltip.modularmachineryaddons.laser=激光能量：
+jei.tooltip.modularmachineryaddons.heat=热量：
+
+# TOP
+
+top.modularmachineryaddons.potential_energy=已储存位能：
+top.modularmachineryaddons.dragon_breath.locked.true=已锁定：是
+top.modularmachineryaddons.dragon_breath.locked.false=已锁定：否
+top.modularmachineryaddons.dragon_breath.type=类型：
+top.modularmachineryaddons.dragon_breath.quantity=已储存：
+top.modularmachineryaddons.next_refresh=状态刷新倒计时：
+top.modularmachineryaddons.laser=已储存：
+top.modularmachineryaddons.heat=温度：
