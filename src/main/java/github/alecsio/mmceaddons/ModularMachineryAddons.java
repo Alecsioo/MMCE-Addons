@@ -44,13 +44,13 @@ import org.apache.logging.log4j.Logger;
                 + "after:mekanism@[1.12.2-9.8.3.390,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
-        acceptableRemoteVersions = "[2.0.0]"
+        acceptableRemoteVersions = "[2.0.1]"
 )
 public class ModularMachineryAddons {
 
     public static final String MODID = "modularmachineryaddons";
     public static final String NAME = "Modular Machinery: Community Edition Addons";
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.0.1";
     public static final String CLIENT_PROXY = "github.alecsio.mmceaddons.client.ClientProxy";
     public static final String COMMON_PROXY = "github.alecsio.mmceaddons.CommonProxy";
 
