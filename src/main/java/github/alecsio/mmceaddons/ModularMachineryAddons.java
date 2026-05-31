@@ -3,6 +3,7 @@ package github.alecsio.mmceaddons;
 import github.alecsio.mmceaddons.client.ClientTickHandler;
 import github.alecsio.mmceaddons.client.MouseScrollHandler;
 import github.alecsio.mmceaddons.client.network.handler.MachineAssemblyMessageHandler;
+import github.alecsio.mmceaddons.common.hatch.nuclearcraft.RadiationHandler;
 import github.alecsio.mmceaddons.common.item.assembly.handler.MachineAssemblyEventHandler;
 import github.alecsio.mmceaddons.common.Mods;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.commands.CommandGetCacheInfo;
@@ -39,7 +40,7 @@ import org.apache.logging.log4j.Logger;
                 + "after:bloodmagic@[0.0.0,);"
                 + "after:thaumcraft@[0.0.0,);"
                 + "after:thaumicenergistics@[2.2.3,);"
-                + "after:nuclearcraft@[2.19b,);"
+                + "after:nuclearcraft@[2,);"
                 + "after:mekanism@[1.12.2-9.8.3.390,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
@@ -79,6 +80,8 @@ public class ModularMachineryAddons {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new MachineAssemblyEventHandler());
         MinecraftForge.EVENT_BUS.register(new RightClickHandler());
+        MinecraftForge.EVENT_BUS.register(new RadiationHandler());
+
         if (event.getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new MouseScrollHandler());
             MinecraftForge.EVENT_BUS.register(new ClientTickHandler());

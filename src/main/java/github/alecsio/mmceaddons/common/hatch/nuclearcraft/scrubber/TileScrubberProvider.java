@@ -18,10 +18,9 @@ import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 public class TileScrubberProvider extends AbstractSnapshotMachineComponent<RequirementScrubber> implements MachineComponentTileNotifiable {
@@ -30,9 +29,7 @@ public class TileScrubberProvider extends AbstractSnapshotMachineComponent<Requi
     protected final ChunksReader chunksReader = ChunksReader.getInstance();
     // Not persisted on purpose, since the cache is not persisted either, it needs a refresh if there's a restart
     private final AtomicBoolean redstonePowered = new AtomicBoolean(false);
-    private final AtomicBoolean needsRefresh = new AtomicBoolean(false);
-    private List<Long> scrubbedChunks = new ArrayList<>();
-    private final Lock scrubbedChunksLock = new ReentrantLock();
+    private List<InterdimensionalChunkPos> scrubbedChunks = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     protected CraftCheck checkSnapshot(RequirementScrubber requirement) {
@@ -46,7 +43,7 @@ public class TileScrubberProvider extends AbstractSnapshotMachineComponent<Requi
 
     @Override
     public void handle(RequirementScrubber requirement) {
-        if (currentChunkRange != requirement.getChunkRange() || needsRefresh.compareAndSet(true, false)) {
+        if (currentChunkRange != requirement.getChunkRange() || scrubbedChunks.isEmpty()) {
             replaceScrubbedChunks(requirement.getChunkRange());
         }
     }
@@ -60,43 +57,35 @@ public class TileScrubberProvider extends AbstractSnapshotMachineComponent<Requi
     // Some of these impl might still suffer from concurrency problems but it might be acceptable
     public void onRedstoneSignal(boolean powered) {
         redstonePowered.set(powered);
-        if (!powered) {
-            needsRefresh.set(true);
+        if (powered)  {
+            clearScrubbedChunks();
+        } else {
+            replaceScrubbedChunks(currentChunkRange);
         }
-    }
-
-    public boolean canScrubChunk(long chunkPosAsLong) {
-        return !isRedstonePowered() && isChunkScrubbed(chunkPosAsLong);
-    }
-
-    public boolean isRedstonePowered() {
-        return redstonePowered.get();
-    }
-
-    public boolean isChunkScrubbed(long chunkPosAsLong) {
-        return scrubbedChunks.contains(chunkPosAsLong);
     }
 
     public void clearScrubbedChunks() {
-        scrubbedChunksLock.lock();
-        try {
-            scrubbedChunks.clear();
-        } finally {
-            scrubbedChunksLock.unlock();
-        }
-        needsRefresh.set(true);
+        ScrubbedChunksCache.removeScrubbedChunks(scrubbedChunks);
+        scrubbedChunks.clear();
     }
 
     private void replaceScrubbedChunks(int newChunkRange) {
-        scrubbedChunksLock.lock();
-        try {
-            currentChunkRange = newChunkRange;
-            scrubbedChunks = getSurroundingChunks(world, this.pos, currentChunkRange);
-            List<InterdimensionalChunkPos> interdimensionalChunkPos = scrubbedChunks.stream().map(chunkPosAsLong -> InterdimensionalChunkPos.of(world.provider.getDimension(), chunkPosAsLong)).collect(Collectors.toList());
-            ScrubbedChunksCache.addChunksToCache(interdimensionalChunkPos, this.pos);
-        } finally {
-            scrubbedChunksLock.unlock();
+        if ((newChunkRange == currentChunkRange && !scrubbedChunks.isEmpty()) || redstonePowered.get()) {
+            return;
         }
+
+        clearScrubbedChunks();
+        currentChunkRange = newChunkRange;
+        List<Long> surroundingChunks = getSurroundingChunks(world, this.pos, currentChunkRange);
+        scrubbedChunks = surroundingChunks.stream().map(chunkPosAsLong -> InterdimensionalChunkPos.of(world.provider.getDimension(), chunkPosAsLong)).collect(Collectors.toList());
+        ScrubbedChunksCache.addChunksToCache(scrubbedChunks);
+    }
+
+    @Override
+    public void invalidate() {
+        ScrubbedChunksCache.removeScrubbedChunks(scrubbedChunks);
+        scrubbedChunks.clear();
+        super.invalidate();
     }
 
     private List<Long> getSurroundingChunks(World world, BlockPos pos, int range) {

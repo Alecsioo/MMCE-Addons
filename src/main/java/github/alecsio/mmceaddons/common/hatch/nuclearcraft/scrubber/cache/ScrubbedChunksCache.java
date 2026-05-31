@@ -1,16 +1,10 @@
 package github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.cache;
 
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber.TileScrubberProvider;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Utility class responsible for caching and managing the association between
@@ -23,25 +17,19 @@ import java.util.concurrent.*;
  */
 public class ScrubbedChunksCache {
 
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    // Mapping of chunk positions (with dimension info) to scrubber block positions.
-    private static final ConcurrentMap<InterdimensionalChunkPos, CopyOnWriteArrayList<BlockPos>> SCRUBBED_CHUNKS_CACHE = new ConcurrentHashMap<>();
+    // Mapping of chunk positions (with dimension info) to number of active scrubbers.
+    private static final ConcurrentMap<InterdimensionalChunkPos, AtomicInteger> SCRUBBED_CHUNKS_CACHE2 = new ConcurrentHashMap<>();
 
     /**
      * Adds one or more chunk positions to the scrubber cache, associating them with the given scrubber.
      * If the chunk is already associated with the scrubber, it will not be added again.
      *
      * @param chunkPos  The list of interdimensional chunk positions to cache.
-     * @param scrubber  The position of the scrubber block responsible for scrubbing these chunks.
      */
-    public static void addChunksToCache(List<InterdimensionalChunkPos> chunkPos, BlockPos scrubber) {
-        List<BlockPos> blockPos = new ArrayList<>();
-        blockPos.add(scrubber);
-
+    public static void addChunksToCache(List<InterdimensionalChunkPos> chunkPos) {
         for (InterdimensionalChunkPos interdimensionalChunkPos : chunkPos) {
-            SCRUBBED_CHUNKS_CACHE.computeIfAbsent(interdimensionalChunkPos, ignored -> new CopyOnWriteArrayList<>(blockPos));
-            SCRUBBED_CHUNKS_CACHE.get(interdimensionalChunkPos).addIfAbsent(scrubber);
+            SCRUBBED_CHUNKS_CACHE2.computeIfAbsent(interdimensionalChunkPos, k -> new AtomicInteger(0));
+            SCRUBBED_CHUNKS_CACHE2.get(interdimensionalChunkPos).incrementAndGet();
         }
     }
 
@@ -51,38 +39,11 @@ public class ScrubbedChunksCache {
      * are removed during this check.
      *
      * @param chunkPos  The interdimensional chunk position to check.
-     * @param world     The world to look up tile entities in.
      * @return {@code true} if any valid scrubber is actively scrubbing the chunk; {@code false} otherwise.
      */
-    public static boolean isChunkScrubbed(InterdimensionalChunkPos chunkPos, World world) {
-        CopyOnWriteArrayList<BlockPos> positions = SCRUBBED_CHUNKS_CACHE.get(chunkPos);
-        if (positions == null || positions.isEmpty()) return false;
-        Iterator<BlockPos> iterator = positions.iterator();
-
-        List<BlockPos> invalidPositions = new ArrayList<>();
-
-        try {
-            while (iterator.hasNext()) {
-                BlockPos pos = iterator.next();
-                TileEntity tileEntity = world.getTileEntity(pos);
-                if (!(tileEntity instanceof TileScrubberProvider provider) || !provider.canScrubChunk(chunkPos.chunkPosAsLong())) {
-                    invalidPositions.add(pos);
-                    continue;
-                }
-
-                return true;
-            }
-        } finally {
-            positions.removeAll(invalidPositions);
-            invalidPositions.forEach(pos -> LOGGER.debug("Removed invalid scrubber position: {}. For chunk: {}", pos, chunkPos));
-
-            if (positions.isEmpty()) {
-                SCRUBBED_CHUNKS_CACHE.remove(chunkPos);
-                LOGGER.debug("Removed empty chunk entry {} from cache", chunkPos);
-            }
-        }
-
-        return false;
+    public static boolean isChunkScrubbed(InterdimensionalChunkPos chunkPos) {
+        AtomicInteger scrubbers = SCRUBBED_CHUNKS_CACHE2.get(chunkPos);
+        return scrubbers != null && scrubbers.get() > 0;
     }
 
     /**
@@ -94,22 +55,20 @@ public class ScrubbedChunksCache {
     public static String getInformation() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        SCRUBBED_CHUNKS_CACHE.forEach((chunkPos, positions) -> {
-            int count = positions.size();
-            stringBuilder.append(chunkPos)
-                    .append(" -> [total: ").append(count).append(", positions: ");
-
-            positions.forEach(pos -> stringBuilder.append(pos).append(", "));
-
-            // Remove trailing ", " if present
-            int len = stringBuilder.length();
-            if (count > 0) {
-                stringBuilder.setLength(len - 2); // strip last ", "
-            }
-
-            stringBuilder.append("]\n");
-        });
+        SCRUBBED_CHUNKS_CACHE2.forEach((chunkPos, count) ->
+                stringBuilder.append(chunkPos)
+                        .append(" -> [total: ").append(count.get()).append("]\n")
+        );
 
         return stringBuilder.toString();
+    }
+
+    public static void removeScrubbedChunks(List<InterdimensionalChunkPos> scrubbedChunks) {
+        for (InterdimensionalChunkPos scrubbedChunk : scrubbedChunks) {
+            AtomicInteger counter = SCRUBBED_CHUNKS_CACHE2.get(scrubbedChunk);
+            if (counter != null) {
+                counter.decrementAndGet();
+            }
+        }
     }
 }

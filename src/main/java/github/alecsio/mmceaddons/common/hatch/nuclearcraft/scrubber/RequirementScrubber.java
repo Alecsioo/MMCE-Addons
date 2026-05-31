@@ -1,12 +1,12 @@
 package github.alecsio.mmceaddons.common.hatch.nuclearcraft.scrubber;
 
 import github.alecsio.mmceaddons.common.hatch.IMultiChunkRequirement;
+import github.alecsio.mmceaddons.common.hatch.handler.IAsyncRequirementHandler;
 import github.alecsio.mmceaddons.common.hatch.nuclearcraft.radiation.IRequirementRadiation;
 import github.alecsio.mmceaddons.common.registry.ModularMachineryAddonsRequirements;
 import github.alecsio.mmceaddons.common.hatch.RequirementValidator;
 import github.alecsio.mmceaddons.common.integration.jei.component.JEIComponentRadiation;
 import github.alecsio.mmceaddons.common.integration.jei.ingredient.Radiation;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.ComponentRequirement;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.crafting.helper.ProcessingComponent;
@@ -16,6 +16,7 @@ import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
 import hellfirepvp.modularmachinery.common.modifier.RecipeModifier;
 import hellfirepvp.modularmachinery.common.util.ResultChance;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -46,7 +47,12 @@ public class RequirementScrubber extends ComponentRequirement.PerTick<Radiation,
     @Nonnull
     @Override
     public CraftCheck doIOTick(ProcessingComponent<?> processingComponent, RecipeCraftingContext recipeCraftingContext) {
-        IRequirementHandler<RequirementScrubber> scrubberHandler = getRadiationHandler(processingComponent);
+        boolean isMainThread = FMLCommonHandler.instance().getMinecraftServerInstance().isCallingFromMinecraftThread();
+        if (!isMainThread) {
+            return CraftCheck.success();
+        }
+
+        IAsyncRequirementHandler<RequirementScrubber> scrubberHandler = getRadiationHandler(processingComponent);
 
         scrubberHandler.handle(this);
 
@@ -79,8 +85,8 @@ public class RequirementScrubber extends ComponentRequirement.PerTick<Radiation,
     }
 
     @SuppressWarnings("unchecked")
-    private IRequirementHandler<RequirementScrubber> getRadiationHandler(ProcessingComponent<?> component) {
-        return (IRequirementHandler<RequirementScrubber> ) component.getComponent().getContainerProvider();
+    private IAsyncRequirementHandler<RequirementScrubber> getRadiationHandler(ProcessingComponent<?> component) {
+        return (IAsyncRequirementHandler<RequirementScrubber> ) component.getComponent().getContainerProvider();
     }
 
     @Nonnull
