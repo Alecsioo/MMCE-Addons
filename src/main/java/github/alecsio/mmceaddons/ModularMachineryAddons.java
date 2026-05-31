@@ -44,13 +44,13 @@ import org.apache.logging.log4j.Logger;
                 + "after:mekanism@[1.12.2-9.8.3.390,);"
         ,
         acceptedMinecraftVersions = "[1.12]",
-        acceptableRemoteVersions = "[2.0.1]"
+        acceptableRemoteVersions = "[2.0.2]"
 )
 public class ModularMachineryAddons {
 
     public static final String MODID = "modularmachineryaddons";
     public static final String NAME = "Modular Machinery: Community Edition Addons";
-    public static final String VERSION = "2.0.1";
+    public static final String VERSION = "2.0.2";
     public static final String CLIENT_PROXY = "github.alecsio.mmceaddons.client.ClientProxy";
     public static final String COMMON_PROXY = "github.alecsio.mmceaddons.CommonProxy";
 
@@ -80,7 +80,10 @@ public class ModularMachineryAddons {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new MachineAssemblyEventHandler());
         MinecraftForge.EVENT_BUS.register(new RightClickHandler());
-        MinecraftForge.EVENT_BUS.register(new RadiationHandler());
+
+        if (Mods.NUCLEARCRAFT.isPresent()) {
+            MinecraftForge.EVENT_BUS.register(new RadiationHandler());
+        }
 
         if (event.getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new MouseScrollHandler());
