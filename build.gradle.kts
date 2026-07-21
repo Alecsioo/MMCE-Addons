@@ -5,10 +5,10 @@ import java.util.*
 plugins {
     id("java-library")
     id("maven-publish")
-    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.4.1"
     id("eclipse")
     id("groovy")
-    id("com.gtnewhorizons.retrofuturagradle") version "1.4.0"
+    id("com.gtnewhorizons.retrofuturagradle") version "2.0.2"
 }
 
 // Project properties
@@ -115,32 +115,38 @@ repositories {
     flatDir {
         dirs("libs")
     }
-    maven {
-        url = uri("https://maven.aliyun.com/nexus/content/groups/public/")
+    // All curse.maven dependencies resolve only here.
+    // Cleanroom's service also supports projects that disable
+    // third-party distribution.
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Cleanroom CurseMaven"
+                url = uri("https://curse.cleanroommc.com")
+            }
+        }
+        filter {
+            includeGroup("curse.maven")
+        }
     }
     maven {
-        url = uri("https://maven.aliyun.com/nexus/content/repositories/jcenter")
-    }
-    maven {
+        name = "Cleanroom Maven"
         url = uri("https://maven.cleanroommc.com")
     }
     maven {
-        url = uri("https://cfa2.cursemaven.com")
+        name = "BlameJared Maven"
+        url = uri("https://maven.blamejared.com")
     }
     maven {
-        url = uri("https://cursemaven.com")
-    }
-    maven {
-        url = uri("https://maven.blamejared.com/")
-    }
-    maven {
+        name = "SpongePowered Maven"
         url = uri("https://repo.spongepowered.org/maven")
     }
     maven {
         name = "OvermindDL1 Maven"
-        url = uri("https://gregtech.overminddl1.com/")
+        url = uri("https://gregtech.overminddl1.com")
+
         mavenContent {
-            excludeGroup("net.minecraftforge") // missing the `universal` artefact
+            excludeGroup("net.minecraftforge")
         }
     }
     maven {
@@ -149,8 +155,16 @@ repositories {
     }
     maven {
         name = "GTNH Maven"
-        url = uri("http://jenkins.usrv.eu:8081/nexus/content/groups/public/")
-        isAllowInsecureProtocol = true
+        url = uri("https://nexus.gtnewhorizons.com/repository/public/")
+
+        content {
+            includeGroup("com.gtnewhorizons")
+            includeGroupByRegex("com\\.gtnewhorizons\\..+")
+        }
+    }
+    maven {
+        name = "Aliyun Public"
+        url = uri("https://maven.aliyun.com/nexus/content/groups/public/")
     }
     mavenCentral()
 }
@@ -180,17 +194,13 @@ dependencies {
     api (mixin) {
         isTransitive = false
     }
-
-
     annotationProcessor("org.ow2.asm:asm-debug-all:5.2")
     annotationProcessor("com.google.guava:guava:30.0-jre")
     annotationProcessor("com.google.code.gson:gson:2.8.9")
 
-
     annotationProcessor (mixin) {
         isTransitive = false
     }
-
 
     implementation(rfg.deobf("curse.maven:ae2-570458:5378163"))
     implementation(rfg.deobf("curse.maven:ae2fc-623955:5751930"))
@@ -232,13 +242,15 @@ dependencies {
     implementation(rfg.deobf("curse.maven:rftools-dep-mcjtylib-233105:2745846"))
     implementation(rfg.deobf("curse.maven:trash-394535:4606884"))
     implementation(rfg.deobf("curse.maven:trashdep-454372:6034694"))
-    compileOnly(rfg.deobf("curse.maven:nuclearcraft-226254:8087650"))
-    compileOnly(rfg.deobf("curse.maven:nuclearcraft-overhauled-336895:8133438"))
+    compileOnly("curse.maven:nuclearcraft-mod-226254:8213198")
+    compileOnly("curse.maven:nuclearcraft-overhauled-336895:8133450")
+    // AbyssalCraft's dedicated development API jar
+    compileOnly("curse.maven:abyssal-53686:7253999")
     implementation(rfg.deobf("curse.maven:drawers-223852:5981297"))
     implementation(rfg.deobf("curse.maven:drawersChameleonDependency-230497:2450900"))
     implementation(rfg.deobf("curse.maven:chisel-278493:3319307"))
-    implementation(rfg.deobf("curse.maven:abyssal-53686:7253998"))
-    implementation(rfg.deobf("curse.maven:bloodmagic-224791:2822288-sources-2822290"))
+    //implementation(rfg.deobf("curse.maven:abyssal-53686:7253998"))
+    implementation(rfg.deobf("curse.maven:bloodmagic-224791:2822288"))
     implementation(rfg.deobf("curse.maven:bmdependency-228832:2645992"))
     implementation("curse.maven:iceandfire-457668:5738729")
     implementation("curse.maven:llibrary-243298:2505007")
