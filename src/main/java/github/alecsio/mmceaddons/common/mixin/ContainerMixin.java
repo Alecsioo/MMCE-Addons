@@ -1,5 +1,6 @@
 package github.alecsio.mmceaddons.common.mixin;
 
+import github.alecsio.mmceaddons.common.hatch.vanilla.gui.ContainerSingularityItemBus;
 import github.alecsio.mmceaddons.util.SingularitySlotItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -12,6 +13,8 @@ public class ContainerMixin {
 
     @Redirect(method = "addInventorySlots(Lnet/minecraftforge/items/IItemHandlerModifiable;Lhellfirepvp/modularmachinery/common/block/prop/ItemBusSize;)V", at = @At(value = "NEW", target = "(Lnet/minecraftforge/items/IItemHandler;III)Lnet/minecraftforge/items/SlotItemHandler;"), remap=false)
     public SlotItemHandler replaceSlotItemHandlers(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
-        return new SingularitySlotItemHandler(itemHandler, index, xPosition, yPosition);
+        if ((Object) this instanceof ContainerSingularityItemBus) {
+            return new SingularitySlotItemHandler(itemHandler, index, xPosition, yPosition);}
+        return new SlotItemHandler(itemHandler, index, xPosition, yPosition);
     }
 }

@@ -43,6 +43,7 @@ item.modularmachineryaddons.itemadvancedmachinedisassembler.name=Advanced Machin
 item.modularmachineryaddons.itemradiationsponge.name=Radiation Sponge
 item.modularmachineryaddons.iteminactiveradiationsponge.name=Inactive Radiation Sponge
 tooltip.modularmachineryaddons.cheese.lie=The cheese is §llie
+tooltip.modularmachineryaddons.singularity.stored=Stored: %s
 
 commands.mmcea.getcacheinfo.usage=/getScrubbedChunksCacheInfo
 

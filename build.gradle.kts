@@ -13,7 +13,7 @@ plugins {
 
 // Project properties
 group = "alecsio.modularmachineryaddons"
-version = "2.0.3"
+version = "2.0.4"
 
 // Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
 java {
