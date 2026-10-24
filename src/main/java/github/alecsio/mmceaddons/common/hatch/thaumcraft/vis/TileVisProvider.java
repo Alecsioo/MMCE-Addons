@@ -41,9 +41,9 @@ public abstract class TileVisProvider extends AbstractSnapshotMachineComponent<R
 
         for (Chunk chunk : chunksReader.getSurroundingChunks(this.world, this.pos, largestChunkRange)) {
             long chunkAsLong = ChunkPos.asLong(chunk.x, chunk.z);
-            Float chunkFlux = AuraHelper.getFlux(this.world, getBlockInChunk(chunk));
+            Float chunkVis = AuraHelper.getVis(this.world, getBlockInChunk(chunk));
 
-            localChunkToVis.put(chunkAsLong, chunkFlux);
+            localChunkToVis.put(chunkAsLong, chunkVis);
         }
 
         VisSnapshot localSnapshot = new VisSnapshot(largestChunkRange, this.pos, localChunkToVis);
