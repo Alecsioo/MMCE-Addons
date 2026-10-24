@@ -13,7 +13,6 @@ import nc.radiation.RadiationHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
-import thaumcraft.api.aura.AuraHelper;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -133,7 +132,10 @@ public abstract class TileRadiationProvider extends AbstractSnapshotMachineCompo
             List<Chunk> chunks = chunksReader.getSurroundingChunks(this.world, this.pos, requirement.getChunkRange());
             double remaining = requirement.getAmount();
 
-            chunks.sort(Comparator.comparingDouble(chunk -> AuraHelper.getFlux(this.world, getBlockInChunk(chunk))));
+            chunks.sort(Comparator.comparingDouble(chunk -> {
+                IRadiationSource source = RadiationHelper.getRadiationSource(chunk);
+                return source == null ? 0.0D : source.getRadiationLevel();
+            }));
 
             double maxPerChunk = requirement.getMaxPerChunk();
 
