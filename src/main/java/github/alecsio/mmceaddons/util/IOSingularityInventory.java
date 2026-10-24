@@ -14,6 +14,12 @@ public class IOSingularityInventory extends IOInventory {
         Arrays.fill(this.slotLimits, maxSize);
     }
 
+    // The parent's canMergeItemStacks refuses unstackable items, which blocks automation from adding to an
+    // occupied slot even though the GUI allows it. A singularity slot holds any number of identical items.
+    private static boolean canMergeSingularityStacks(@Nonnull ItemStack stack, @Nonnull ItemStack other) {
+        return !stack.isEmpty() && !other.isEmpty() && stack.isItemEqual(other) && ItemStack.areItemStackTagsEqual(stack, other);
+    }
+
     protected ItemStack insertItemInternal(int slot, @Nonnull ItemStack stack, boolean simulate) {
         if (!this.allowAnySlots && !arrayContains(this.inSlots, slot)) {
             return stack;
@@ -26,7 +32,7 @@ public class IOSingularityInventory extends IOInventory {
                 if (!holder.itemStack.get().isEmpty()) {
                     ItemStack existing = ItemUtils.copyStackWithSize(holder.itemStack.get(), holder.itemStack.get().getCount());
                     int max = this.getSlotLimit(slot);
-                    if (existing.getCount() < max && canMergeItemStacks(existing, toInsert)) {
+                    if (existing.getCount() < max && canMergeSingularityStacks(existing, toInsert)) {
                         int movable = Math.min(max - existing.getCount(), stack.getCount());
                         if (!simulate) {
                             holder.itemStack.get().grow(movable);
