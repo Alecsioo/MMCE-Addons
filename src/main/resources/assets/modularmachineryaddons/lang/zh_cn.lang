@@ -43,6 +43,7 @@ item.modularmachineryaddons.itemadvancedmachinedisassembler.name=高级机械拆
 item.modularmachineryaddons.itemradiationsponge.name=辐射海绵
 item.modularmachineryaddons.iteminactiveradiationsponge.name=未激活的辐射海绵
 tooltip.modularmachineryaddons.cheese.lie=奶酪是个§l谎言
+tooltip.modularmachineryaddons.singularity.stored=已储存：%s
 
 commands.mmcea.getcacheinfo.usage=/getScrubbedChunksCacheInfo
 
