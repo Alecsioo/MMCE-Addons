@@ -10,11 +10,11 @@ import java.util.Map;
 
 public class VisSnapshot extends AbstractSnapshot<RequirementVis> {
 
-    private final Map<Long, Float> visToFlux;
+    private final Map<Long, Float> chunkToVis;
 
-    public VisSnapshot(int coveredRange, BlockPos center, Map<Long, Float> visToFlux) {
+    public VisSnapshot(int coveredRange, BlockPos center, Map<Long, Float> chunkToVis) {
         super(coveredRange, center);
-        this.visToFlux = visToFlux;
+        this.chunkToVis = chunkToVis;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class VisSnapshot extends AbstractSnapshot<RequirementVis> {
         ChunkPos center = new ChunkPos(this.center);
         Map<Long, Float> result = new HashMap<>();
 
-        for (Map.Entry<Long, Float> entry : visToFlux.entrySet()) {
+        for (Map.Entry<Long, Float> entry : chunkToVis.entrySet()) {
             if (isChunkWithinRange(entry.getKey(), center, range)) {
                 result.put(entry.getKey(), entry.getValue());
             }
@@ -39,7 +39,7 @@ public class VisSnapshot extends AbstractSnapshot<RequirementVis> {
         double accumulated = 0.0D;
         double minPerChunk = requirement.getMinPerChunk();
 
-        for (float stored : visToFlux.values()) {
+        for (float stored : chunkToVis.values()) {
             accumulated += Math.max(0.0D, stored - minPerChunk);
             if (accumulated >= needed) return true;
         }
@@ -55,7 +55,7 @@ public class VisSnapshot extends AbstractSnapshot<RequirementVis> {
         double accumulated = 0.0D;
         double maxPerChunk = requirement.getMaxPerChunk();
 
-        for (float stored : visToFlux.values()) {
+        for (float stored : chunkToVis.values()) {
             accumulated += Math.max(0.0D, maxPerChunk - stored);
             if (accumulated >= needed) return true;
         }
