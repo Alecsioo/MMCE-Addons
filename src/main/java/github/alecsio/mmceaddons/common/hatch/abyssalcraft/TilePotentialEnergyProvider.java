@@ -4,7 +4,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.shinoow.abyssalcraft.api.energy.IEnergyCollector;
 import com.shinoow.abyssalcraft.api.energy.IEnergyTransporter;
 import github.alecsio.mmceaddons.common.MMCEAConfig;
-import github.alecsio.mmceaddons.common.hatch.handler.IRequirementHandler;
+import github.alecsio.mmceaddons.common.hatch.handler.IAsyncRequirementHandler;
 import hellfirepvp.modularmachinery.common.crafting.helper.CraftCheck;
 import hellfirepvp.modularmachinery.common.machine.IOType;
 import hellfirepvp.modularmachinery.common.machine.MachineComponent;
@@ -16,7 +16,7 @@ import net.minecraft.util.EnumFacing;
 
 import javax.annotation.Nullable;
 
-public abstract class TilePotentialEnergyProvider extends TileColorableMachineComponent implements MachineComponentTile, IRequirementHandler<RequirementPotentialEnergy>, IEnergyCollector, IEnergyTransporter {
+public abstract class TilePotentialEnergyProvider extends TileColorableMachineComponent implements MachineComponentTile, IAsyncRequirementHandler<RequirementPotentialEnergy>, IEnergyCollector, IEnergyTransporter {
 
     protected AtomicDouble storedEnergy = new AtomicDouble(0);
 
@@ -81,8 +81,13 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
 
     public static class Input extends TilePotentialEnergyProvider {
         @Override
-        public CraftCheck canHandle(RequirementPotentialEnergy requirement) {
+        public CraftCheck canHandleSync(RequirementPotentialEnergy requirement) {
             return storedEnergy.doubleValue() - requirement.getAmount() >= 0 ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.input");
+        }
+
+        @Override
+        public CraftCheck canHandleAsync(RequirementPotentialEnergy requirement) {
+            return canHandleSync(requirement);
         }
 
         @Override
@@ -99,8 +104,13 @@ public abstract class TilePotentialEnergyProvider extends TileColorableMachineCo
 
     public static class Output extends TilePotentialEnergyProvider {
         @Override
-        public CraftCheck canHandle(RequirementPotentialEnergy requirement) {
+        public CraftCheck canHandleSync(RequirementPotentialEnergy requirement) {
             return (storedEnergy.doubleValue() + requirement.getAmount()) <= MMCEAConfig.potentialEnergyHatchesCapacity ? CraftCheck.success() : CraftCheck.failure("error.modularmachineryaddons.requirement.missing.potentialenergy.output");
+        }
+
+        @Override
+        public CraftCheck canHandleAsync(RequirementPotentialEnergy requirement) {
+            return canHandleSync(requirement);
         }
 
         @Override
