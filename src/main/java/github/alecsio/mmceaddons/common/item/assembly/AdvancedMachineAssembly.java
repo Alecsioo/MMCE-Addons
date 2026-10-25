@@ -201,10 +201,16 @@ public class AdvancedMachineAssembly extends AbstractMachineAssembly {
             }
 
             for (IFluidHandlerItem fluidHandler : fluidHandlers) {
+                // Handlers can drain less than requested (e.g. a tank holding 40mB when 1000mB are needed),
+                // so the full amount must be available, else the fluid would be placed for free
                 FluidStack drained = fluidHandler.drain(fluidStack, false);
-                if (drained != null && drained.isFluidEqual(fluidStack)) {
+                if (drained == null || !drained.isFluidEqual(fluidStack) || drained.amount < fluidStack.amount) {
+                    continue;
+                }
+
+                drained = fluidHandler.drain(fluidStack, true);
+                if (drained != null && drained.isFluidEqual(fluidStack) && drained.amount >= fluidStack.amount) {
                     handledFluid = drained.copy();
-                    fluidHandler.drain(fluidStack, true);
                     break;
                 }
             }
