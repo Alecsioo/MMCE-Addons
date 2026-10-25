@@ -13,7 +13,7 @@ plugins {
 
 // Project properties
 group = "alecsio.modularmachineryaddons"
-version = "2.0.4"
+version = "2.0.5"
 
 // Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
 java {
@@ -249,7 +249,7 @@ dependencies {
     implementation(rfg.deobf("curse.maven:drawers-223852:5981297"))
     implementation(rfg.deobf("curse.maven:drawersChameleonDependency-230497:2450900"))
     implementation(rfg.deobf("curse.maven:chisel-278493:3319307"))
-    //implementation(rfg.deobf("curse.maven:abyssal-53686:7253998"))
+    implementation(rfg.deobf("curse.maven:abyssal-53686:7253998"))
     implementation(rfg.deobf("curse.maven:bloodmagic-224791:2822288"))
     implementation(rfg.deobf("curse.maven:bmdependency-228832:2645992"))
     implementation("curse.maven:iceandfire-457668:5738729")
